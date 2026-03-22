@@ -1,0 +1,110 @@
+# Shop Page, Product Details & Shopping Cart
+
+Build the customer-facing shop page, product detail page, and shopping cart, including all required database tables, models, controllers, views, and routes.
+
+## Proposed Changes
+
+### Database Layer
+
+#### [NEW] `database/migrations/xxxx_create_products_table.php`
+Products table with columns: `id`, `name`, `slug`, `short_description`, `description`, `regular_price`, `sale_price` (nullable), `SKU`, `stock_status` (enum: instock/outofstock), `featured` (boolean), `quantity`, `image` (main image), `images` (gallery, comma-separated filenames), `category_id` (FK → categories), `timestamps`.
+
+#### [NEW] `database/migrations/xxxx_create_carts_table.php`
+Session-based carts: `id`, `user_id` (nullable FK → users), `session_id` (for guest users), `timestamps`.
+
+#### [NEW] `database/migrations/xxxx_create_cart_items_table.php`
+Cart line items: `id`, `cart_id` (FK → carts), `product_id` (FK → products), `quantity`, `price`, `timestamps`.
+
+---
+
+### Models
+
+#### [NEW] `app/Models/Product.php`
+- `$fillable` array with all product fields
+- `belongsTo` relationship: [category()](file:///c:/Users/Jorge/abacart_ph/app/Http/Controllers/AdminController.php#106-110)
+- Accessor for sale percentage calculation
+
+#### [NEW] `app/Models/Cart.php`
+- `hasMany` → `CartItem`
+- `belongsTo` → [User](file:///c:/Users/Jorge/abacart_ph/app/Http/Controllers/UserController.php#7-14)
+
+#### [NEW] `app/Models/CartItem.php`
+- `belongsTo` → `Cart`, `Product`
+
+#### [MODIFY] [app/Models/Category.php](file:///c:/Users/Jorge/abacart_ph/app/Models/Category.php)
+- Add `hasMany` → `Product`
+
+---
+
+### Controllers
+
+#### [NEW] `app/Http/Controllers/ShopController.php`
+- [index()](file:///c:/Users/Jorge/abacart_ph/app/Http/Controllers/HomeController.php#9-13) — shop listing with pagination, filter by category, sort by price/date
+- `product_details($slug)` — single product page with related products
+
+#### [NEW] `app/Http/Controllers/CartController.php`
+- [index()](file:///c:/Users/Jorge/abacart_ph/app/Http/Controllers/HomeController.php#9-13) — view cart page
+- `add_to_cart(Request)` — add product (AJAX-friendly, returns JSON)
+- `update_cart(Request)` — update quantity
+- `remove_item($id)` — remove item from cart
+
+---
+
+### Views
+
+#### [NEW] `resources/views/shop.blade.php`
+Shop listing page extending `layouts.app`:
+- Sidebar with category filters
+- Product grid with product cards (matching existing theme style)
+- Pagination
+- Sort dropdown (default, price low-high, price high-low, newest)
+
+#### [NEW] `resources/views/details.blade.php`
+Product details page extending `layouts.app`:
+- Product image gallery
+- Name, price (with sale price if applicable), description
+- Quantity selector + Add to Cart button
+- Related products section
+
+#### [NEW] `resources/views/cart.blade.php`
+Cart page extending `layouts.app`:
+- Table with product image, name, price, quantity controls, subtotal, remove button
+- Cart totals section with subtotal and total
+- Continue Shopping + Proceed to Checkout buttons
+- Empty cart state message
+
+---
+
+### Routes
+
+#### [MODIFY] [routes/web.php](file:///c:/Users/Jorge/abacart_ph/routes/web.php)
+Add public routes (no auth required):
+```
+GET  /shop                    → ShopController@index       (shop.index)
+GET  /shop/product/{slug}     → ShopController@details     (shop.product.details)
+GET  /cart                    → CartController@index        (cart.index)
+POST /cart/add                → CartController@add_to_cart  (cart.add)
+PUT  /cart/update             → CartController@update_cart  (cart.update)
+DELETE /cart/remove/{id}      → CartController@remove_item  (cart.remove)
+```
+
+---
+
+### Layout Updates
+
+#### [MODIFY] [resources/views/layouts/app.blade.php](file:///c:/Users/Jorge/abacart_ph/resources/views/layouts/app.blade.php)
+- Update nav links: `shop.html` → `{{ route('shop.index') }}`, `cart.html` → `{{ route('cart.index') }}`
+- Make cart item count dynamic
+
+---
+
+## Verification Plan
+
+### Manual Verification
+1. Run `php artisan migrate` — verify the 3 new tables are created without errors
+2. Seed a few products via tinker or admin panel, then visit `/shop` — products should display in a grid with pagination
+3. Click a product → `/shop/product/{slug}` should show product details
+4. Click "Add to Cart" → product should be added, cart count should update
+5. Visit `/cart` → cart items should display with correct prices
+6. Update quantity and remove items → cart should update accordingly
+7. Verify nav links (Shop, Cart) work correctly from all pages

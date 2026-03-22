@@ -1,0 +1,26 @@
+﻿
+   INFO  Running migrations.  
+
+  2026_03_19_000000_rename_remaining_descriptive_columns  11.08ms FAIL
+
+   ErrorException 
+
+  Trying to access array offset on value of type null
+
+  at vendor\laravel\framework\src\Illuminate\Database\Schema\Grammars\MySqlGrammar.php:362
+    358Γûò     {
+    359Γûò         $column = (new Collection($this->connection->getSchemaBuilder()->getColumns($blueprint->getTable())))
+    360Γûò             ->firstWhere('name', $command->from);
+    361Γûò 
+  Γ₧£ 362Γûò         $modifiers = $this->addModifiers($column['type'], $blueprint, new ColumnDefinition([
+    363Γûò             'change' => true,
+    364Γûò             'type' => match ($column['type_name']) {
+    365Γûò                 'bigint' => 'bigInteger',
+    366Γûò                 'int' => 'integer',
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Schema\Grammars\MySqlGrammar.php:362
+      Illuminate\Foundation\Bootstrap\HandleExceptions::Illuminate\Foundation\Bootstrap\{closure}("Trying to access array offset on value of type null", "C:\Users\Jorge\abacart_ph\vendor\laravel\framework\src\Illuminate\Database\Schema\Grammars\MySqlGrammar.php")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\Schema\Grammars\MySqlGrammar.php:344
+      Illuminate\Database\Schema\Grammars\MySqlGrammar::compileLegacyRenameColumn(Object(Illuminate\Database\Schema\Blueprint), Object(Illuminate\Support\Fluent))
+
