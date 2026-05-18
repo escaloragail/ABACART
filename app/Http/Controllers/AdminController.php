@@ -18,6 +18,8 @@ class AdminController extends Controller
         $orders = \App\Models\Order::all();
         $total_orders = $orders->count();
         $total_amount = $orders->sum('total');
+        $total_products = Product::where('is_active', 1)->count();
+        $total_customers = \App\Models\User::where('utype', 'USR')->count();
 
         $pending_orders = \App\Models\Order::where('order_status', 'ordered')->get();
         $pending_count = $pending_orders->count();
@@ -54,7 +56,7 @@ class AdminController extends Controller
         }
 
         return view('admin.index', compact(
-            'total_orders', 'total_amount', 
+            'total_orders', 'total_amount', 'total_products', 'total_customers',
             'pending_count', 'pending_amount',
             'delivered_count', 'delivered_amount',
             'canceled_count', 'canceled_amount',
@@ -506,6 +508,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . \Illuminate\Support\Facades\Auth::user()->User_ID . ',User_ID',
             'phone_number' => 'required|string|max:15',
             'password' => 'nullable|string|min:8|confirmed',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -513,6 +516,7 @@ class AdminController extends Controller
 
         $user = \App\Models\User::find(\Illuminate\Support\Facades\Auth::user()->User_ID);
         $user->name = $request->name;
+        $user->email = $request->email;
         $user->phone_number = $request->phone_number;
 
         if ($request->hasFile('image')) {

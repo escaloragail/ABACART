@@ -85,17 +85,83 @@
     </div>
 @endsection
 @push('scripts')
+<style>
+    /* Custom SweetAlert Black & White Aesthetic */
+    .swal-modal {
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 20px;
+    }
+    .swal-title {
+        font-family: 'Inter', sans-serif;
+        color: #111;
+        font-weight: 800;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .swal-text {
+        font-family: 'Inter', sans-serif;
+        color: #64748b;
+        text-align: center;
+        font-size: 14px;
+    }
+    .swal-button {
+        border-radius: 50px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 12px 30px;
+        font-size: 11px;
+        transition: all 0.2s ease;
+    }
+    .swal-button--cancel {
+        background-color: #fff !important;
+        color: #111 !important;
+        border: 1px solid #111 !important;
+        box-shadow: none !important;
+    }
+    .swal-button--cancel:hover {
+        background-color: #f1f5f9 !important;
+    }
+    .swal-button--confirm {
+        background-color: #111 !important;
+        color: #fff !important;
+        border: 1px solid #111 !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    }
+    .swal-button--confirm:hover {
+        background-color: #2d3748 !important;
+    }
+    .swal-icon {
+        display: none !important;
+    }
+</style>
 <script>
     $(function(){
         $('.delete').on('click', function(e){
             e.preventDefault();
             var form = $(this).closest('form');
             swal({
-                title: "Are you sure?",
-                text: "You want to delete this coupon?",
-                type: "warning",
-                buttons: ["No", "Yes"],
-                confirmButtonColor: "#dc3545"
+                title: "Delete Coupon?",
+                text: "Are you sure you want to delete this coupon?",
+                buttons: {
+                    cancel: {
+                        text: "No, Keep It",
+                        value: null,
+                        visible: true,
+                        className: "swal-button--cancel",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes, Delete",
+                        value: true,
+                        visible: true,
+                        className: "swal-button--confirm",
+                        closeModal: true
+                    }
+                }
             }).then(function (result) {
                 if (result) {
                     form.submit();

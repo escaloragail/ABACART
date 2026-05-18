@@ -54,12 +54,7 @@
                                         <div class="text">Dashboard</div>
                                     </a>
                                 </li>
-                                <li class="menu-item">
-                                    <a href="{{ route('home.index') }}" target="_blank">
-                                        <div class="icon"><i class="icon-home"></i></div>
-                                        <div class="text">View Site</div>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                         <div class="center-item">
@@ -164,9 +159,7 @@
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="header-item">
-                                                @if($new_orders_count > 0)
-                                                    <span class="text-tiny">{{ $new_orders_count }}</span>
-                                                @endif
+                                                <span class="text-tiny" id="notification-badge" style="{{ $new_orders_count > 0 ? '' : 'display:none;' }}">{{ $new_orders_count }}</span>
                                                 <i class="icon-bell"></i>
                                             </span>
                                         </button>
@@ -176,16 +169,18 @@
                                                 <h6>Notifications</h6>
                                             </li>
                                             @forelse($new_orders as $order)
-                                            <li>
-                                                <div class="message-item">
-                                                    <div class="image">
-                                                        <i class="icon-noti-1"></i>
+                                            <li class="notification-item" data-id="{{ $order->Order_ID }}">
+                                                <a href="{{ route('admin.orders') }}" class="message-item-link" data-id="{{ $order->Order_ID }}" style="text-decoration:none; color:inherit; display:block;">
+                                                    <div class="message-item">
+                                                        <div class="image">
+                                                            <i class="icon-noti-1"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="body-title-2">New Order #{{ $order->Order_ID }}</div>
+                                                            <div class="text-tiny">From {{ $order->user->name ?? 'User' }} - Total: ₱{{ $order->total }}</div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <div class="body-title-2">New Order #{{ $order->Order_ID }}</div>
-                                                        <div class="text-tiny">From {{ $order->user->name ?? 'User' }} - Total: ₱{{ $order->total }}</div>
-                                                    </div>
-                                                </div>
+                                                </a>
                                             </li>
                                             @empty
                                             <li>
@@ -230,14 +225,7 @@
                                                     <div class="body-title-2">Account</div>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="#" class="user-item">
-                                                    <div class="icon">
-                                                        <i class="icon-mail"></i>
-                                                    </div>
-                                                    <div class="body-title-2">Messages</div>
-                                                </a>
-                                            </li>
+
                                             <li>
                                                 <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                                     @csrf
@@ -276,5 +264,41 @@
     <script src="{{ asset('/js/main.js') }}"></script>
 
     @stack("scripts")
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let readNotifs = JSON.parse(localStorage.getItem('admin_read_notifs') || '[]');
+            let badge = document.getElementById('notification-badge');
+            let currentTotal = parseInt(badge ? badge.textContent : '0');
+            
+            let hiddenCount = 0;
+            document.querySelectorAll('.notification-item').forEach(function(item) {
+                let orderId = item.getAttribute('data-id');
+                if (readNotifs.includes(orderId)) {
+                    item.style.display = 'none';
+                    hiddenCount++;
+                }
+            });
+
+            if (badge) {
+                let newTotal = currentTotal - hiddenCount;
+                if (newTotal > 0) {
+                    badge.textContent = newTotal;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+
+            document.querySelectorAll('.message-item-link').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    let orderId = this.getAttribute('data-id');
+                    if (!readNotifs.includes(orderId)) {
+                        readNotifs.push(orderId);
+                        localStorage.setItem('admin_read_notifs', JSON.stringify(readNotifs));
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
