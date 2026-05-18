@@ -12,7 +12,7 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
 .shop-sidebar { background: transparent !important; width: 220px; border: none; }
 .ac-sidebar-all {
     display: flex; align-items: center; gap: 10px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.12em;
     color: #444; text-decoration: none; text-transform: uppercase; margin-bottom: 30px;
 }
 .ac-sidebar-all .ac-line { width: 20px; height: 1.5px; background: #333; }
@@ -20,7 +20,7 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
 .ac-sidebar-menu { list-style: none; padding: 0; margin: 0; }
 .ac-sidebar-menu li { margin-bottom: 18px; }
 .ac-sidebar-menu a {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
     color: #999; text-decoration: none; text-transform: uppercase;
     transition: all 0.2s ease;
     display: inline-block;
@@ -62,12 +62,37 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
 }
 .ac-product-card:hover .ac-view-details-btn { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── OUT OF STOCK STYLING ── */
+.product-out-of-stock {
+    opacity: 0.55;
+    filter: grayscale(100%);
+    pointer-events: none; /* Disables all clicks, preventing add to cart or view details */
+}
+.out-of-stock-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e11d48; /* Red for out of stock */
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: 20px;
+    z-index: 10;
+    text-transform: uppercase;
+}
+
 .ac-product-info { padding: 20px 5px 10px; text-align: left; }
+.ac-product-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.ac-product-title h6 { margin: 0; }
 .ac-product-title a { font-size: 14px; font-weight: 500; color: #111; text-decoration: none; }
 
-.ac-price { font-family: 'Playfair Display', serif; font-size: 28px; color: #111; margin-top: 10px; display: block; }
+.ac-product-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.ac-price { font-family: 'Playfair Display', serif; font-size: 28px; color: #111; display: block; }
 .ac-price-old { font-size: 18px; color: #bbb; text-decoration: line-through; margin-right: 10px; }
 .ac-price-sale { color: #8B4513; }
+.ac-stock-count { font-size: 11px; font-weight: 700; color: #16a34a; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; white-space: nowrap; }
 
 @media (max-width: 991px) { .shop-main { flex-direction: column; } .shop-sidebar { width: 100%; } }
 </style>
@@ -94,8 +119,12 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
         <div class="shop-list flex-grow-1">
             <div id="products-grid">
                 @foreach($products as $product)
-                <div class="ac-product-card">
+                <div class="ac-product-card {{ $product->quantity <= 0 ? 'product-out-of-stock' : '' }}">
                     <div class="ac-product-img-wrap">
+                        @if($product->quantity <= 0)
+                            <div class="out-of-stock-badge">Out of Stock</div>
+                        @endif
+                        
                         <a href="{{ route('shop.product.details', ['slug' => $product->product_slug]) }}">
                             <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $product->main_product_image }}" alt="{{ $product->product_name }}">
                         </a>
@@ -106,19 +135,28 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
                     </div>
 
                     <div class="ac-product-info">
-                        <h6 class="ac-product-title">
-                            <a href="{{ route('shop.product.details', ['slug' => $product->product_slug]) }}">{{ $product->product_name }}</a>
-                        </h6>
-                        
-                        <div class="ac-product-price">
-                            @if($product->is_on_sale == 1 && $product->sale_price)
-                                <span class="ac-price">
-                                    <span class="ac-price-old">₱{{ number_format($product->regular_price) }}</span>
-                                    <span class="ac-price-sale">₱{{ number_format($product->sale_price) }}</span>
-                                </span>
-                            @else
-                                <span class="ac-price">₱{{ number_format($product->regular_price) }}</span>
+                        <div class="ac-product-title-row">
+                            <div class="ac-product-title">
+                                <h6><a href="{{ route('shop.product.details', ['slug' => $product->product_slug]) }}">{{ $product->product_name }}</a></h6>
+                            </div>
+                            @if($product->quantity > 0)
+                                <div class="ac-stock-count">
+                                    {{ $product->quantity }} in stock
+                                </div>
                             @endif
+                        </div>
+                        
+                        <div class="ac-product-bottom">
+                            <div class="ac-product-price">
+                                @if($product->is_on_sale == 1 && $product->sale_price)
+                                    <span class="ac-price">
+                                        <span class="ac-price-old">₱{{ number_format($product->regular_price) }}</span>
+                                        <span class="ac-price-sale">₱{{ number_format($product->sale_price) }}</span>
+                                    </span>
+                                @else
+                                    <span class="ac-price">₱{{ number_format($product->regular_price) }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
