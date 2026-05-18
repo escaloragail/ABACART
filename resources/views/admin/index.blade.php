@@ -66,48 +66,52 @@
 
         <!-- ===== RECENT ORDERS TABLE ===== -->
         <div class="dash-orders-section">
-            <div class="dash-orders-card">
-                <div class="dash-orders-header">
-                    <h6 class="dash-chart-title">Recent Orders</h6>
-                    <a href="{{ route('admin.orders') }}" class="dash-view-all">View All</a>
+            <div class="dash-orders-card wg-box" style="padding: 0; overflow: hidden; margin-top: 20px;">
+                <div class="dash-orders-header" style="padding: 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                    <h6 class="dash-chart-title" style="margin: 0;">Recent Orders</h6>
+                    <a href="{{ route('admin.orders') }}" class="dash-view-all" style="font-size: 13px; font-weight: 600; color: #111;">View All</a>
                 </div>
-                <div class="table-responsive">
-                    <table class="dash-orders-table">
-                        <thead>
-                            <tr>
-                                <th>Order No</th>
-                                <th>Customer Name</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($recent_orders as $order)
-                            <tr>
-                                <td><span class="dash-order-id">#{{ $order->Order_ID }}</span></td>
-                                <td>{{ $order->user->name ?? 'Guest' }}</td>
-                                <td>{{ $order->created_at->format('d M Y') }}</td>
-                                <td>₱{{ number_format($order->total, 2) }}</td>
-                                <td>
-                                    @if($order->order_status == 'delivered')
-                                        <span class="dash-status-badge dash-status-delivered">Delivered</span>
-                                    @elseif($order->order_status == 'canceled')
-                                        <span class="dash-status-badge dash-status-canceled">Canceled</span>
-                                    @else
-                                        <span class="dash-status-badge dash-status-pending">Pending</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.order.details', ['order_id' => $order->Order_ID]) }}" class="dash-view-btn">
-                                        <i class="icon-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="wg-table table-all-user">
+                    <div class="table-responsive modern-table-wrap">
+                        <table class="table modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Customer Name</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($recent_orders as $order)
+                                <tr>
+                                    <td class="td-id">#{{ $order->Order_ID }}</td>
+                                    <td><strong>{{ $order->user->name ?? 'Guest' }}</strong></td>
+                                    <td>{{ $order->created_at->format('M d Y') }}</td>
+                                    <td class="td-price">₱{{ number_format($order->total, 2) }}</td>
+                                    <td>
+                                        @if($order->order_status == 'delivered')
+                                            <span class="modern-badge bg-success-soft">Delivered</span>
+                                        @elseif($order->order_status == 'canceled')
+                                            <span class="modern-badge bg-danger-soft">Canceled</span>
+                                        @else
+                                            <span class="modern-badge bg-warning-soft">Pending</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('admin.order.details', ['order_id' => $order->Order_ID]) }}" class="btn-action-pill">
+                                                VIEW DETAILS
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
