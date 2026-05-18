@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function(){
     
     // Final Action: Place Order
     Route::post('/checkout/place-order', [CheckoutController::class, 'place_order'])->name('cart.place_order');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
     // User Dashboard & Account
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
