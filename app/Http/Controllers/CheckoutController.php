@@ -96,7 +96,7 @@ class CheckoutController extends Controller
         public function place_order(Request $request) 
     {
         // 1. Setup Data
-        $userId = Auth::user()->id; 
+        $userId = Auth::user()->User_ID; 
         $cartItems = CartItem::where('User_ID', $userId)->where('instance', 'cart')->get();
 
         if ($cartItems->isEmpty()) {
@@ -109,6 +109,20 @@ class CheckoutController extends Controller
         $discount = Session::get('discounts')['discount'] ?? 0;
         $total = ($subtotal + $tax) - $discount;
         $addressId = $request->address_id;
+
+        if ($addressId === 'new') {
+            $newAddress = new Address();
+            $newAddress->User_ID = $userId;
+            $newAddress->address_type = $request->address_type ?? 'New Address';
+            $newAddress->Zone_Street_HouseNumber = $request->Zone_Street_HouseNumber;
+            $newAddress->Barangay = $request->Barangay;
+            $newAddress->City = $request->City;
+            $newAddress->Province = $request->Province;
+            $newAddress->is_default = 0;
+            $newAddress->save();
+
+            $addressId = $newAddress->Address_ID;
+        }
 
         // 3. Save the Main Order
         $order = new Order();
@@ -129,7 +143,7 @@ class CheckoutController extends Controller
             $orderItem = new OrderItem();
             $orderItem->Order_ID = $order->Order_ID; 
             $orderItem->Product_ID = $item->Product_ID;
-            $orderItem->price = $item->product->product_price;
+            $orderItem->price = $item->effective_price;
             $orderItem->quantity = $item->quantity;
             
             // Handle 'options' as seen in your DB screenshot
@@ -148,8 +162,14 @@ class CheckoutController extends Controller
         CartItem::where('User_ID', $userId)->where('instance', 'cart')->delete();
         Session::forget(['coupon', 'discounts']);
 
-        // 6. Redirect to Dashboard (Prevents White Screen)
-        return redirect()->route('user.index')->with('success', 'Order placed! Your bag has been cleared.');
+        // 6. Redirect to Success Page
+        return redirect()->route('checkout.success');
+    }
+
+    // STEP 04: Order Success Confirmation
+    public function success()
+    {
+        return view('checkout-success');
     }
     
 }
