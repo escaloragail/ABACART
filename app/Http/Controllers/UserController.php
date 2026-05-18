@@ -126,6 +126,20 @@ class UserController extends Controller
         return redirect()->route('user.addresses')->with('success', 'Address added successfully!');
     }
 
+    public function address_delete($id)
+    {
+        $address = Address::where('Address_ID', $id)
+            ->where('User_ID', Auth::user()->User_ID)
+            ->first();
+
+        if (!$address) {
+            return back()->with('error', 'Address not found.');
+        }
+
+        $address->delete();
+        return back()->with('success', 'Address deleted successfully!');
+    }
+
     public function GenerateProfileImage($image, $imageName)
     {
         $destinationPath = public_path('uploads/profiles');
