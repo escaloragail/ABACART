@@ -72,6 +72,13 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
     letter-spacing: 0.1em !important;
     margin-bottom: 20px !important;
 }
+.demure-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 15px !important;
+}
 .demure-button {
     font-family: 'Inter', sans-serif !important;
     font-size: 10px !important;
@@ -85,6 +92,8 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
     border: none !important;
     transition: all 0.3s ease !important;
     box-shadow: 0 4px 12px rgba(99, 77, 58, 0.2) !important;
+    width: 100% !important;
+    margin: 0 !important;
 }
 .demure-button:hover {
     background-color: #4e3c2d !important;
@@ -102,9 +111,10 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
     color: #634d3a !important;
     text-transform: uppercase !important;
     border: 1px solid #634d3a !important;
-    margin-left: 10px !important;
+    margin: 0 !important;
     transition: all 0.3s ease !important;
     cursor: pointer !important;
+    width: 100% !important;
 }
 .demure-button-secondary:hover {
     background-color: rgba(99, 77, 58, 0.05) !important;
@@ -270,6 +280,7 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
                     popup: 'demure-modal',
                     title: 'demure-title',
                     htmlContainer: 'demure-text',
+                    actions: 'demure-actions',
                     confirmButton: 'demure-button'
                 }
             }).then(() => {
@@ -320,6 +331,7 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
                             popup: 'demure-modal',
                             title: 'demure-title',
                             htmlContainer: 'demure-text',
+                            actions: 'demure-actions',
                             confirmButton: 'demure-button',
                             cancelButton: 'demure-button-secondary'
                         }
@@ -348,6 +360,7 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
                             popup: 'demure-modal',
                             title: 'demure-title',
                             htmlContainer: 'demure-text',
+                            actions: 'demure-actions',
                             confirmButton: 'demure-button'
                         }
                     }).then(() => {
