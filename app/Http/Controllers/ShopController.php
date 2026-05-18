@@ -39,8 +39,7 @@ class ShopController extends Controller
 
         $q_categories = $request->query('categories');
 
-        $products = Product::where('quantity', '>', 0)
-            ->where('is_active', 1)
+        $products = Product::where('is_active', 1)
             ->when($q_categories, function ($query, $q_categories) {
                 $query->whereIn('Category_ID', explode(',', $q_categories));
             })
@@ -59,7 +58,6 @@ class ShopController extends Controller
 
         $rproducts = Product::where('product_slug', '!=', $slug)
             ->where('Category_ID', $product->Category_ID)
-            ->where('quantity', '>', 0)
             ->where('is_active', 1)
             ->get()->take(8);
 
