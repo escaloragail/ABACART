@@ -2,27 +2,27 @@
 @section('content')
 
 <style>
-    /* ── Add Product Compact Layout ── */
+    /* ── Add Product Layout (Spacious) ── */
     .product-add-card {
         background: #fff;
         border-radius: 16px;
-        padding: 30px 40px;
+        padding: 40px 50px;
         border: 1px solid #e2e8f0;
-        margin-top: 10px;
+        margin-top: 20px;
     }
 
     .form-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 20px;
+        gap: 25px 30px;
+        margin-bottom: 30px;
     }
 
     .form-grid-3 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-bottom: 20px;
+        gap: 25px 30px;
+        margin-bottom: 30px;
     }
 
     .form-grid-full {
@@ -38,26 +38,26 @@
         border: 1px solid #e2e8f0 !important;
         border-radius: 10px !important;
         font-family: 'Inter', sans-serif !important;
-        font-size: 13px !important;
+        font-size: 14px !important;
         color: #111 !important;
         background-color: #fff !important;
         transition: all 0.2s ease !important;
-        height: 52px !important;
-        padding: 1.5rem 1rem 0.5rem !important;
+        height: 58px !important;
+        padding: 1.6rem 1.2rem 0.6rem !important;
         width: 100%;
         display: block;
         box-shadow: none !important;
     }
 
     .form-select {
-        padding-top: 1.25rem !important;
-        padding-bottom: 0.25rem !important;
+        padding-top: 1.4rem !important;
+        padding-bottom: 0.4rem !important;
     }
 
     textarea.form-control {
         height: auto !important;
-        min-height: 80px;
-        padding-top: 1.5rem !important;
+        min-height: 100px;
+        padding-top: 1.6rem !important;
         resize: vertical;
     }
 
@@ -72,11 +72,11 @@
         top: 0;
         left: 0;
         height: 100%;
-        padding: 1rem 1rem;
+        padding: 1.2rem 1.2rem;
         pointer-events: none;
         transform-origin: 0 0;
         font-family: 'Inter', sans-serif !important;
-        font-size: 11px !important;
+        font-size: 12px !important;
         color: #a0aec0 !important;
         transition: opacity .1s ease-in-out,transform .1s ease-in-out !important;
         text-transform: uppercase !important;
@@ -88,14 +88,14 @@
     .form-floating > .form-control:not(:placeholder-shown) ~ label,
     .form-floating > .form-select ~ label {
         color: #111 !important;
-        transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
+        transform: scale(.85) translateY(-0.6rem) translateX(0.15rem);
     }
 
     /* ── File Inputs ── */
     .file-input-wrapper {
         border: 1px dashed #cbd5e1;
         border-radius: 10px;
-        padding: 12px;
+        padding: 20px;
         text-align: center;
         background: #f8fafc;
         transition: all 0.2s ease;
@@ -106,16 +106,16 @@
     }
     .file-input-label {
         font-family: 'Inter', sans-serif;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: #64748b;
-        margin-bottom: 6px;
+        margin-bottom: 10px;
         display: block;
     }
     .file-input-wrapper input[type="file"] {
-        font-size: 11px;
+        font-size: 12px;
         color: #475569;
         max-width: 100%;
     }
@@ -125,10 +125,10 @@
         background: #111;
         color: #fff;
         border: none;
-        padding: 14px 40px;
+        padding: 16px 40px;
         border-radius: 50px;
         font-family: 'Inter', sans-serif;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -137,7 +137,7 @@
         display: inline-block;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         width: 100%;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 
     .btn-save-product:hover {
@@ -150,12 +150,12 @@
         align-items: center;
         gap: 12px; 
         font-family: 'Inter', sans-serif;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 800;
         letter-spacing: 0.15em; 
         color: #111;
         text-transform: uppercase;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
     }
     .ac-section-title::before {
         content: "";
