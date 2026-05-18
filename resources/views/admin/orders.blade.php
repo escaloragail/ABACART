@@ -17,19 +17,19 @@
 
             <div class="wg-box">
                 <div class="flex items-center justify-between gap10 flex-wrap mb-20">
-                    <div class="flex items-center gap10 flex-wrap">
-                        <a href="{{ route('admin.orders') }}" class="tf-button style-1 {{ !$status ? 'bg-primary text-white' : 'btn-outline-primary' }}">All ({{ $counts['all'] }})</a>
-                        <a href="{{ route('admin.orders', ['status' => 'ordered']) }}" class="tf-button style-1 {{ $status == 'ordered' ? 'bg-warning text-dark' : 'btn-outline-warning' }}">Ordered ({{ $counts['ordered'] }})</a>
-                        <a href="{{ route('admin.orders', ['status' => 'delivered']) }}" class="tf-button style-1 {{ $status == 'delivered' ? 'bg-success text-white' : 'btn-outline-success' }}">Delivered ({{ $counts['delivered'] }})</a>
-                        <a href="{{ route('admin.orders', ['status' => 'canceled']) }}" class="tf-button style-1 {{ $status == 'canceled' ? 'bg-danger text-white' : 'btn-outline-danger' }}">Canceled ({{ $counts['canceled'] }})</a>
+                    <div class="modern-filter-tabs">
+                        <a href="{{ route('admin.orders') }}" class="modern-tab {{ !$status ? 'active' : '' }}">All Orders <span class="count-badge">{{ $counts['all'] }}</span></a>
+                        <a href="{{ route('admin.orders', ['status' => 'ordered']) }}" class="modern-tab {{ $status == 'ordered' ? 'active' : '' }}">Ordered <span class="count-badge">{{ $counts['ordered'] }}</span></a>
+                        <a href="{{ route('admin.orders', ['status' => 'delivered']) }}" class="modern-tab {{ $status == 'delivered' ? 'active' : '' }}">Delivered <span class="count-badge">{{ $counts['delivered'] }}</span></a>
+                        <a href="{{ route('admin.orders', ['status' => 'canceled']) }}" class="modern-tab {{ $status == 'canceled' ? 'active' : '' }}">Canceled <span class="count-badge">{{ $counts['canceled'] }}</span></a>
                     </div>
                 </div>
                 <div class="wg-table table-all-user">
-                    <div class="table-responsive">
+                    <div class="table-responsive modern-table-wrap">
                         @if (Session::has('success'))
                             <p class="alert alert-success">{{ Session::get('success') }}</p>
                         @endif
-                        <table class="table table-striped table-bordered">
+                        <table class="table modern-table">
                             <thead>
                                 <tr>
                                     <th>Order #</th>
@@ -45,23 +45,21 @@
                             <tbody>
                                 @foreach ($orders as $order)
                                 <tr>
-                                    <td>{{ $order->Order_ID }}</td>
-                                    <td>{{ $order->user->name ?? 'Unknown' }}</td>
-                                    <td>${{ $order->subtotal }}</td>
-                                    <td>${{ $order->discount }}</td>
-                                    <td>${{ $order->total }}</td>
+                                    <td class="td-id">#{{ $order->Order_ID }}</td>
+                                    <td><strong>{{ $order->user->name ?? 'Unknown' }}</strong></td>
+                                    <td>₱{{ $order->subtotal }}</td>
+                                    <td>₱{{ $order->discount }}</td>
+                                    <td class="td-price">₱{{ $order->total }}</td>
                                     <td>
-                                        @if($order->order_status == 'ordered') <span class="badge bg-warning">Ordered</span>
-                                        @elseif($order->order_status == 'delivered') <span class="badge bg-success">Delivered</span>
-                                        @else <span class="badge bg-danger">Canceled</span> @endif
+                                        @if($order->order_status == 'ordered') <span class="modern-badge bg-warning-soft">Ordered</span>
+                                        @elseif($order->order_status == 'delivered') <span class="modern-badge bg-success-soft">Delivered</span>
+                                        @else <span class="modern-badge bg-danger-soft">Canceled</span> @endif
                                     </td>
                                     <td>{{ $order->created_at->format('M d Y') }}</td>
                                     <td>
-                                        <div class="list-icon-function">
-                                            <a href="{{ route('admin.order.details', ['order_id' => $order->Order_ID]) }}">
-                                                <div class="item edit">
-                                                    <i class="icon-eye"></i>
-                                                </div>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('admin.order.details', ['order_id' => $order->Order_ID]) }}" class="btn-action-pill">
+                                                VIEW DETAILS
                                             </a>
                                         </div>
                                     </td>

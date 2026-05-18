@@ -147,7 +147,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center gap10">
-                                                    <h4>${{ number_format(array_sum($monthlyTotals), 2) }}</h4>
+                                                    <h4>₱{{ number_format(array_sum($monthlyTotals), 2) }}</h4>
                                                 </div>
                                             </div>
                                             <div>
@@ -158,7 +158,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center gap10">
-                                                    <h4>${{ number_format(array_sum($monthlyDelivered), 2) }}</h4>
+                                                    <h4>₱{{ number_format(array_sum($monthlyDelivered), 2) }}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -202,9 +202,9 @@
                                                             <td class="text-center">{{ $order->Order_ID }}</td>
                                                             <td class="text-center">{{ $order->user->name ?? 'Guest' }}</td>
                                                             <td class="text-center">{{ $order->address->phone ?? 'N/A' }}</td>
-                                                            <td class="text-center">${{ $order->subtotal }}</td>
-                                                            <td class="text-center">${{ $order->tax }}</td>
-                                                            <td class="text-center">${{ $order->total }}</td>
+                                                            <td class="text-center">₱{{ $order->subtotal }}</td>
+                                                            <td class="text-center">₱{{ $order->tax }}</td>
+                                                            <td class="text-center">₱{{ $order->total }}</td>
 
                                                             <td class="text-center">{{ $order->order_status }}</td>
                                                             <td class="text-center">{{ $order->created_at }}</td>

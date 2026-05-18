@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>${{ $item->price }}</td>
+                                <td>₱{{ $item->price }}</td>
                                 <td class="text-center">{{ $item->quantity }}</td>
                                 <td class="text-center">{{ $item->product->SKU ?? 'N/A' }}</td>
                                 <td class="text-center">
@@ -95,7 +95,7 @@
                                         None
                                     @endif
                                 </td>
-                                <td class="text-center">${{ $item->price * $item->quantity }}</td>
+                                <td class="text-center">₱{{ $item->price * $item->quantity }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -117,19 +117,19 @@
                     <table class="table table-striped table-bordered mt-3">
                         <tr>
                             <th>Subtotal</th>
-                            <td>${{ $order->subtotal }}</td>
+                            <td>₱{{ $order->subtotal }}</td>
                         </tr>
                         <tr>
                             <th>Tax</th>
-                            <td>${{ $order->tax }}</td>
+                            <td>₱{{ $order->tax }}</td>
                         </tr>
                         <tr>
                             <th>Discount</th>
-                            <td>${{ $order->discount }}</td>
+                            <td>₱{{ $order->discount }}</td>
                         </tr>
                         <tr>
                             <th>Total</th>
-                            <td>${{ $order->total }}</td>
+                            <td>₱{{ $order->total }}</td>
                         </tr>
                     </table>
                 </div>

@@ -17,14 +17,14 @@
 
             <div class="wg-box">
                 <div class="flex items-center justify-between gap10 flex-wrap mb-3">
-                    <div class="d-flex gap-2">
+                    <div class="modern-filter-tabs">
                         <a href="{{ route('admin.products', ['show' => 'active']) }}"
-                           class="btn btn-sm {{ ($show ?? 'active') == 'active' ? 'btn-primary' : 'btn-outline-secondary' }}">
-                            Active <span class="badge bg-light text-dark ms-1">{{ $activeCount }}</span>
+                           class="modern-tab {{ ($show ?? 'active') == 'active' ? 'active' : '' }}">
+                            Active <span class="count-badge">{{ $activeCount }}</span>
                         </a>
                         <a href="{{ route('admin.products', ['show' => 'inactive']) }}"
-                           class="btn btn-sm {{ ($show ?? '') == 'inactive' ? 'btn-danger' : 'btn-outline-secondary' }}">
-                            Inactive <span class="badge bg-light text-dark ms-1">{{ $inactiveCount }}</span>
+                           class="modern-tab {{ ($show ?? '') == 'inactive' ? 'active' : '' }}">
+                            Inactive <span class="count-badge">{{ $inactiveCount }}</span>
                         </a>
                     </div>
                     <a class="tf-button style-1 w208" href="{{ route('admin.product.add') }}">
@@ -32,11 +32,11 @@
                     </a>
                 </div>
                 <div class="wg-table table-all-user">
-                    <div class="table-responsive">
+                    <div class="table-responsive modern-table-wrap">
                         @if (Session::has('success'))
                             <p class="alert alert-success">{{ Session::get('success') }}</p>
                         @endif
-                        <table class="table table-striped table-bordered">
+                        <table class="table modern-table">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -54,21 +54,27 @@
                             <tbody>
                                 @foreach ($products as $product)
                                 <tr>
-                                    <td>{{ $product->Product_ID }}</td>
+                                    <td class="td-id">#{{ $product->Product_ID }}</td>
                                     <td>
                                         <div class="image">
                                             <img src="{{ asset('uploads/products/thumbnails') }}/{{ $product->main_product_image }}" alt="" class="image">
                                         </div>
                                     </td>
-                                    <td>{{ $product->product_name }}</td>
-                                    <td>${{ $product->regular_price }}</td>
+                                    <td><strong>{{ $product->product_name }}</strong></td>
+                                    <td class="td-price">₱{{ $product->regular_price }}</td>
                                     <td>{{ $product->category->category_name ?? 'Unknown' }}</td>
-                                    <td>{{ $product->featured == 1 ? 'Yes' : 'No' }}</td>
+                                    <td>
+                                        @if($product->featured == 1)
+                                            <span class="modern-badge bg-warning-soft">Yes</span>
+                                        @else
+                                            <span class="modern-badge bg-secondary-soft">No</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($product->quantity > 0)
-                                            <span class="badge bg-success">In Stock</span>
+                                            <span class="modern-badge bg-success-soft">In Stock</span>
                                         @else
-                                            <span class="badge bg-danger">Out of Stock</span>
+                                            <span class="modern-badge bg-danger-soft">Out of Stock</span>
                                         @endif
                                     </td>
                                     <td>
@@ -90,33 +96,31 @@
                                     </td>
                                     <td>
                                         @if($product->is_active)
-                                            <span class="badge bg-success">Active</span>
+                                            <span class="modern-badge bg-success-soft">Active</span>
                                         @else
-                                            <span class="badge bg-secondary">Inactive</span>
+                                            <span class="modern-badge bg-danger-soft">Inactive</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="list-icon-function">
-                                            <a href="{{ route('admin.product.edit', ['id' => $product->Product_ID]) }}">
-                                                <div class="item edit">
-                                                    <i class="icon-edit-3"></i>
-                                                </div>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('admin.product.edit', ['id' => $product->Product_ID]) }}" class="btn-action-pill">
+                                                Edit
                                             </a>
                                             @if($product->is_active)
-                                                <form action="{{ route('admin.product.delete', ['id' => $product->Product_ID]) }}" method="POST">
+                                                <form action="{{ route('admin.product.delete', ['id' => $product->Product_ID]) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <div class="item text-danger delete">
-                                                        <i class="icon-eye-off"></i>
-                                                    </div>
+                                                    <button type="button" class="btn-action-pill btn-delete delete">
+                                                        Deactivate
+                                                    </button>
                                                 </form>
                                             @else
-                                                <form action="{{ route('admin.product.reactivate', ['id' => $product->Product_ID]) }}" method="POST">
+                                                <form action="{{ route('admin.product.reactivate', ['id' => $product->Product_ID]) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('PUT')
-                                                    <div class="item text-success reactivate">
-                                                        <i class="icon-eye"></i>
-                                                    </div>
+                                                    <button type="button" class="btn-action-pill reactivate">
+                                                        Reactivate
+                                                    </button>
                                                 </form>
                                             @endif
                                         </div>

@@ -25,11 +25,11 @@
                     </a>
                 </div>
                 <div class="wg-table table-all-user">
-                    <div class="table-responsive">
+                    <div class="table-responsive modern-table-wrap">
                         @if (Session::has('success'))
                             <p class="alert alert-success">{{ Session::get('success') }}</p>
                         @endif
-                        <table class="table table-striped table-bordered">
+                        <table class="table modern-table">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,25 +44,29 @@
                             <tbody>
                                 @foreach ($coupons as $coupon)
                                 <tr>
-                                    <td>{{ $coupon->Coupon_ID }}</td>
-                                    <td>{{ $coupon->code }}</td>
-                                    <td>{{ $coupon->type == 'fixed' ? 'Fixed Amount' : 'Percentage' }}</td>
+                                    <td class="td-id">#{{ $coupon->Coupon_ID }}</td>
+                                    <td><strong>{{ $coupon->code }}</strong></td>
+                                    <td>
+                                        @if($coupon->type == 'fixed')
+                                            <span class="modern-badge bg-warning-soft">Fixed Amount</span>
+                                        @else
+                                            <span class="modern-badge bg-info-soft">Percentage</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $coupon->type == 'fixed' ? '₱' : '' }}{{ $coupon->value }}{{ $coupon->type == 'percent' ? '%' : '' }}</td>
                                     <td>₱{{ $coupon->cart_value }}</td>
                                     <td>{{ \Carbon\Carbon::parse($coupon->expiry_date)->format('M d Y') }}</td>
                                     <td>
-                                        <div class="list-icon-function">
-                                            <a href="{{ route('admin.coupon.edit', ['id' => $coupon->Coupon_ID]) }}">
-                                                <div class="item edit">
-                                                    <i class="icon-edit-3"></i>
-                                                </div>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('admin.coupon.edit', ['id' => $coupon->Coupon_ID]) }}" class="btn-action-pill">
+                                                Edit
                                             </a>
-                                            <form action="{{ route('admin.coupon.delete', ['id' => $coupon->Coupon_ID]) }}" method="POST">
+                                            <form action="{{ route('admin.coupon.delete', ['id' => $coupon->Coupon_ID]) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <div class="item text-danger delete">
-                                                    <i class="icon-trash-2"></i>
-                                                </div>
+                                                <button type="button" class="btn-action-pill btn-delete delete">
+                                                    Delete
+                                                </button>
                                             </form>
                                         </div>
                                     </td>

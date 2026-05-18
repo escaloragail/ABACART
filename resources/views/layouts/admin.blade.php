@@ -186,7 +186,7 @@
                                                     </div>
                                                     <div>
                                                         <div class="body-title-2">New Order #{{ $order->Order_ID }}</div>
-                                                        <div class="text-tiny">From {{ $order->user->name ?? 'User' }} - Total: ${{ $order->total }}</div>
+                                                        <div class="text-tiny">From {{ $order->user->name ?? 'User' }} - Total: ₱{{ $order->total }}</div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -262,7 +262,7 @@
                     <div class="main-content">
                         @yield("content")
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © {{ date('Y') }} Abacart_PH</div>
+                            <!-- Removed Copyright -->
                         </div>
                     </div>
 
