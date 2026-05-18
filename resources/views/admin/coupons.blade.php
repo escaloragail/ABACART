@@ -47,8 +47,8 @@
                                     <td>{{ $coupon->Coupon_ID }}</td>
                                     <td>{{ $coupon->code }}</td>
                                     <td>{{ $coupon->type == 'fixed' ? 'Fixed Amount' : 'Percentage' }}</td>
-                                    <td>{{ $coupon->type == 'fixed' ? '$' : '' }}{{ $coupon->value }}{{ $coupon->type == 'percent' ? '%' : '' }}</td>
-                                    <td>${{ $coupon->cart_value }}</td>
+                                    <td>{{ $coupon->type == 'fixed' ? '₱' : '' }}{{ $coupon->value }}{{ $coupon->type == 'percent' ? '%' : '' }}</td>
+                                    <td>₱{{ $coupon->cart_value }}</td>
                                     <td>{{ \Carbon\Carbon::parse($coupon->expiry_date)->format('M d Y') }}</td>
                                     <td>
                                         <div class="list-icon-function">
