@@ -699,5 +699,8 @@
   <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
   <script src="{{ asset('assets/js/theme.js') }}"></script>
   @stack("scripts")
+
+  <!-- AI Chatbot Widget -->
+  @include('components.chatbot')
 </body>
 </html>
