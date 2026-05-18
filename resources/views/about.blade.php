@@ -89,7 +89,7 @@
 <div class="ac-about-hero">
     <div class="ac-about-left">
         <h1>Meet The<br>Abacart</h1>
-        <p class="subtext">Small changes can make a big impact. We're here for your body and the planet.</p>
+        <p class="subtext">Handmade quality for your everyday life. Crafted with care, built to last.</p>
     </div>
     
     <div class="ac-about-right">

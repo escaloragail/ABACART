@@ -22,7 +22,6 @@
         padding: 0 40px;
     }
 
-    /* ── Sidebar Styles ── */
     .account-sidebar-card {
         background: #fff;
         border-radius: 16px;
@@ -70,7 +69,6 @@
         transform: translateX(3px);
     }
 
-    /* ── Content Area ── */
     .orders-content-card {
         background: #fff;
         border-radius: 16px;
@@ -79,18 +77,16 @@
         min-height: 500px;
     }
 
-    /* ── Section Title ── */
-    .ac-section-title { 
+    .ac-section-title {
         display: flex;
         align-items: center;
-        gap: 12px; 
+        gap: 12px;
         font-family: 'Inter', sans-serif;
         font-size: 12px;
         font-weight: 800;
-        letter-spacing: 0.15em; 
+        letter-spacing: 0.15em;
         color: #111;
         text-transform: uppercase;
-        margin-bottom: 35px;
     }
     .ac-section-title::before {
         content: "";
@@ -100,8 +96,7 @@
         display: inline-block;
     }
 
-    /* ── Form Inputs ── */
-    .form-control {
+    .form-control, .form-select {
         border: 1px solid #e2e8f0 !important;
         border-radius: 12px !important;
         font-family: 'Inter', sans-serif !important;
@@ -111,7 +106,7 @@
         transition: all 0.2s ease !important;
     }
 
-    .form-control:focus {
+    .form-control:focus, .form-select:focus {
         border-color: #111 !important;
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05) !important;
         color: #111 !important;
@@ -129,18 +124,11 @@
     }
 
     .form-floating > .form-control:focus ~ label,
-    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+    .form-floating > .form-control:not(:placeholder-shown) ~ label,
+    .form-floating > .form-select ~ label {
         color: #111 !important;
     }
 
-    .form-control:disabled,
-    .form-control[disabled] {
-        background-color: #f7fafc !important;
-        color: #a0aec0 !important;
-        cursor: not-allowed !important;
-    }
-
-    /* ── Alert Styles ── */
     .alert {
         border-radius: 10px;
         border: none;
@@ -150,8 +138,7 @@
         padding: 16px 20px;
     }
 
-    /* ── Primary Action Pill Button ── */
-    .btn-save-details {
+    .btn-save-address {
         background: #111;
         color: #fff;
         border: none;
@@ -168,49 +155,36 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    .btn-save-details:hover {
+    .btn-save-address:hover {
         background: #2d3748;
         color: #fff;
         box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
-    /* ── Profile Pic Styles ── */
-    .profile-image-container {
-        border: 2px solid #e2e8f0;
-        padding: 4px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-bottom: 15px;
-    }
-
-    .profile-image-label {
-        font-family: 'Inter', sans-serif;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+    .btn-cancel {
+        background: transparent;
         color: #a0aec0;
-        display: block;
-        margin-bottom: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 14px 30px;
+        border-radius: 50px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-block;
     }
 
-    .profile-image-input {
-        max-width: 250px;
-        margin: 0 auto;
-        font-size: 12px;
-        height: auto;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
+    .btn-cancel:hover {
+        border-color: #111;
+        color: #111;
     }
 
     @media (max-width: 992px) {
-        .orders-container {
-            padding: 0 20px;
-        }
-        .sidebar-column {
-            margin-bottom: 30px;
-        }
+        .orders-container { padding: 0 20px; }
+        .sidebar-column { margin-bottom: 30px; }
     }
 </style>
 
@@ -228,11 +202,10 @@
             {{-- ── Main Content ── --}}
             <div class="col-lg-9">
                 <div class="orders-content-card">
-                    <div class="ac-section-title">Account Details</div>
+                    <div class="mb-5">
+                        <div class="ac-section-title">Edit Address</div>
+                    </div>
 
-                    @if (Session::has('success'))
-                        <div class="alert alert-success">{{ Session::get('success') }}</div>
-                    @endif
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
@@ -243,71 +216,57 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('user.account.update') }}" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+                    <form action="{{ route('user.address.update', ['id' => $address->Address_ID]) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
                         <div class="row">
-                            {{-- Profile Image Section --}}
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Zone_Street_HouseNumber"
+                                        placeholder="Zone / Street / House No"
+                                        value="{{ old('Zone_Street_HouseNumber', $address->Zone_Street_HouseNumber) }}" required>
+                                    <label>Zone / Street / House No *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Barangay"
+                                        placeholder="Barangay"
+                                        value="{{ old('Barangay', $address->Barangay) }}" required>
+                                    <label>Barangay *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="City"
+                                        placeholder="City"
+                                        value="{{ old('City', $address->City) }}" required>
+                                    <label>City *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Province"
+                                        placeholder="Province"
+                                        value="{{ old('Province', $address->Province) }}" required>
+                                    <label>Province *</label>
+                                </div>
+                            </div>
                             <div class="col-md-12 mb-5">
-                                <div class="text-center">
-                                    <div class="profile-image-container">
-                                        @if($user->image)
-                                            <img src="{{ asset('uploads/profiles/' . $user->image) }}" alt="{{ $user->name }}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
-                                        @else
-                                            <img src="{{ asset('assets/images/avatar/user-1.png') }}" alt="{{ $user->name }}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
-                                        @endif
-                                    </div>
-                                    <div class="form-group mt-2">
-                                        <label for="image" class="profile-image-label">Change Profile Image</label>
-                                        <input type="file" class="profile-image-input" name="image" id="image">
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- General Information --}}
-                            <div class="col-md-6 mb-4">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" placeholder="Name" name="name" value="{{ $user->name }}" required>
-                                    <label for="name">Name *</label>
+                                    <select class="form-select" name="address_type" required>
+                                        <option value="Home"   {{ old('address_type', $address->address_type) == 'Home'   ? 'selected' : '' }}>Home</option>
+                                        <option value="Work"   {{ old('address_type', $address->address_type) == 'Work'   ? 'selected' : '' }}>Work</option>
+                                        <option value="Office" {{ old('address_type', $address->address_type) == 'Office' ? 'selected' : '' }}>Office</option>
+                                        <option value="Other"  {{ old('address_type', $address->address_type) == 'Other'  ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                    <label>Address Label *</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" placeholder="Phone Number" name="phone_number" value="{{ $user->phone_number }}" required>
-                                    <label for="phone_number">Phone Number *</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-5">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" placeholder="Email Address" name="email" value="{{ old('email', $user->email) }}" required>
-                                    <label for="email">Email Address *</label>
-                                </div>
-                            </div>
-
-                            {{-- Password Change Section --}}
-                            <div class="col-md-12 mb-4">
-                                <div style="border-bottom: 1px solid #edf2f7; padding-bottom: 10px; margin-bottom: 25px;">
-                                    <h6 class="text-uppercase fw-bold mb-1" style="font-size: 11px; letter-spacing: 0.1em; color: #111;">Password Change</h6>
-                                    <p class="text-muted mb-0" style="font-size: 12px;">Leave blank to keep your current password.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" name="password" placeholder="New password">
-                                    <label for="password">New password</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-5">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm new password">
-                                    <label for="password_confirmation">Confirm new password</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <button type="submit" class="btn-save-details">Save Changes</button>
-                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center">
+                            <button type="submit" class="btn-save-address">Save Changes</button>
+                            <a href="{{ route('user.addresses') }}" class="btn-cancel">Cancel</a>
                         </div>
                     </form>
                 </div>
