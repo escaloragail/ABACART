@@ -210,6 +210,7 @@
                                     <div class="ac-radio-circle"></div>
                                     <div class="ac-card-content">
                                         <h6 class="fw-bold mb-1 text-uppercase" style="font-size: 13px; letter-spacing: 0.05em; color: #111;">{{ $addr->address_type }}</h6>
+                                        <p class="mb-1" style="font-size: 14px; font-weight: 600; color: #111;">{{ Auth::user()->name }} <span class="text-muted fw-normal mx-1">|</span> {{ Auth::user()->phone_number ?? Auth::user()->mobile }}</p>
                                         <p class="mb-0 text-muted" style="font-size: 14px; line-height: 1.5;">{{ $addr->Zone_Street_HouseNumber }}, {{ $addr->Barangay }}, {{ $addr->City }}</p>
                                     </div>
                                 </label>
