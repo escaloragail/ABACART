@@ -1,155 +1,229 @@
 @extends('layouts.app')
 @section('content')
-<main class="pt-90">
-    <div class="mb-md-1 pb-md-3"></div>
-    <section class="product-single container">
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="product-single__media" data-qnt="1">
-                    <div class="product-single__image">
-                        <div class="swiper-container">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto w-100" src="{{ asset('uploads/products') }}/{{ $product->main_product_image }}" width="674" height="674" alt="{{ $product->product_name }}" />
-                                </div>
-                                @if($product->sub_product_images)
-                                    @foreach(explode(',', $product->sub_product_images) as $img)
-                                    <div class="swiper-slide product-single__image-item">
-                                        <img loading="lazy" class="h-auto w-100" src="{{ asset('uploads/products') }}/{{ $img }}" width="674" height="674" alt="{{ $product->product_name }}" />
-                                    </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+/* ── Reset and Page Setup ── */
+body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
+.product-single { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+/* ── LEFT: GALLERY ── */
+.ac-dt-main-img {
+    background: #e1dfda; border-radius: 12px; padding: 24px;
+    width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+}
+.ac-dt-main-img img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.ac-dt-thumbs { display: flex; gap: 12px; }
+.ac-dt-thumb {
+    width: 64px; height: 64px; border-radius: 8px; background: #e1dfda;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    padding: 6px; border: 2px solid transparent; transition: border-color 0.2s;
+}
+.ac-dt-thumb.active { border-color: #5d4a3d; }
+.ac-dt-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+
+/* ── RIGHT: DETAILS ── */
+.ac-dt-info { padding-left: 40px; }
+.ac-dt-title { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 500; color: #353b3e; margin-bottom: 8px; }
+.ac-dt-breadcrumb { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #a3aab2; margin-bottom: 24px; }
+.ac-dt-breadcrumb a { color: #634d3a; text-decoration: none; }
+.ac-dt-breadcrumb span.sep { margin: 0 8px; color: #dfd8d1; }
+.ac-dt-meta { margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.ac-dt-sku { font-size: 11px; font-weight: 600; color: #8c98a4; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
+.ac-dt-desc { font-size: 12px; color: #7a8288; line-height: 1.6; margin-bottom: 30px; max-width: 440px; }
+.ac-dt-price { margin-bottom: 30px; }
+.ac-dt-price span.current-price { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; color: #5d4a3d; }
+.ac-dt-price span.old-price { font-family: 'Playfair Display', serif; font-size: 20px; color: #a3aab2; text-decoration: line-through; margin-left: 12px; }
+
+/* ── FORM ELEMENTS ── */
+.ac-dt-qty-label { font-size: 10px; font-weight: 700; color: #a3aab2; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+.ac-dt-qty-wrap { display: inline-flex; align-items: center; background: #ffffff; border-radius: 4px; border: 1px solid #dfd8d1; margin-bottom: 24px; padding: 4px 8px; }
+.ac-dt-qty-wrap button { background: none; border: none; font-size: 18px; color: #5d4a3d; cursor: pointer; padding: 4px 12px; outline: none; }
+.ac-dt-qty-wrap input { width: 36px; text-align: center; border: none; font-size: 13px; font-weight: 600; color: #3c4245; background: transparent; outline: none; }
+
+.ac-dt-actions { display: flex; flex-direction: column; gap: 12px; max-width: 340px; margin-bottom: 40px;}
+.ac-btn-outline { background: transparent; border: 1px solid #5d4a3d; color: #5d4a3d; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 16px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; width: 100%; }
+.ac-btn-solid { background: #634d3a; border: 1px solid #634d3a; color: #ffffff; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 16px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; width: 100%; text-decoration: none; display: block; text-align: center;}
+
+/* ── MINIMALIST POP-UP STYLING ── */
+.demure-modal {
+    width: 300px !important;
+    padding: 20px !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+}
+.demure-title {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 18px !important;
+    color: #5d4a3d !important;
+    margin-top: 10px !important;
+}
+.demure-text {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11px !important;
+    color: #a3aab2 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+.demure-button {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    padding: 12px 20px !important;
+    border-radius: 4px !important;
+    background-color: #634d3a !important;
+    color: white !important;
+    text-transform: uppercase !important;
+    border: none !important;
+}
+
+@media(max-width: 991px) { .ac-dt-info { padding-left: 0; margin-top: 40px; } }
+</style>
+
+<main class="pt-4">
+    <section class="product-single container mt-4">
+        <div class="row align-items-start">
+            <div class="col-lg-6">
+                <div class="ac-dt-main-img" id="mainImageWrap">
+                    <img id="mainProductImage" src="{{ asset('uploads/products') }}/{{ $product->main_product_image }}" alt="{{ $product->product_name }}">
+                </div>
+                <div class="ac-dt-thumbs">
+                    <div class="ac-dt-thumb active" onclick="swapImage(this, '{{ asset('uploads/products') }}/{{ $product->main_product_image }}')">
+                        <img src="{{ asset('uploads/products') }}/{{ $product->main_product_image }}" alt="Thumb">
                     </div>
+                    @if($product->sub_product_images)
+                        @foreach(explode(',', $product->sub_product_images) as $img)
+                        <div class="ac-dt-thumb" onclick="swapImage(this, '{{ asset('uploads/products') }}/{{ $img }}')">
+                            <img src="{{ asset('uploads/products') }}/{{ $img }}" alt="Thumb">
+                        </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="d-flex justify-content-between mb-4 pb-md-2">
-                    <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-                        <a href="{{ route('home.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
-                        <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-                        <a href="{{ route('shop.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
-                        <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-                        <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">{{ $product->product_name }}</a>
+
+            <div class="col-lg-5 offset-lg-1">
+                <div class="ac-dt-info">
+                    <div class="ac-dt-breadcrumb">
+                        <a href="{{ route('home.index') }}">Home</a> <span class="sep">/</span> 
+                        <a href="{{ route('shop.index') }}">The Shop</a> <span class="sep">/</span> 
+                        <span style="color: #634d3a;">{{ $product->product_name }}</span>
                     </div>
-                </div>
-                <h1 class="product-single__name">{{ $product->product_name }}</h1>
-                <div class="product-single__price">
-                    @if($product->is_on_sale == 1 && $product->sale_price)
-                        <span class="current-price">${{ $product->sale_price }}</span>
-                        <span class="old-price">${{ $product->regular_price }}</span>
-                    @else
-                        <span class="current-price">${{ $product->regular_price }}</span>
-                    @endif
-                </div>
-                <div class="product-single__short-desc">
-                    <p>{{ $product->short_description }}</p>
-                </div>
-                <div class="product-single__stock mb-3">
-                    @if($product->quantity > 0)
-                        <span class="badge bg-success p-2">In Stock: {{ $product->quantity }} left</span>
-                    @else
-                        <span class="badge bg-danger p-2">Out of Stock</span>
-                    @endif
-                </div>
-                
-                @if($product->quantity <= 0)
-                    <div class="alert alert-danger">This item is currently out of stock.</div>
-                @elseif(Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->where('id', $product->Product_ID)->count() > 0)
-                    <div class="product-single__addtocart">
-                        <a href="{{ route('cart.index') }}" class="btn btn-warning btn-lg mb-3">Go to Cart</a>
+
+                    <h1 class="ac-dt-title">{{ $product->product_name }}</h1>
+                    
+                    <div class="ac-dt-meta">
+                        <span class="ac-dt-sku">SKU: {{ $product->SKU ?? 'N/A' }}</span>
+                        <span class="ac-dt-sku" style="opacity: 0.3;">|</span>
+                        <span class="ac-dt-sku">Category: {{ $product->category->category_name ?? 'N/A' }}</span>
+                        @if($product->quantity > 0)
+                            <span class="ac-dt-sku" style="opacity: 0.3;">|</span>
+                            <span class="ac-dt-sku" style="color: #6da252;">In Stock: {{ $product->quantity }}</span>
+                        @endif
                     </div>
-                @else
-                    <form name="addtocart" method="POST" action="{{ route('cart.add') }}">
-                        @csrf
-                        <div class="product-single__addtocart">
-                            <div class="qty-control position-relative">
-                                <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}" class="qty-control__number text-center">
-                                <div class="qty-control__reduce">-</div>
-                                <div class="qty-control__increase">+</div>
+
+                    <div class="ac-dt-desc">
+                        <p>{{ $product->short_description }}</p>
+                    </div>
+
+                    <div class="ac-dt-price">
+                        @if($product->is_on_sale == 1 && $product->sale_price)
+                            <span class="current-price">₱{{ $product->sale_price }}</span>
+                            <span class="old-price">₱{{ $product->regular_price }}</span>
+                        @else
+                            <span class="current-price">₱{{ $product->regular_price }}</span>
+                        @endif
+                    </div>
+
+                    @php
+                        $inCart = false;
+                        if(Auth::check()) {
+                            $inCart = \App\Models\CartItem::where('User_ID', Auth::user()->User_ID)
+                                        ->where('instance', 'cart')
+                                        ->where('Product_ID', $product->Product_ID)->exists();
+                        }
+                    @endphp
+
+                    @if($product->quantity <= 0)
+                        <div class="alert alert-danger mb-4">Out of Stock</div>
+                    @else
+                        <form id="productDetailsForm" method="POST" action="{{ route('cart.add') }}">
+                            @csrf
+                            <div class="ac-dt-qty-label">Select Quantity</div>
+                            <div class="ac-dt-qty-wrap">
+                                <button type="button" onclick="document.getElementById('qtyInput').stepDown()">-</button>
+                                <input type="number" id="qtyInput" name="quantity" value="1" min="1" max="{{ $product->quantity }}">
+                                <button type="button" onclick="document.getElementById('qtyInput').stepUp()">+</button>
                             </div>
+
                             <input type="hidden" name="id" value="{{ $product->Product_ID }}">
                             <input type="hidden" name="name" value="{{ $product->product_name }}">
                             <input type="hidden" name="price" value="{{ $product->is_on_sale == 1 && $product->sale_price ? $product->sale_price : $product->regular_price }}">
-                            <!-- Use a normal submit button -->
-                            <button type="submit" class="btn btn-primary btn-addtocart mt-3">Add to Cart</button>
-                        </div>
-                    </form>
-                @endif
-                
-                <div class="product-single__meta-info mt-4">
-                    <div class="meta-item">
-                        <label>SKU:</label>
-                        <span>{{ $product->SKU }}</span>
-                    </div>
-                    <div class="meta-item">
-                        <label>Categories:</label>
-                        <span>{{ $product->category->category_name }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="product-single__details-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab" href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-description" role="tabpanel" aria-labelledby="tab-description-tab">
-                    <div class="product-single__description">
-                        {{ $product->product_description }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                            
+                            <div class="ac-dt-actions">
+                                <button type="button" id="addToCartBtn" class="ac-btn-outline">ADD TO CART</button>
+                                <button type="button" id="buyNowBtn" class="ac-btn-solid">BUY NOW</button>
 
-    <section class="products-carousel container">
-        <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Related <strong>Products</strong></h2>
-
-        <div id="related_products" class="position-relative">
-            <div class="swiper-container js-swiper-slider" data-settings='{"autoplay": false, "slidesPerView": 4, "slidesPerGroup": 4, "effect": "none", "loop": false}'>
-                <div class="swiper-wrapper">
-                    @foreach($rproducts as $rproduct)
-                    <div class="swiper-slide product-card">
-                        <div class="pc__img-wrapper">
-                            <a href="{{ route('shop.product.details', ['slug' => $rproduct->product_slug]) }}">
-                                <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $rproduct->main_product_image }}" width="330" height="400" alt="{{ $rproduct->product_name }}" class="pc__img">
-                            </a>
-                            @if(Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->where('id', $rproduct->Product_ID)->count() > 0)
-                                <a href="{{ route('cart.index') }}" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" title="Go to Cart">Go to Cart</a>
-                            @else
-                                <form name="addtocart" method="POST" action="{{ route('cart.add') }}">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $rproduct->Product_ID }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <input type="hidden" name="name" value="{{ $rproduct->product_name }}">
-                                    <input type="hidden" name="price" value="{{ $rproduct->sale_price == '' ? $rproduct->regular_price : $rproduct->sale_price }}">
-                                    <button type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" title="Add To Cart">Add To Cart</button>
-                                </form>
-                            @endif
-                        </div>
-
-                        <div class="pc__info position-relative">
-                            <p class="pc__category">{{ $rproduct->category->category_name }}</p>
-                            <h6 class="pc__title"><a href="{{ route('shop.product.details', ['slug' => $rproduct->product_slug]) }}">{{ $rproduct->product_name }}</a></h6>
-                            <div class="product-card__price d-flex">
-                                @if($rproduct->is_on_sale && $rproduct->sale_price)
-                                <span class="money price price-old">${{ $rproduct->regular_price }}</span>
-                                <span class="money price price-sale">${{ $rproduct->sale_price }}</span>
-                                @else
-                                <span class="money price">${{ $rproduct->regular_price }}</span>
-                                @endif
                             </div>
-                        </div>
-                    </div>
-                    @endforeach
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 </main>
+
+<script>
+    function swapImage(thumbElem, imgUrl) {
+        document.getElementById('mainProductImage').src = imgUrl;
+        document.querySelectorAll('.ac-dt-thumb').forEach(el => el.classList.remove('active'));
+        thumbElem.classList.add('active');
+    }
+
+    const form = document.getElementById('productDetailsForm');
+
+    // --- BUY NOW LOGIC (Direct to Cart) ---
+    document.getElementById('buyNowBtn')?.addEventListener('click', function() {
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        }).then(() => {
+            window.location.href = "{{ route('cart.index') }}";
+        });
+    });
+
+    // --- ADD TO CART LOGIC (Minimal Pop-up) ---
+    document.getElementById('addToCartBtn')?.addEventListener('click', function() {
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        }).then(() => {
+            Swal.fire({
+                title: 'ADDED TO BASKET',
+                text: 'Selection saved to your collection',
+                icon: 'success',
+                iconColor: '#a3aab2',
+                showConfirmButton: true,
+                confirmButtonText: 'CONTINUE SHOPPING',
+                background: '#ffffff',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'demure-modal',
+                    title: 'demure-title',
+                    htmlContainer: 'demure-text',
+                    confirmButton: 'demure-button'
+                }
+            }).then(() => {
+                window.location.reload();
+            });
+        });
+    });
+</script>
+
 @endsection

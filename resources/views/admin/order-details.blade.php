@@ -191,30 +191,26 @@
             <div class="wg-box mb-20">
                 <div class="flex items-center justify-between gap10 flex-wrap">
                     <div class="wg-filter flex-grow">
-                        <h5>Transaction</h5>
+                        <h5>Payment Info</h5>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    @if($transaction)
                     <table class="table table-striped table-bordered mt-3">
                         <tr>
                             <th>Payment Mode</th>
-                            <td>{{ strtoupper($transaction->payment_mode) }}</td>
+                            <td>{{ strtoupper($order->payment_mode) }}</td>
                         </tr>
                         <tr>
                             <th>Status</th>
                             <td>
-                                @if($transaction->status == 'pending') <span class="badge bg-warning">Pending</span>
-                                @elseif($transaction->status == 'approved') <span class="badge bg-success">Approved</span>
-                                @elseif($transaction->status == 'declined') <span class="badge bg-danger">Declined</span>
-                                @elseif($transaction->status == 'refunded') <span class="badge bg-secondary">Refunded</span>
+                                @if($order->payment_status == 'pending') <span class="badge bg-warning">Pending</span>
+                                @elseif($order->payment_status == 'approved') <span class="badge bg-success">Approved</span>
+                                @elseif($order->payment_status == 'declined') <span class="badge bg-danger">Declined</span>
+                                @elseif($order->payment_status == 'refunded') <span class="badge bg-secondary">Refunded</span>
                                 @endif
                             </td>
                         </tr>
                     </table>
-                    @else
-                        <p class="mt-3">No transaction details found.</p>
-                    @endif
                 </div>
             </div>
             

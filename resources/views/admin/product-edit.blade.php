@@ -84,15 +84,6 @@
 
                     <div class="cols gap22">
                         <fieldset class="name">
-                            <div class="body-title mb-10">Stock Status <span class="tf-color-1">*</span></div>
-                            <div class="select">
-                                <select name="stock_status" required>
-                                    <option value="instock" {{ $product->stock_status == 'instock' ? 'selected' : '' }}>In Stock</option>
-                                    <option value="outofstock" {{ $product->stock_status == 'outofstock' ? 'selected' : '' }}>Out of Stock</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                        <fieldset class="name">
                             <div class="body-title mb-10">Featured <span class="tf-color-1">*</span></div>
                             <div class="select">
                                 <select name="featured" required>
@@ -107,6 +98,15 @@
                                 <select name="is_on_sale" required>
                                     <option value="0" {{ $product->is_on_sale == '0' ? 'selected' : '' }}>No</option>
                                     <option value="1" {{ $product->is_on_sale == '1' ? 'selected' : '' }}>Yes</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                        <fieldset class="name">
+                            <div class="body-title mb-10">Active <span class="tf-color-1">*</span></div>
+                            <div class="select">
+                                <select name="is_active" required>
+                                    <option value="1" {{ $product->is_active ? 'selected' : '' }}>Yes (Visible)</option>
+                                    <option value="0" {{ !$product->is_active ? 'selected' : '' }}>No (Hidden)</option>
                                 </select>
                             </div>
                         </fieldset>

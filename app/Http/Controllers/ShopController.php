@@ -13,7 +13,7 @@ class ShopController extends Controller
         $size = $request->query('size') ? $request->query('size') : 12;
         $order = $request->query('order') ? $request->query('order') : -1;
 
-        $o_column = 'id';
+        $o_column = 'Product_ID';
         $o_order = 'DESC';
 
         switch ($order) {
@@ -39,11 +39,12 @@ class ShopController extends Controller
 
         $q_categories = $request->query('categories');
 
-        $products = Product::where('stock_status', 'instock')
+        $products = Product::where('quantity', '>', 0)
+            ->where('is_active', 1)
             ->when($q_categories, function ($query, $q_categories) {
                 $query->whereIn('Category_ID', explode(',', $q_categories));
             })
-            ->orderBy('product_id', 'desc')
+            ->orderBy($o_column, $o_order)
             ->paginate($size);
 
         return view('shop', compact('products', 'size', 'order', 'categories', 'q_categories'));
@@ -51,14 +52,15 @@ class ShopController extends Controller
 
     public function product_details($slug)
     {
-        $product = Product::where('product_slug', $slug)->first();
+        $product = Product::where('product_slug', $slug)->where('is_active', 1)->first();
         if (!$product) {
             abort(404);
         }
 
         $rproducts = Product::where('product_slug', '!=', $slug)
             ->where('Category_ID', $product->Category_ID)
-            ->where('stock_status', 'instock')
+            ->where('quantity', '>', 0)
+            ->where('is_active', 1)
             ->get()->take(8);
 
         return view('details', compact('product', 'rproducts'));

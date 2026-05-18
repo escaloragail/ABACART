@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Transaction;
 use App\Models\Address;
 
 class UserController extends Controller
@@ -36,13 +35,12 @@ class UserController extends Controller
         }
 
         $orderItems = OrderItem::where('Order_ID', $order_id)->orderBy('Order_Item_ID')->paginate(12);
-        $transaction = Transaction::where('Order_ID', $order_id)->first();
         $address = Address::where('User_ID', $order->User_ID)->where('Address_ID', $order->Address_ID ?? 0)->first();
         if(!$address) {
              $address = Address::where('User_ID', Auth::user()->User_ID)->orderBy('Address_ID', 'DESC')->first();
         }
 
-        return view('user.order-details', compact('order', 'orderItems', 'transaction', 'address'));
+        return view('user.order-details', compact('order', 'orderItems', 'address'));
     }
 
     public function order_cancel(Request $request)
@@ -51,13 +49,9 @@ class UserController extends Controller
         if($order && $order->User_ID == Auth::user()->User_ID) {
             $order->order_status = 'canceled';
             $order->date_cancelled = Carbon::now();
+            $order->payment_status = 'declined';
             $order->save();
 
-            $transaction = Transaction::where('Order_ID', $request->order_id)->first();
-            if($transaction) {
-                $transaction->status = 'declined';
-                $transaction->save();
-            }
             return back()->with('success', 'Order has been canceled successfully!');
         }
         return back()->with('error', 'Operation failed.');

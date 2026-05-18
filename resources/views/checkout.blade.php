@@ -1,238 +1,296 @@
 @extends('layouts.app')
 @section('content')
-<main class="pt-90">
-    <div class="mb-4 pb-4"></div>
-    <section class="shop-checkout container">
-      <h2 class="page-title">Shipping and Checkout</h2>
-      
-      @if ($errors->any())
-        <div class="alert alert-danger mb-4">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background: #ffffff !important;
+        font-family: 'Inter', sans-serif;
+        color: #111;
+    }
+    
+    /* ── Content Area ── */
+    .ac-white-content {
+        background: #ffffff !important;
+        padding-top: 40px;
+        padding-bottom: 100px;
+        min-height: 80vh;
+    }
+
+    /* ── Steps Header ── */
+    .ac-steps-wrapper {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 50px;
+        padding-bottom: 0;
+    }
+    .ac-step {
+        flex: 1;
+        text-align: left;
+        padding: 0 0 20px 0;
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        color: #a0aec0;
+        transition: 0.3s;
+    }
+    .ac-step.active {
+        color: #111;
+        border-bottom: 2px solid #111;
+    }
+    .ac-step h6 {
+        font-size: 12px;
+        font-weight: 800;
+        margin: 0 0 5px 0;
+        color: inherit;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    .ac-step p {
+        font-size: 11px;
+        margin: 0;
+        color: #a0aec0;
+    }
+
+    /* ── Section Decoration ── */
+    .ac-section-title { 
+        display: flex;
+        align-items: center;
+        gap: 12px; 
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.15em; 
+        color: #111;
+        text-transform: uppercase;
+        margin-bottom: 30px; 
+    }
+    .ac-section-title::before {
+        content: "";
+        width: 24px;
+        height: 2px;
+        background: #111;
+        display: inline-block;
+    }
+
+    /* ── Cards & Inputs (Darker Borders) ── */
+    .ac-card-option {
+        background: #fff;
+        border-radius: 16px;
+        padding: 25px 30px;
+        margin-bottom: 15px; 
+        cursor: pointer;
+        border: 1px solid #e2e8f0;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        width: 100%;
+    }
+    .ac-radio-input {
+        display: none;
+    }
+    .ac-radio-circle {
+        width: 22px;
+        height: 22px;
+        border: 1px solid #cbd5e1;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 2px;
+        position: relative;
+        transition: all 0.2s ease;
+    }
+    
+    .ac-radio-input:checked + .ac-card-option {
+        border-color: #111 !important;
+        background: #fafafa;
+    }
+    .ac-radio-input:checked + .ac-card-option .ac-radio-circle {
+        border-color: #111;
+        background: #111;
+    }
+    .ac-radio-input:checked + .ac-card-option .ac-radio-circle::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 6px;
+        left: 6px;
+    }
+
+    /* ── Form Inputs ── */
+    .form-control, .form-select {
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 14px !important;
+        color: #111 !important;
+        background-color: #fff !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #111 !important;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05) !important;
+        color: #111 !important;
+        outline: none !important;
+    }
+
+    .form-floating > label {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        color: #a0aec0 !important;
+        transition: all 0.2s ease !important;
+        text-transform: uppercase !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label,
+    .form-floating > .form-select ~ label {
+        color: #111 !important;
+    }
+
+    .ac-textarea {
+        height: 120px !important;
+        border-radius: 16px !important;
+        padding: 18px !important;
+    }
+
+    /* ── Large Button ── */
+    .ac-btn-black {
+        background: #111;
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        padding: 20px;
+        width: 100%;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        transition: 0.2s;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .ac-btn-black:hover {
+        background: #2d3748;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="ac-white-content">
+    <div class="container">
+        
+        <div class="ac-steps-wrapper">
+            <div class="ac-step"><h6>01 SHOPPING BAG</h6><p>Manage Your Items List</p></div>
+            <div class="ac-step active"><h6>02 SHIPPING AND CHECKOUT</h6><p>Delivery Details</p></div>
+            <div class="ac-step"><h6>03 CONFIRMATION</h6><p>Review And Submit Your Order</p></div>
         </div>
-      @endif
-      <div class="checkout-steps">
-        <a href="{{ route('cart.index') }}" class="checkout-steps__item active">
-          <span class="checkout-steps__item-number">01</span>
-          <span class="checkout-steps__item-title">
-            <span>Shopping Bag</span>
-            <em>Manage Your Items List</em>
-          </span>
-        </a>
-        <a href="{{ route('cart.checkout') }}" class="checkout-steps__item active">
-          <span class="checkout-steps__item-number">02</span>
-          <span class="checkout-steps__item-title">
-            <span>Shipping and Checkout</span>
-            <em>Checkout Your Items List</em>
-          </span>
-        </a>
-        <a href="#" class="checkout-steps__item">
-          <span class="checkout-steps__item-number">03</span>
-          <span class="checkout-steps__item-title">
-            <span>Confirmation</span>
-            <em>Review And Submit Your Order</em>
-          </span>
-        </a>
-      </div>
-      <form name="checkout-form" action="{{ route('cart.place.order') }}" method="POST">
-        @csrf
-        <div class="checkout-form">
-          <div class="billing-info__wrapper">
-            <div class="row">
-              <div class="col-12">
-                <h4>1. SELECT SHIPPING ADDRESS</h4>
-                <div class="saved-addresses mb-4 mt-3">
-                    @forelse($addresses as $addr)
-                        <div class="form-check p-3 border rounded mb-2 address-item" style="cursor: pointer;">
-                            <input class="form-check-input" type="radio" name="address_id" id="address_{{ $addr->Address_ID }}" value="{{ $addr->Address_ID }}" {{ $loop->first ? 'checked' : '' }} style="margin-left: 0;">
-                            <label class="form-check-label w-100 ms-4" for="address_{{ $addr->Address_ID }}">
-                                <strong>{{ $addr->address_type }}</strong><br>
-                                {{ $addr->Zone_Street_HouseNumber }}, {{ $addr->Barangay }}, {{ $addr->City }}, {{ $addr->Province }}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-7"> 
+                <form action="{{ route('cart.review') }}" method="GET">
+                    
+                    <div class="ac-section-title">1. Select Delivery Address</div>
+                    
+                    <div class="address-options mb-4">
+                        @forelse($addresses as $addr)
+                            <div class="w-100 mb-3">
+                                <input type="radio" name="address_id" id="addr_{{ $addr->Address_ID }}" value="{{ $addr->Address_ID }}" class="ac-radio-input" {{ $loop->first ? 'checked' : '' }} onchange="toggleNewAddress(false)">
+                                <label class="ac-card-option" for="addr_{{ $addr->Address_ID }}">
+                                    <div class="ac-radio-circle"></div>
+                                    <div class="ac-card-content">
+                                        <h6 class="fw-bold mb-1 text-uppercase" style="font-size: 13px; letter-spacing: 0.05em; color: #111;">{{ $addr->address_type }}</h6>
+                                        <p class="mb-0 text-muted" style="font-size: 14px; line-height: 1.5;">{{ $addr->Zone_Street_HouseNumber }}, {{ $addr->Barangay }}, {{ $addr->City }}</p>
+                                    </div>
+                                </label>
+                            </div>
+                        @empty
+                        @endforelse
+                        
+                        <div class="w-100 mb-3">
+                            <input type="radio" name="address_id" id="addr_new" value="new" class="ac-radio-input" {{ $addresses->isEmpty() ? 'checked' : '' }} onchange="toggleNewAddress(true)">
+                            <label class="ac-card-option" for="addr_new">
+                                <div class="ac-radio-circle"></div>
+                                <div class="ac-card-content">
+                                    <h6 class="fw-bold mb-1 text-uppercase" style="font-size: 13px; letter-spacing: 0.05em; color: #111;">+ Add New Address</h6>
+                                    <p class="mb-0 text-muted" style="font-size: 14px; line-height: 1.5;">Enter a different delivery location</p>
+                                </div>
                             </label>
                         </div>
-                    @empty
-                        <p class="text-muted">No saved addresses found. Please add a new one below.</p>
-                    @endforelse
-                    
-                    <div class="form-check p-3 border rounded mb-2 address-item" style="cursor: pointer;">
-                        <input class="form-check-input" type="radio" name="address_id" id="address_new" value="new" {{ $addresses->isEmpty() ? 'checked' : '' }} style="margin-left: 0;">
-                        <label class="form-check-label w-100 ms-4" for="address_new">
-                            <strong>Add New Address</strong>
-                        </label>
                     </div>
-                </div>
-              </div>
-            </div>
 
-            <div id="new_address_form" style="{{ $addresses->isNotEmpty() ? 'display: none;' : '' }}">
-                <div class="row mt-3">
-                  <div class="col-md-6">
-                    <div class="form-floating my-3">
-                      <input type="text" class="form-control" name="Zone_Street_HouseNumber" value="{{ old('Zone_Street_HouseNumber') }}">
-                      <label for="Zone_Street_HouseNumber">Zone / Street / House Number *</label>
+                    <div id="new_address_form" style="{{ $addresses->isNotEmpty() ? 'display: none;' : '' }} background: #fff; padding: 40px; border-radius: 25px; margin-bottom: 30px; border: 1px solid #e2e8f0;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Zone_Street_HouseNumber" placeholder="Street" value="{{ old('Zone_Street_HouseNumber') }}">
+                                    <label>Street / House No. *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Barangay" placeholder="Barangay" value="{{ old('Barangay') }}">
+                                    <label>Barangay *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="City" placeholder="City" value="{{ old('City') }}">
+                                    <label>City / Town *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="Province" placeholder="Province" value="{{ old('Province') }}">
+                                    <label>Province *</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <select class="form-select" name="address_type">
+                                        <option value="Home">Home</option>
+                                        <option value="Work">Work</option>
+                                    </select>
+                                    <label>Address Label</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-floating my-3">
-                      <input type="text" class="form-control" name="Barangay" value="{{ old('Barangay') }}">
-                      <label for="Barangay">Barangay *</label>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-floating my-3">
-                      <input type="text" class="form-control" name="City" value="{{ old('City') }}">
-                      <label for="City">Town / City *</label>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-floating my-3">
-                      <input type="text" class="form-control" name="Province" value="{{ old('Province') }}">
-                      <label for="Province">Province *</label>
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="form-floating my-3">
-                      <select name="address_type" class="form-control">
-                          <option value="Home">Home</option>
-                          <option value="Work">Work</option>
-                      </select>
-                      <label for="address_type">Address Type *</label>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            
-            <hr class="my-5">
 
-            <div class="row">
-              <div class="col-12">
-                <h4>2. MESSAGE FOR ADMIN (Optional)</h4>
-                <div class="form-floating mt-3">
-                  <textarea class="form-control" name="note" style="height: 100px" placeholder="Leave a message for the admin"></textarea>
-                  <label for="note">Instructions or Note</label>
-                </div>
-              </div>
-            </div>
-
-            <hr class="my-5">
-            
-            <div class="row">
-              <div class="col-6">
-                <h4>3. PAYMENT MODE</h4>
-              </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="payment_mode" id="payment_cod" value="cod" checked>
-                      <label class="form-check-label" for="payment_cod">
-                        Cash on Delivery (COD)
-                      </label>
+                    <div class="ac-section-title mt-5">2. Instructions</div>
+                    <div class="form-floating mb-5">
+                        <textarea class="form-control ac-textarea" name="note" placeholder="Special Instructions (Optional)">{{ old('note') }}</textarea>
+                        <label>Special Instructions (Optional)</label>
                     </div>
-                </div>
-            </div>
 
-          </div>
-          <div class="checkout__totals-wrapper">
-            <div class="sticky-content">
-              <div class="checkout__totals">
-                <h3>4. REVIEW ORDER</h3>
-                <table class="checkout-cart-items">
-                  <thead>
-                    <tr>
-                      <th>PRODUCT</th>
-                      <th class="text-right">SUBTOTAL</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach(Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content() as $item)
-                        <tr>
-                            <td>
-                                {{ $item->name }} x {{ $item->qty }}
-                            </td>
-                            <td class="text-right">
-                                ${{ $item->subtotal() }}
-                            </td>
-                        </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-                <table class="checkout-totals">
-                  <tbody>
-                    @if(Session::has('coupon'))
-                        <tr>
-                        <th>SUBTOTAL</th>
-                        <td class="text-right">${{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->subtotal() }}</td>
-                        </tr>
-                        <tr>
-                        <th>DISCOUNT ({{ Session::get('coupon')['code'] }})</th>
-                        <td class="text-right">-${{ Session::get('discounts')['discount'] }}</td>
-                        </tr>
-                        <tr>
-                        <th>SUBTOTAL AFTER DISCOUNT</th>
-                        <td class="text-right">${{ Session::get('discounts')['subtotal'] }}</td>
-                        </tr>
-                        <tr>
-                        <th>TAX</th>
-                        <td class="text-right">${{ Session::get('discounts')['tax'] }}</td>
-                        </tr>
-                        <tr>
-                        <th>TOTAL</th>
-                        <td class="text-right">${{ Session::get('discounts')['total'] }}</td>
-                        </tr>
-                    @else
-                        <tr>
-                        <th>SUBTOTAL</th>
-                        <td class="text-right">${{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->subtotal() }}</td>
-                        </tr>
-                        <tr>
-                        <th>TAX</th>
-                        <td class="text-right">${{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->tax() }}</td>
-                        </tr>
-                        <tr>
-                        <th>TOTAL</th>
-                        <td class="text-right">${{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->total() }}</td>
-                        </tr>
-                    @endif
-                  </tbody>
-                </table>
-              </div>
-              @if (Session::has('success'))
-                  <div class="alert alert-success mt-3">
-                      {{ Session::get('success') }}
-                  </div>
-              @endif
-              @if (Session::has('error'))
-                  <div class="alert alert-danger mt-3">
-                      {{ Session::get('error') }}
-                  </div>
-              @endif
-              <button type="submit" class="btn btn-primary btn-checkout">PLACE ORDER</button>
+                    <input type="hidden" name="payment_mode" value="cod">
+
+                    <div class="text-center">
+                        <button type="submit" class="ac-btn-black animate-button" style="max-width: 450px; margin: 0 auto;">
+                            Continue to Review
+                        </button>
+                    </div>
+
+                </form>
             </div>
-          </div>
         </div>
-      </form>
-    </section>
-  </main>
-@endsection
+    </div>
+</div>
 
-@push('scripts')
 <script>
-    $(function(){
-        $('input[name="address_id"]').on('change', function(){
-            if($(this).val() == 'new') {
-                $('#new_address_form').slideDown();
-            } else {
-                $('#new_address_form').slideUp();
-            }
-        });
-
-        $('.address-item').on('click', function(){
-            $(this).find('input[name="address_id"]').prop('checked', true).trigger('change');
-        });
-    });
+    function toggleNewAddress(show) {
+        document.getElementById('new_address_form').style.display = show ? 'block' : 'none';
+    }
 </script>
-@endpush
+
+@endsection

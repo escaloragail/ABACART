@@ -16,9 +16,16 @@
             </div>
 
             <div class="wg-box">
-                <div class="flex items-center justify-between gap10 flex-wrap">
-                    <div class="wg-filter flex-grow">
-                        <!-- Search form can go here -->
+                <div class="flex items-center justify-between gap10 flex-wrap mb-3">
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.products', ['show' => 'active']) }}"
+                           class="btn btn-sm {{ ($show ?? 'active') == 'active' ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            Active <span class="badge bg-light text-dark ms-1">{{ $activeCount }}</span>
+                        </a>
+                        <a href="{{ route('admin.products', ['show' => 'inactive']) }}"
+                           class="btn btn-sm {{ ($show ?? '') == 'inactive' ? 'btn-danger' : 'btn-outline-secondary' }}">
+                            Inactive <span class="badge bg-light text-dark ms-1">{{ $inactiveCount }}</span>
+                        </a>
                     </div>
                     <a class="tf-button style-1 w208" href="{{ route('admin.product.add') }}">
                         <i class="icon-plus"></i>Add new
@@ -40,6 +47,7 @@
                                     <th>Featured</th>
                                     <th>Stock</th>
                                     <th>Quantity</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -56,7 +64,13 @@
                                     <td>${{ $product->regular_price }}</td>
                                     <td>{{ $product->category->category_name ?? 'Unknown' }}</td>
                                     <td>{{ $product->featured == 1 ? 'Yes' : 'No' }}</td>
-                                    <td>{{ $product->stock_status }}</td>
+                                    <td>
+                                        @if($product->quantity > 0)
+                                            <span class="badge bg-success">In Stock</span>
+                                        @else
+                                            <span class="badge bg-danger">Out of Stock</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="qty-control d-flex align-items-center gap-2">
                                             <form action="{{ route('admin.product.quantity.update', ['id' => $product->Product_ID]) }}" method="POST" class="d-inline">
@@ -75,19 +89,36 @@
                                         </div>
                                     </td>
                                     <td>
+                                        @if($product->is_active)
+                                            <span class="badge bg-success">Active</span>
+                                        @else
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <div class="list-icon-function">
                                             <a href="{{ route('admin.product.edit', ['id' => $product->Product_ID]) }}">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="{{ route('admin.product.delete', ['id' => $product->Product_ID]) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <div class="item text-danger delete">
-                                                    <i class="icon-trash-2"></i>
-                                                </div>
-                                            </form>
+                                            @if($product->is_active)
+                                                <form action="{{ route('admin.product.delete', ['id' => $product->Product_ID]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <div class="item text-danger delete">
+                                                        <i class="icon-eye-off"></i>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('admin.product.reactivate', ['id' => $product->Product_ID]) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="item text-success reactivate">
+                                                        <i class="icon-eye"></i>
+                                                    </div>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -111,11 +142,25 @@
             e.preventDefault();
             var form = $(this).closest('form');
             swal({
-                title: "Are you sure?",
-                text: "You want to delete this product?",
+                title: "Deactivate Product?",
+                text: "The product will be hidden from the store but not deleted.",
                 type: "warning",
-                buttons: ["No", "Yes"],
+                buttons: ["No", "Yes, Deactivate"],
                 confirmButtonColor: "#dc3545"
+            }).then(function (result) {
+                if (result) {
+                    form.submit();
+                }
+            });
+        });
+        $('.reactivate').on('click', function(e){
+            e.preventDefault();
+            var form = $(this).closest('form');
+            swal({
+                title: "Reactivate Product?",
+                text: "The product will be visible in the store again.",
+                type: "info",
+                buttons: ["No", "Yes, Reactivate"],
             }).then(function (result) {
                 if (result) {
                     form.submit();

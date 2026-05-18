@@ -39,28 +39,28 @@
               <tr>
                 <td>
                   <div class="shopping-cart__product-item">
-                    <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $item->model->image }}" width="120" height="120" alt="{{ $item->name }}" />
+                    <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $item->product->main_product_image }}" width="120" height="120" alt="{{ $item->product->product_name }}" />
                   </div>
                 </td>
                 <td>
                   <div class="shopping-cart__product-item__detail">
-                    <h4>{{ $item->name }}</h4>
+                    <h4>{{ $item->product->product_name }}</h4>
                   </div>
                 </td>
                 <td>
-                  <span class="shopping-cart__product-price">${{ $item->price }}</span>
+                  <span class="shopping-cart__product-price">${{ number_format($item->effective_price, 2) }}</span>
                 </td>
                 <td>
-                  <span class="shopping-cart__subtotal">{{ $item->qty }}</span>
+                  <span class="shopping-cart__subtotal">{{ $item->quantity }}</span>
                 </td>
                 <td>
-                    <form method="POST" action="{{ route('wishlist.move.to.cart', ['rowId' => $item->rowId]) }}">
+                    <form method="POST" action="{{ route('wishlist.move.to.cart', ['id' => $item->Cart_Item_ID]) }}">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-primary">Move to Cart</button>
                     </form>
                 </td>
                 <td>
-                    <form method="POST" action="{{ route('wishlist.remove', ['rowId' => $item->rowId]) }}">
+                    <form method="POST" action="{{ route('wishlist.remove', ['id' => $item->Cart_Item_ID]) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger remove-cart">

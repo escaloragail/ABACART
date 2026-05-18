@@ -31,26 +31,7 @@
       <rect y="8" width="20" height="2" />
       <rect y="16" width="25" height="2" />
     </symbol>
-    <symbol id="icon_facebook" viewBox="0 0 9 15">
-      <path
-        d="M7.62891 8.31543L8.01172 5.7998H5.57812V4.15918C5.57812 3.44824 5.90625 2.79199 7 2.79199H8.12109V0.631836C8.12109 0.631836 7.10938 0.44043 6.15234 0.44043C4.15625 0.44043 2.84375 1.6709 2.84375 3.8584V5.7998H0.601562V8.31543H2.84375V14.4404H5.57812V8.31543H7.62891Z" />
-    </symbol>
-    <symbol id="icon_twitter" viewBox="0 0 14 13">
-      <path
-        d="M12.5508 3.59668C13.0977 3.18652 13.5898 2.69434 13.9727 2.12012C13.4805 2.33887 12.9062 2.50293 12.332 2.55762C12.9336 2.20215 13.3711 1.65527 13.5898 0.97168C13.043 1.2998 12.4141 1.5459 11.7852 1.68262C11.2383 1.1084 10.5 0.780273 9.67969 0.780273C8.09375 0.780273 6.80859 2.06543 6.80859 3.65137C6.80859 3.87012 6.83594 4.08887 6.89062 4.30762C4.51172 4.1709 2.37891 3.02246 0.957031 1.2998C0.710938 1.70996 0.574219 2.20215 0.574219 2.74902C0.574219 3.7334 1.06641 4.6084 1.85938 5.12793C1.39453 5.10059 0.929688 4.99121 0.546875 4.77246V4.7998C0.546875 6.19434 1.53125 7.34277 2.84375 7.61621C2.625 7.6709 2.35156 7.72559 2.10547 7.72559C1.91406 7.72559 1.75 7.69824 1.55859 7.6709C1.91406 8.81934 2.98047 9.63965 4.23828 9.66699C3.25391 10.4326 2.02344 10.8975 0.683594 10.8975C0.4375 10.8975 0.21875 10.8701 0 10.8428C1.25781 11.6631 2.76172 12.1279 4.40234 12.1279C9.67969 12.1279 12.5508 7.78027 12.5508 3.97949C12.5508 3.84277 12.5508 3.7334 12.5508 3.59668Z" />
-    </symbol>
-    <symbol id="icon_instagram" viewBox="0 0 14 13">
-      <path
-        d="M7.125 3.2959C5.375 3.2959 3.98047 4.71777 3.98047 6.44043C3.98047 8.19043 5.375 9.58496 7.125 9.58496C8.84766 9.58496 10.2695 8.19043 10.2695 6.44043C10.2695 4.71777 8.84766 3.2959 7.125 3.2959ZM7.125 8.49121C6.00391 8.49121 5.07422 7.58887 5.07422 6.44043C5.07422 5.31934 5.97656 4.41699 7.125 4.41699C8.24609 4.41699 9.14844 5.31934 9.14844 6.44043C9.14844 7.58887 8.24609 8.49121 7.125 8.49121ZM11.1172 3.18652C11.1172 2.77637 10.7891 2.44824 10.3789 2.44824C9.96875 2.44824 9.64062 2.77637 9.64062 3.18652C9.64062 3.59668 9.96875 3.9248 10.3789 3.9248C10.7891 3.9248 11.1172 3.59668 11.1172 3.18652ZM13.1953 3.9248C13.1406 2.94043 12.9219 2.06543 12.2109 1.35449C11.5 0.643555 10.625 0.424805 9.64062 0.370117C8.62891 0.31543 5.59375 0.31543 4.58203 0.370117C3.59766 0.424805 2.75 0.643555 2.01172 1.35449C1.30078 2.06543 1.08203 2.94043 1.02734 3.9248C0.972656 4.93652 0.972656 7.97168 1.02734 8.9834C1.08203 9.96777 1.30078 10.8154 2.01172 11.5537C2.75 12.2646 3.59766 12.4834 4.58203 12.5381C5.59375 12.5928 8.62891 12.5928 9.64062 12.5381C10.625 12.4834 11.5 12.2646 12.2109 11.5537C12.9219 10.8154 13.1406 9.96777 13.1953 8.9834C13.25 7.97168 13.25 4.93652 13.1953 3.9248ZM11.8828 10.0498C11.6914 10.5967 11.2539 11.0068 10.7344 11.2256C9.91406 11.5537 8 11.4717 7.125 11.4717C6.22266 11.4717 4.30859 11.5537 3.51562 11.2256C2.96875 11.0068 2.55859 10.5967 2.33984 10.0498C2.01172 9.25684 2.09375 7.34277 2.09375 6.44043C2.09375 5.56543 2.01172 3.65137 2.33984 2.83105C2.55859 2.31152 2.96875 1.90137 3.51562 1.68262C4.30859 1.35449 6.22266 1.43652 7.125 1.43652C8 1.43652 9.91406 1.35449 10.7344 1.68262C11.2539 1.87402 11.6641 2.31152 11.8828 2.83105C12.2109 3.65137 12.1289 5.56543 12.1289 6.44043C12.1289 7.34277 12.2109 9.25684 11.8828 10.0498Z" />
-    </symbol>
-    <symbol id="icon_youtube" viewBox="0 0 16 11">
-      <path
-        d="M15.0117 1.8584C14.8477 1.20215 14.3281 0.682617 13.6992 0.518555C12.5234 0.19043 7.875 0.19043 7.875 0.19043C7.875 0.19043 3.19922 0.19043 2.02344 0.518555C1.39453 0.682617 0.875 1.20215 0.710938 1.8584C0.382812 3.00684 0.382812 5.46777 0.382812 5.46777C0.382812 5.46777 0.382812 7.90137 0.710938 9.07715C0.875 9.7334 1.39453 10.2256 2.02344 10.3896C3.19922 10.6904 7.875 10.6904 7.875 10.6904C7.875 10.6904 12.5234 10.6904 13.6992 10.3896C14.3281 10.2256 14.8477 9.7334 15.0117 9.07715C15.3398 7.90137 15.3398 5.46777 15.3398 5.46777C15.3398 5.46777 15.3398 3.00684 15.0117 1.8584ZM6.34375 7.68262V3.25293L10.2266 5.46777L6.34375 7.68262Z" />
-    </symbol>
-    <symbol id="icon_pinterest" viewBox="0 0 14 15">
-      <path
-        d="M13.5625 7.44043C13.5625 3.69434 10.5273 0.65918 6.78125 0.65918C3.03516 0.65918 0 3.69434 0 7.44043C0 10.3389 1.77734 12.7725 4.29297 13.7568C4.23828 13.2373 4.18359 12.417 4.32031 11.8154C4.45703 11.2959 5.11328 8.45215 5.11328 8.45215C5.11328 8.45215 4.92188 8.04199 4.92188 7.44043C4.92188 6.51074 5.46875 5.7998 6.15234 5.7998C6.72656 5.7998 7 6.2373 7 6.75684C7 7.33105 6.61719 8.20605 6.42578 9.02637C6.28906 9.68262 6.78125 10.2295 7.4375 10.2295C8.64062 10.2295 9.57031 8.97168 9.57031 7.13965C9.57031 5.49902 8.39453 4.37793 6.75391 4.37793C4.8125 4.37793 3.69141 5.82715 3.69141 7.30371C3.69141 7.90527 3.91016 8.53418 4.18359 8.8623C4.23828 8.91699 4.23828 8.99902 4.23828 9.05371C4.18359 9.27246 4.04688 9.7373 4.04688 9.81934C4.01953 9.95605 3.9375 9.9834 3.80078 9.92871C2.95312 9.51855 2.43359 8.28809 2.43359 7.27637C2.43359 5.14355 3.99219 3.1748 6.91797 3.1748C9.26953 3.1748 11.1016 4.87012 11.1016 7.1123C11.1016 9.43652 9.625 11.3232 7.57422 11.3232C6.89062 11.3232 6.23438 10.9678 6.01562 10.5303C6.01562 10.5303 5.6875 11.8428 5.60547 12.1436C5.44141 12.7451 5.03125 13.4834 4.75781 13.9209C5.38672 14.1396 6.07031 14.2217 6.78125 14.2217C10.5273 14.2217 13.5625 11.1865 13.5625 7.44043Z" />
-    </symbol>
+
     <symbol id="icon_search" viewBox="0 0 20 20">
       <g clip-path="url(#clip0_6_7)">
         <path
@@ -62,21 +43,6 @@
       </g>
       <defs>
         <clipPath id="clip0_6_7">
-          <rect width="20" height="20" fill="white" />
-        </clipPath>
-      </defs>
-    </symbol>
-    <symbol id="icon_user" viewBox="0 0 20 20">
-      <g clip-path="url(#clip0_6_29)">
-        <path
-          d="M10 11.2652C3.99077 11.2652 0.681274 14.108 0.681274 19.2701C0.681274 19.6732 1.00803 20 1.4112 20H18.5888C18.992 20 19.3187 19.6732 19.3187 19.2701C19.3188 14.1083 16.0093 11.2652 10 11.2652ZM2.16768 18.5402C2.45479 14.6805 5.08616 12.7251 10 12.7251C14.9139 12.7251 17.5453 14.6805 17.8326 18.5402H2.16768Z"
-          fill="currentColor" />
-        <path
-          d="M10 0C7.23969 0 5.1582 2.12336 5.1582 4.93895C5.1582 7.83699 7.33023 10.1944 10 10.1944C12.6698 10.1944 14.8419 7.83699 14.8419 4.93918C14.8419 2.12336 12.7604 0 10 0ZM10 8.7348C8.13508 8.7348 6.61805 7.03211 6.61805 4.93918C6.61805 2.92313 8.04043 1.45984 10 1.45984C11.9283 1.45984 13.382 2.95547 13.382 4.93918C13.382 7.03211 11.865 8.7348 10 8.7348Z"
-          fill="currentColor" />
-      </g>
-      <defs>
-        <clipPath id="clip0_6_29">
           <rect width="20" height="20" fill="white" />
         </clipPath>
       </defs>
@@ -94,6 +60,21 @@
       </g>
       <defs>
         <clipPath id="clip0_6_54">
+          <rect width="20" height="20" fill="white" />
+        </clipPath>
+      </defs>
+    </symbol>
+        <symbol id="icon_user" viewBox="0 0 20 20">
+      <g clip-path="url(#clip0_6_29)">
+        <path
+          d="M10 11.2652C3.99077 11.2652 0.681274 14.108 0.681274 19.2701C0.681274 19.6732 1.00803 20 1.4112 20H18.5888C18.992 20 19.3187 19.6732 19.3187 19.2701C19.3188 14.1083 16.0093 11.2652 10 11.2652ZM2.16768 18.5402C2.45479 14.6805 5.08616 12.7251 10 12.7251C14.9139 12.7251 17.5453 14.6805 17.8326 18.5402H2.16768Z"
+          fill="currentColor" />
+        <path
+          d="M10 0C7.23969 0 5.1582 2.12336 5.1582 4.93895C5.1582 7.83699 7.33023 10.1944 10 10.1944C12.6698 10.1944 14.8419 7.83699 14.8419 4.93918C14.8419 2.12336 12.7604 0 10 0ZM10 8.7348C8.13508 8.7348 6.61805 7.03211 6.61805 4.93918C6.61805 2.92313 8.04043 1.45984 10 1.45984C11.9283 1.45984 13.382 2.95547 13.382 4.93918C13.382 7.03211 11.865 8.7348 10 8.7348Z"
+          fill="currentColor" />
+      </g>
+      <defs>
+        <clipPath id="clip0_6_29">
           <rect width="20" height="20" fill="white" />
         </clipPath>
       </defs>
@@ -252,14 +233,101 @@
     </symbol>
   </svg>
   <style>
-    #header {
-      padding-top: 8px;
-      padding-bottom: 8px;
-    }
+
+  #header {
+    background: #F9F9F9 !important;
+    padding: 5px 0 !important;
+    position: sticky !important;
+    top: 0;
+    z-index: 1100;
+    /* Changed border-bottom: none to a visible state */
+    border-bottom: 1px solid #EBE5DB !important; 
+    font-family: 'Inter', sans-serif;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  #header.scrolled {
+    box-shadow: 0 4px 24px rgba(99,77,58,0.10);
+    /* Optional: Hide the border or darken it when scrolling */
+    border-bottom-color: transparent !important;
+  }
+
 
     .logo__image {
-      max-width: 220px;
+      max-width: 180px;
     }
+
+
+    /* Navigation links */
+    .navigation__link {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      color: #2c2420 !important;
+      padding-bottom: 3px !important;
+      transition: all 0.3s !important;
+    }
+    .navigation__link:hover {
+      color: #634d3a !important;
+    }
+
+
+    /* Header tools icons */
+    .header-tools__item {
+      color: #2c2420 !important;
+      transition: all 0.3s !important;
+    }
+    .header-tools__item:hover {
+      color: #634d3a !important;
+    }
+
+
+    /* Cart badge */
+    .cart-amount {
+      background: #e74c3c !important;
+      color: #fff !important;
+      font-size: 9px !important;
+      font-weight: 700 !important;
+    }
+
+
+    /* Search popup */
+    .search-popup {
+      background: #FAF7F2 !important;
+    }
+
+
+    /* Notification dropdown */
+    .hover-container:hover .hover__content {
+      display: block !important;
+    }
+    .hover__content {
+      border-radius: 12px !important;
+      border: none !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12) !important;
+    }
+
+
+    /* User name text */
+    .pr-6px {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2c2420;
+      padding-right: 6px;
+    }
+
+
+    /* Mobile header hide on desktop */
+    @media (min-width: 992px) {
+      .header-mobile { display: none !important; }
+    }
+  </style>
+
   </style>
   <div class="header-mobile header_sticky">
     <div class="container d-flex align-items-center h-100">
@@ -299,7 +367,13 @@
         <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <use href="#icon_cart" />
         </svg>
-        <span class="cart-amount d-block position-absolute js-cart-items-count">{{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->count() }}</span>
+        <span class="cart-amount d-block position-absolute js-cart-items-count">
+            @auth
+                {{ \App\Models\CartItem::where('User_ID', Auth::user()->User_ID)->where('instance', 'cart')->sum('quantity') }}
+            @else
+                0
+            @endauth
+        </span>
       </a>
     </div>
 
@@ -332,16 +406,10 @@
               <a href="{{route('home.index')}}" class="navigation__link">Home</a>
             </li>
             <li class="navigation__item">
-              <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
-            </li>
-            <li class="navigation__item">
-              <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
+              <a href="{{ route('shop.index') }}" class="navigation__link">Products</a>
             </li>
             <li class="navigation__item">
               <a href="{{ route('home.about') }}" class="navigation__link">About</a>
-            </li>
-            <li class="navigation__item">
-              <a href="{{ route('home.contact') }}" class="navigation__link">Contact</a>
             </li>
           </ul>
         </div>
@@ -421,16 +489,10 @@
               <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
             </li>
             <li class="navigation__item">
-              <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
-            </li>
-            <li class="navigation__item">
-              <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
+              <a href="{{ route('shop.index') }}" class="navigation__link">Products</a>
             </li>
             <li class="navigation__item">
               <a href="{{ route('home.about') }}" class="navigation__link">About</a>
-            </li>
-            <li class="navigation__item">
-              <a href="contact.html" class="navigation__link">Contact</a>
             </li>
           </ul>
         </nav>
@@ -468,11 +530,11 @@
                     <ul class="sub-menu__list list-unstyled">
                       <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a>
                       </li>
-                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Dresses</a></li>
+                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Home Decor</a></li>
                       <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a>
                       </li>
-                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Footwear</a></li>
-                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Sweatshirt</a></li>
+                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a></li>
+                      <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Sandals</a></li>
                     </ul>
                   </div>
 
@@ -481,31 +543,25 @@
               </form>
             </div>
           </div>
-          @guest
-          <div class="header-tools__item hover-container">
-            <a href="{{ route('login') }}" class="header-tools__item">
-              <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_user" />
-              </svg>
-            </a>
-          </div>
-          @else
-          <div class="header-tools__item hover-container">
-            <a href="{{ Auth::user()->utype == 'ADM' ? route('admin.index') : route('user.index') }}" class="header-tools__item d-flex align-items-center">
-              <span class="pr-6px">{{ Auth::user()->name }}</span>
-               @if(Auth::user()->image && file_exists(public_path('uploads/profiles/' . Auth::user()->image)))
-                <img src="{{ asset('uploads/profiles/' . Auth::user()->image) }}" alt="{{ Auth::user()->name }}" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
-              @else
-                <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_user" />
-                </svg>
-              @endif
-            </a>
-          </div>
-          @endguest
+          <a href="{{ route('wishlist.index') }}" class="header-tools__item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <use href="#icon_heart" />
+            </svg>
+          </a>
 
+          <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
+            <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <use href="#icon_cart" />
+            </svg>
+            <span class="cart-amount d-block position-absolute js-cart-items-count">
+                @auth
+                    {{ \App\Models\CartItem::where('User_ID', Auth::user()->User_ID)->where('instance', 'cart')->sum('quantity') }}
+                @else
+                    0
+                @endauth
+            </span>
+          </a>
           @auth
             @if(Auth::user()->utype != 'ADM')
                 @php
@@ -549,19 +605,30 @@
             @endif
           @endauth
 
-          <a href="{{ route('wishlist.index') }}" class="header-tools__item">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <use href="#icon_heart" />
-            </svg>
-          </a>
-
-          <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
-            <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <use href="#icon_cart" />
-            </svg>
-            <span class="cart-amount d-block position-absolute js-cart-items-count">{{ Surfsidemedia\Shoppingcart\Facades\Cart::instance('cart')->content()->count() }}</span>
-          </a>
+        @guest
+          <div class="header-tools__item hover-container">
+                <a href="{{ route('login') }}" class="header-tools__item">
+                  <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_user" />
+                  </svg>
+                </a>
+              </div>
+              @else
+              <div class="header-tools__item hover-container">
+                <a href="{{ Auth::user()->utype == 'ADM' ? route('admin.index') : route('user.index') }}" class="header-tools__item d-flex align-items-center">
+                  <span class="pr-6px">{{ Auth::user()->name }}</span>
+                  @if(Auth::user()->image && file_exists(public_path('uploads/profiles/' . Auth::user()->image)))
+                    <img src="{{ asset('uploads/profiles/' . Auth::user()->image) }}" alt="{{ Auth::user()->name }}" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
+                  @else
+                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <use href="#icon_user" />
+                    </svg>
+                  @endif
+                </a>
+              </div>
+        @endguest
         </div>
       </div>
     </div>
@@ -571,118 +638,9 @@
 
   <hr class="mt-5 text-secondary" />
   <footer class="footer footer_type_2">
-    <div class="footer-middle container">
-      <div class="row row-cols-lg-5 row-cols-2">
-        <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
-          <div class="logo">
-            <a href="{{ route('home.index') }}">
-              <img src="{{ asset('assets/images/logo.png') }}" alt="Abacart" class="logo__image d-block" />
-            </a>
-          </div>
-          <p class="footer-address">123 Street Name, City, Country</p>
-          <p class="m-0"><strong class="fw-medium">contact@abacart_ph.com</strong></p>
-          <p><strong class="fw-medium">+1 000-000-0000</strong></p>
-
-          <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
-            <li>
-              <a href="#" class="footer__social-link d-block">
-                <svg class="svg-icon svg-icon_facebook" width="9" height="15" viewBox="0 0 9 15"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_facebook" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link d-block">
-                <svg class="svg-icon svg-icon_twitter" width="14" height="13" viewBox="0 0 14 13"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_twitter" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link d-block">
-                <svg class="svg-icon svg-icon_instagram" width="14" height="13" viewBox="0 0 14 13"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_instagram" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link d-block">
-                <svg class="svg-icon svg-icon_youtube" width="16" height="11" viewBox="0 0 16 11"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M15.0117 1.8584C14.8477 1.20215 14.3281 0.682617 13.6992 0.518555C12.5234 0.19043 7.875 0.19043 7.875 0.19043C7.875 0.19043 3.19922 0.19043 2.02344 0.518555C1.39453 0.682617 0.875 1.20215 0.710938 1.8584C0.382812 3.00684 0.382812 5.46777 0.382812 5.46777C0.382812 5.46777 0.382812 7.90137 0.710938 9.07715C0.875 9.7334 1.39453 10.2256 2.02344 10.3896C3.19922 10.6904 7.875 10.6904 7.875 10.6904C7.875 10.6904 12.5234 10.6904 13.6992 10.3896C14.3281 10.2256 14.8477 9.7334 15.0117 9.07715C15.3398 7.90137 15.3398 5.46777 15.3398 5.46777C15.3398 5.46777 15.3398 3.00684 15.0117 1.8584ZM6.34375 7.68262V3.25293L10.2266 5.46777L6.34375 7.68262Z" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link d-block">
-                <svg class="svg-icon svg-icon_pinterest" width="14" height="15" viewBox="0 0 14 15"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <use href="#icon_pinterest" />
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer-column footer-menu mb-4 mb-lg-0">
-          <h6 class="sub-menu__title text-uppercase">Company</h6>
-          <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="{{ route('home.about') }}" class="menu-link menu-link_us-s">About Us</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a></li>
-            <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Blog</a></li>
-            <li class="sub-menu__item"><a href="{{ route('home.contact') }}" class="menu-link menu-link_us-s">Contact Us</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column footer-menu mb-4 mb-lg-0">
-          <h6 class="sub-menu__title text-uppercase">Shop</h6>
-          <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a></li>
-            <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a></li>
-            <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a></li>
-            <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a></li>
-            <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column footer-menu mb-4 mb-lg-0">
-          <h6 class="sub-menu__title text-uppercase">Help</h6>
-          <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer Service</a></li>
-            <li class="sub-menu__item"><a href="account_dashboard.html" class="menu-link menu-link_us-s">My Account</a>
-            </li>
-            <li class="sub-menu__item"><a href="store_location.html" class="menu-link menu-link_us-s">Find a Store</a>
-            </li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Legal & Privacy</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Gift Card</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column footer-menu mb-4 mb-lg-0">
-          <h6 class="sub-menu__title text-uppercase">Categories</h6>
-          <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shirts</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Jeans</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shoes</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shop All</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
+      <div class="footer-bottom">
       <div class="container d-md-flex align-items-center">
         <span class="footer-copyright me-auto">©{{ date('Y') }} Abacart_PH</span>
-        <div class="footer-settings d-md-flex align-items-center">
-          <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms-conditions.html">Terms &amp;
-            Conditions</a>
-        </div>
       </div>
     </div>
   </footer>
@@ -701,7 +659,7 @@
       </div>
 
       <div class="col-4">
-        <a href="" class="footer-mobile__link d-flex flex-column align-items-center">
+        <a href="{{ route('shop.index') }}" class="footer-mobile__link d-flex flex-column align-items-center">
           <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <use href="#icon_hanger" />
@@ -711,13 +669,19 @@
       </div>
 
       <div class="col-4">
-        <a href="" class="footer-mobile__link d-flex flex-column align-items-center">
+        <a href="{{ route('wishlist.index') }}" class="footer-mobile__link d-flex flex-column align-items-center">
           <div class="position-relative">
             <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <use href="#icon_heart" />
             </svg>
-            <span class="wishlist-amount d-block position-absolute js-wishlist-count">3</span>
+            <span class="wishlist-amount d-block position-absolute js-wishlist-count">
+                @auth
+                    {{ \App\Models\CartItem::where('User_ID', Auth::user()->User_ID)->where('instance', 'wishlist')->count() }}
+                @else
+                    0
+                @endauth
+            </span>
           </div>
           <span>Wishlist</span>
         </a>

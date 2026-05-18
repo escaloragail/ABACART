@@ -33,12 +33,33 @@ class AdminController extends Controller
 
         $recent_orders = \App\Models\Order::orderBy('created_at', 'DESC')->limit(10)->get();
 
+        // Real-time monthly chart data
+        $currentYear = date('Y');
+        $monthlyData = \App\Models\Order::selectRaw("MONTH(created_at) as month, order_status, SUM(total) as total_amount")
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('month', 'order_status')
+            ->get();
+
+        $monthlyTotals = array_fill(0, 12, 0);
+        $monthlyPending = array_fill(0, 12, 0);
+        $monthlyDelivered = array_fill(0, 12, 0);
+        $monthlyCanceled = array_fill(0, 12, 0);
+
+        foreach ($monthlyData as $data) {
+            $idx = $data->month - 1;
+            $monthlyTotals[$idx] += floatval($data->total_amount);
+            if ($data->order_status == 'ordered') $monthlyPending[$idx] = floatval($data->total_amount);
+            elseif ($data->order_status == 'delivered') $monthlyDelivered[$idx] = floatval($data->total_amount);
+            elseif ($data->order_status == 'canceled') $monthlyCanceled[$idx] = floatval($data->total_amount);
+        }
+
         return view('admin.index', compact(
             'total_orders', 'total_amount', 
             'pending_count', 'pending_amount',
             'delivered_count', 'delivered_amount',
             'canceled_count', 'canceled_amount',
-            'recent_orders'
+            'recent_orders',
+            'monthlyTotals', 'monthlyPending', 'monthlyDelivered', 'monthlyCanceled'
         ));
     }
 
@@ -55,6 +76,9 @@ class AdminController extends Controller
     }
     public function category_store(Request $request)
     {
+        $request->merge([
+            'slug' => Str::slug($request->slug)
+        ]);
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:categories,category_slug',
@@ -62,7 +86,7 @@ class AdminController extends Controller
         ]);
         $category = new Category();
         $category->category_name = $request->name;
-        $category->category_slug = Str::slug($request->name);
+        $category->category_slug = $request->slug;
         $image = $request->file('image');
         $file_extention = $request->file('image')->extension();
         $file_name = Carbon :: now()->timestamp.'.'.$file_extention;
@@ -94,6 +118,9 @@ class AdminController extends Controller
 
     public function category_update(Request $request, $id)
     {
+        $request->merge([
+            'slug' => Str::slug($request->slug)
+        ]);
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:categories,category_slug,' . $id . ',Category_ID',
@@ -102,7 +129,7 @@ class AdminController extends Controller
 
         $category = Category::find($id);
         $category->category_name = $request->name;
-        $category->category_slug = Str::slug($request->name);
+        $category->category_slug = $request->slug;
 
         if ($request->hasFile('image')) {
             if (File::exists(public_path('uploads/categories/' . $category->image))) {
@@ -130,10 +157,17 @@ class AdminController extends Controller
         return redirect()->route('admin.categories')->with('success', 'Category has been deleted successfully.');
     }
 
-    public function products()
+    public function products(Request $request)
     {
-        $products = Product::orderBy('Product_ID', 'desc')->paginate(10);
-        return view('admin.products', compact('products'));
+        $show = $request->query('show', 'active');
+        if ($show == 'inactive') {
+            $products = Product::where('is_active', 0)->orderBy('Product_ID', 'desc')->paginate(10);
+        } else {
+            $products = Product::where('is_active', 1)->orderBy('Product_ID', 'desc')->paginate(10);
+        }
+        $activeCount = Product::where('is_active', 1)->count();
+        $inactiveCount = Product::where('is_active', 0)->count();
+        return view('admin.products', compact('products', 'show', 'activeCount', 'inactiveCount'));
     }
 
     public function product_quantity_update(Request $request, $id)
@@ -156,6 +190,9 @@ class AdminController extends Controller
 
     public function product_store(Request $request)
     {
+        $request->merge([
+            'product_slug' => Str::slug($request->product_slug)
+        ]);
         $request->validate([
             'product_name' => 'required',
             'product_slug' => 'required|unique:products,product_slug',
@@ -163,7 +200,6 @@ class AdminController extends Controller
             'product_description' => 'required',
             'regular_price' => 'required',
             'SKU' => 'required',
-            'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
             'Category_ID' => 'required',
@@ -173,13 +209,12 @@ class AdminController extends Controller
 
         $product = new Product();
         $product->product_name = $request->product_name;
-        $product->product_slug = Str::slug($request->product_name);
+        $product->product_slug = $request->product_slug;
         $product->short_description = $request->short_description;
         $product->product_description = $request->product_description;
         $product->regular_price = $request->regular_price;
         $product->sale_price = $request->sale_price;
         $product->SKU = $request->SKU;
-        $product->stock_status = $request->stock_status;
         $product->featured = $request->featured;
         $product->quantity = $request->quantity;
         $product->Category_ID = $request->Category_ID;
@@ -244,6 +279,9 @@ class AdminController extends Controller
 
     public function product_update(Request $request, $id)
     {
+        $request->merge([
+            'product_slug' => Str::slug($request->product_slug)
+        ]);
         $request->validate([
             'product_name' => 'required',
             'product_slug' => 'required|unique:products,product_slug,' . $id . ',Product_ID',
@@ -251,7 +289,6 @@ class AdminController extends Controller
             'product_description' => 'required',
             'regular_price' => 'required',
             'SKU' => 'required',
-            'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
             'Category_ID' => 'required',
@@ -260,13 +297,12 @@ class AdminController extends Controller
 
         $product = Product::find($id);
         $product->product_name = $request->product_name;
-        $product->product_slug = Str::slug($request->product_name);
+        $product->product_slug = $request->product_slug;
         $product->short_description = $request->short_description;
         $product->product_description = $request->product_description;
         $product->regular_price = $request->regular_price;
         $product->sale_price = $request->sale_price;
         $product->SKU = $request->SKU;
-        $product->stock_status = $request->stock_status;
         $product->featured = $request->featured;
         $product->quantity = $request->quantity;
         $product->Category_ID = $request->Category_ID;
@@ -308,27 +344,17 @@ class AdminController extends Controller
     public function product_delete($id)
     {
         $product = Product::find($id);
-        if (File::exists(public_path('uploads/products/' . $product->main_product_image))) {
-            File::delete(public_path('uploads/products/' . $product->main_product_image));
-        }
-        if (File::exists(public_path('uploads/products/thumbnails/' . $product->main_product_image))) {
-            File::delete(public_path('uploads/products/thumbnails/' . $product->main_product_image));
-        }
+        $product->is_active = 0;
+        $product->save();
+        return redirect()->route('admin.products')->with('success', 'Product has been deactivated successfully');
+    }
 
-        if ($product->sub_product_images) {
-            $images = explode(',', $product->sub_product_images);
-            foreach ($images as $image) {
-                if (File::exists(public_path('uploads/products/' . $image))) {
-                    File::delete(public_path('uploads/products/' . $image));
-                }
-                if (File::exists(public_path('uploads/products/thumbnails/' . $image))) {
-                    File::delete(public_path('uploads/products/thumbnails/' . $image));
-                }
-            }
-        }
-
-        $product->delete();
-        return redirect()->route('admin.products')->with('success', 'Product has been deleted successfully');
+    public function product_reactivate($id)
+    {
+        $product = Product::find($id);
+        $product->is_active = 1;
+        $product->save();
+        return redirect()->route('admin.products', ['show' => 'inactive'])->with('success', 'Product has been reactivated successfully');
     }
 
     public function coupons()
@@ -423,13 +449,11 @@ class AdminController extends Controller
     {
         $order = \App\Models\Order::find($order_id);
         $orderItems = \App\Models\OrderItem::where('Order_ID', $order_id)->orderBy('Order_Item_ID')->paginate(12);
-        $transaction = \App\Models\Transaction::where('Order_ID', $order_id)->first();
         $address = \App\Models\Address::where('User_ID', $order->User_ID)->where('Address_ID', $order->Address_ID ?? 0)->first();
-        // Fallback for address if Address_ID wasn't specifically linked
         if(!$address) {
              $address = \App\Models\Address::where('User_ID', $order->User_ID)->orderBy('Address_ID', 'DESC')->first();
         }
-        return view('admin.order-details', compact('order', 'orderItems', 'transaction', 'address'));
+        return view('admin.order-details', compact('order', 'orderItems', 'address'));
     }
 
     public function update_order_status(Request $request)
@@ -466,11 +490,8 @@ class AdminController extends Controller
 
         if($request->order_status == 'delivered')
         {
-            $transaction = \App\Models\Transaction::where('Order_ID', $request->order_id)->first();
-            if($transaction) {
-                $transaction->status = 'approved';
-                $transaction->save();
-            }
+            $order->payment_status = 'approved';
+            $order->save();
         }
         return back()->with('success', 'Status has been updated successfully!');
     }
