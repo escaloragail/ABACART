@@ -36,11 +36,24 @@ class CartController extends Controller
             ->get();
 
         $subtotal = $items->sum('subtotal');
-        $taxRate = 12;
-        $tax = round($subtotal * $taxRate / 100, 2);
-        $total = round($subtotal + $tax, 2);
+        
+        // Dynamic discount recalculation
+        $this->calculateDiscount();
 
-        return view('cart', compact('items', 'subtotal', 'tax', 'total'));
+        $discount = 0;
+        $taxRate = 12;
+
+        if (Session::has('discounts')) {
+            $totals = Session::get('discounts');
+            $discount = floatval($totals['discount']);
+            $tax = floatval($totals['tax']);
+            $total = floatval($totals['total']);
+        } else {
+            $tax = round($subtotal * $taxRate / 100, 2);
+            $total = round($subtotal + $tax, 2);
+        }
+
+        return view('cart', compact('items', 'subtotal', 'discount', 'tax', 'total'));
     }
 
     public function add_to_cart(Request $request)
@@ -150,10 +163,22 @@ class CartController extends Controller
         if (Session::has('coupon')) {
             $cart_subtotal = $this->getCartSubtotal();
 
+            // Safety limit: if the cart is empty or falls below the coupon minimum value, auto-remove coupon
+            if ($cart_subtotal <= 0 || $cart_subtotal < Session::get('coupon')['cart_value']) {
+                Session::forget('coupon');
+                Session::forget('discounts');
+                return;
+            }
+
             if (Session::get('coupon')['type'] == 'fixed') {
                 $discount = Session::get('coupon')['value'];
             } else {
                 $discount = ($cart_subtotal * Session::get('coupon')['value']) / 100;
+            }
+
+            // Cap the discount so it never exceeds the subtotal
+            if ($discount > $cart_subtotal) {
+                $discount = $cart_subtotal;
             }
 
             $subtotalAfterDiscount = $cart_subtotal - $discount;

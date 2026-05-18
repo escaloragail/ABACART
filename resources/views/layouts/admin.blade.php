@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'ABACART') }}</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Abacart" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/animate.min.css') }}">
@@ -17,8 +17,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('font/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('icon/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
-    <link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/png">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 
@@ -38,8 +38,7 @@
                 <div class="section-menu-left">
                     <div class="box-logo">
                         <a href="{{ route('admin.index') }}" id="site-logo-inner">
-                            <img class="" id="logo_header1" alt="" src="{{ asset('images/logo/logo.png') }}"
-                                data-light="{{ asset('images/logo/logo-light.png') }}" data-dark="{{ asset('images/logo/logo.png') }}">
+                            <img class="" id="logo_header1" alt="Abacart Logo" src="{{ asset('images/logo/logo.png') }}" style="max-height: 42px; width: auto; mix-blend-mode: multiply;">
                         </a>
                         <div class="button-show-hide">
                             <i class="icon-menu-left"></i>
@@ -143,9 +142,7 @@
                         <div class="wrap">
                             <div class="header-left">
                                 <a href="{{ route('admin.index') }}">
-                                    <img class="" id="logo_header_mobile" alt="" src="{{ asset('images/logo/logo.png') }}"
-                                        data-light="{{ asset('images/logo/logo.png') }}" data-dark="{{ asset('images/logo/logo.png') }}"
-                                        data-width="154px" data-height="52px" data-retina="{{ asset('images/logo/logo.png') }}">
+                                    <img class="" id="logo_header_mobile" alt="Abacart Logo" src="{{ asset('images/logo/logo.png') }}" style="max-height: 35px; width: auto; mix-blend-mode: multiply;">
                                 </a>
                                 <div class="button-show-hide">
                                     <i class="icon-menu-left"></i>

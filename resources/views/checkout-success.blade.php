@@ -12,9 +12,9 @@
     
     .ac-white-content {
         background: #ffffff !important;
-        padding-top: 80px;
-        padding-bottom: 120px;
-        min-height: 80vh;
+        padding-top: 40px;
+        padding-bottom: 60px;
+        min-height: 50vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -24,7 +24,7 @@
         text-align: center;
         max-width: 600px;
         margin: 0 auto;
-        padding: 50px;
+        padding: 30px 40px;
         background: #fff;
         border-radius: 20px;
         border: 1px solid #e2e8f0;

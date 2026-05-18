@@ -9,23 +9,84 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
 .shop-main { max-width: 1400px; margin: 0 auto; gap: 60px; }
 
 /* ── SIDEBAR CATEGORIES ── */
-.shop-sidebar { background: transparent !important; width: 220px; border: none; }
-.ac-sidebar-all {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 14px; font-weight: 700; letter-spacing: 0.12em;
-    color: #444; text-decoration: none; text-transform: uppercase; margin-bottom: 30px;
+.shop-sidebar { 
+    background: transparent !important; 
+    width: 240px; 
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    align-self: start;
 }
-.ac-sidebar-all .ac-line { width: 20px; height: 1.5px; background: #333; }
 
-.ac-sidebar-menu { list-style: none; padding: 0; margin: 0; }
-.ac-sidebar-menu li { margin-bottom: 18px; }
-.ac-sidebar-menu a {
-    font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
-    color: #999; text-decoration: none; text-transform: uppercase;
-    transition: all 0.2s ease;
-    display: inline-block;
+.ac-sidebar-all {
+    display: flex; 
+    align-items: center; 
+    gap: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; 
+    font-weight: 600; 
+    letter-spacing: 0.05em;
+    color: #2c2420; 
+    text-decoration: none; 
+    margin-bottom: 16px;
+    padding-bottom: 0;
+    border: none;
+    transition: all 0.3s ease;
 }
-.ac-sidebar-menu a:hover, .ac-sidebar-menu a.active-cat { color: #333; }
+.ac-sidebar-all:hover {
+    color: #634d3a;
+}
+.ac-sidebar-all .ac-line { 
+    display: none !important;
+}
+
+.ac-sidebar-menu { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+.ac-sidebar-menu li { 
+    margin-bottom: 2px; 
+}
+.ac-sidebar-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px; 
+    font-weight: 600; 
+    letter-spacing: 0.08em;
+    color: #7a6e67; 
+    text-decoration: none; 
+    text-transform: uppercase;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.ac-sidebar-menu a .chevron-icon {
+    font-size: 10px;
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+}
+.ac-sidebar-menu a:hover { 
+    color: #634d3a; 
+    transform: translateX(4px);
+}
+.ac-sidebar-menu a:hover .chevron-icon {
+    opacity: 1;
+    transform: translateX(0);
+}
+.ac-sidebar-menu a.active-cat { 
+    color: #634d3a !important; 
+    font-weight: 700;
+    border: none;
+}
+.ac-sidebar-menu a.active-cat .chevron-icon {
+    opacity: 1;
+    color: #634d3a;
+    transform: translateX(0);
+}
 
 /* ── PRODUCT GRID ── */
 #products-grid {
@@ -109,7 +170,8 @@ body { background: #FCF9F6 !important; font-family: 'Inter', sans-serif; color: 
                 <li>
                     <a href="{{ route('shop.index', ['categories' => $category->Category_ID]) }}" 
                        class="{{ request('categories') == $category->Category_ID ? 'active-cat' : '' }}">
-                        {{ $category->category_name }}
+                        <span>{{ $category->category_name }}</span>
+                        <i class="fa fa-chevron-right chevron-icon"></i>
                     </a>
                 </li>
                 @endforeach

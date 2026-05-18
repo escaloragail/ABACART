@@ -163,9 +163,55 @@
                         <span style="color: #888; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em;">Subtotal</span>
                         <span style="color: #111; font-weight: 500;">₱{{ number_format($subtotal, 2) }}</span>
                     </div>
+
+                    @if(Session::has('coupon'))
+                    <div class="ac-summary-row" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px;">
+                        <span style="color: #d9534f; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em;">Discount ({{ Session::get('coupon')['code'] }})</span>
+                        <span style="color: #d9534f; font-weight: 500;">-₱{{ number_format($discount, 2) }}</span>
+                    </div>
+                    @endif
+
                     <div class="ac-summary-row" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px;">
                         <span style="color: #888; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em;">Tax</span>
                         <span style="color: #111; font-weight: 500;">₱{{ number_format($tax, 2) }}</span>
+                    </div>
+
+                    <!-- Coupon Box -->
+                    <div class="coupon-section" style="margin-top: 25px; margin-bottom: 25px;">
+                        @if(Session::has('coupon_success'))
+                            <div style="font-size: 11px; color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                {{ Session::get('coupon_success') }}
+                            </div>
+                        @elseif(Session::has('success'))
+                            <div style="font-size: 11px; color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
+                        @if(Session::has('error'))
+                            <div style="font-size: 11px; color: #c62828; background: #ffebee; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                {{ Session::get('error') }}
+                            </div>
+                        @endif
+
+                        @if(!Session::has('coupon'))
+                            <form action="{{ route('cart.coupon.apply') }}" method="POST" style="display: flex; gap: 8px; margin: 0;">
+                                @csrf
+                                <input type="text" name="coupon_code" placeholder="Enter coupon code" required style="flex: 1; border: 1px solid #dfd8d1; border-radius: 50px; padding: 12px 18px; font-size: 12px; outline: none; background: #fcfbfa; font-family: 'Inter', sans-serif;">
+                                <button type="submit" style="background: #111; color: #fff; border: none; border-radius: 50px; padding: 0 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#111'">Apply</button>
+                            </form>
+                        @else
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: #FAF7F2; border: 1.5px dashed #dfd8d1; border-radius: 12px; padding: 12px 18px;">
+                                <div>
+                                    <div style="font-size: 10px; font-weight: 800; color: #8c7e73; letter-spacing: 0.05em;">COUPON APPLIED</div>
+                                    <div style="font-size: 13px; font-weight: 700; color: #634d3a;">{{ Session::get('coupon')['code'] }}</div>
+                                </div>
+                                <form action="{{ route('cart.coupon.remove') }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background: none; border: none; color: #d9534f; font-size: 18px; font-weight: 700; cursor: pointer;">&times;</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
 
                     <hr style="margin: 25px 0; border-color: #eee;">

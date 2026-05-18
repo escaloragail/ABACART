@@ -105,9 +105,16 @@ class CheckoutController extends Controller
 
         // 2. Calculations (Prevents "Variable not found" errors)
         $subtotal = $cartItems->sum('subtotal');
-        $tax = round($subtotal * 0.12, 2); 
-        $discount = Session::get('discounts')['discount'] ?? 0;
-        $total = ($subtotal + $tax) - $discount;
+        if (Session::has('discounts')) {
+            $totals = Session::get('discounts');
+            $discount = floatval($totals['discount']);
+            $tax = floatval($totals['tax']);
+            $total = floatval($totals['total']);
+        } else {
+            $discount = 0;
+            $tax = round($subtotal * 0.12, 2); 
+            $total = round($subtotal + $tax, 2);
+        }
         $addressId = $request->address_id;
 
         if ($addressId === 'new') {
@@ -125,9 +132,18 @@ class CheckoutController extends Controller
         }
 
         // 3. Save the Main Order
+        $couponId = null;
+        if (Session::has('coupon')) {
+            $coupon = Coupon::where('code', Session::get('coupon')['code'])->first();
+            if ($coupon) {
+                $couponId = $coupon->Coupon_ID;
+            }
+        }
+
         $order = new Order();
         $order->User_ID = $userId;
         $order->Address_ID = $addressId;
+        $order->Coupon_ID = $couponId;
         $order->subtotal = $subtotal;
         $order->tax = $tax;
         $order->discount = $discount;

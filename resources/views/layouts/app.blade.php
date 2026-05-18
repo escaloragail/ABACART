@@ -7,10 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'ABACART') }}</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Abacart" />
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
     <link
     href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
@@ -255,6 +255,7 @@
 
     .logo__image {
       max-width: 180px;
+      mix-blend-mode: multiply !important;
     }
 
 
@@ -295,7 +296,7 @@
 
     /* Search popup */
     .search-popup {
-      background: #FAF7F2 !important;
+      background: #ffffff !important;
     }
 
 
@@ -340,26 +341,27 @@
 
       <div class="logo">
         <a href="{{ route('home.index') }}">
-          <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo" class="logo__image d-block" />
+          <img src="{{ asset('assets/images/logo.png') }}" alt="Abacart Logo" class="logo__image d-block" style="max-height: 40px; width: auto;" />
         </a>
       </div>
 
       @auth
         @if(Auth::user()->utype != 'ADM')
-            <a href="{{ route('user.orders') }}" class="header-tools__item position-relative me-3">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <use href="#icon_bell" />
-                </svg>
-                @php
-                    $user_notifications_count = \App\Models\Order::where('user_id', Auth::user()->id)
-                        ->whereIn('order_status', ['delivered', 'canceled'])
-                        ->where('updated_at', '>=', now()->subDays(7))
-                        ->count();
-                @endphp
-                @if($user_notifications_count > 0)
-                    <span class="cart-amount d-block position-absolute" style="background: #ff3f3f; width: 16px; height: 16px; min-width: 16px; line-height: 16px; font-size: 10px; top: -5px; right: -5px;">{{ $user_notifications_count }}</span>
-                @endif
-            </a>
+            <div class="header-tools__item hover-container position-relative me-3 notification-bell-container">
+                <a href="{{ route('user.orders') }}" class="header-tools__item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_bell" />
+                    </svg>
+                    @php
+                        $user_notifications_count = \App\Models\Order::where('User_ID', Auth::user()->User_ID)
+                            ->where('updated_at', '>=', now()->subDays(7))
+                            ->count();
+                    @endphp
+                    @if($user_notifications_count > 0)
+                        <span class="cart-amount d-block position-absolute notification-badge" style="background: #ff3f3f; width: 16px; height: 16px; min-width: 16px; line-height: 16px; font-size: 10px; top: -5px; right: -5px;">{{ $user_notifications_count }}</span>
+                    @endif
+                </a>
+            </div>
         @endif
       @endauth
 
@@ -479,7 +481,7 @@
       <div class="header-desk header-desk_type_1">
         <div class="logo">
           <a href="{{ route('home.index') }}">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo" class="logo__image d-block" />
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Abacart Logo" class="logo__image d-block" style="max-height: 48px; width: auto;" />
           </a>
         </div>
 
@@ -566,20 +568,18 @@
             @if(Auth::user()->utype != 'ADM')
                 @php
                     $user_notifications_count = \App\Models\Order::where('User_ID', Auth::user()->User_ID)
-                        ->whereIn('order_status', ['delivered', 'canceled'])
                         ->where('updated_at', '>=', now()->subDays(7))
                         ->count();
                     $user_notifications = \App\Models\Order::where('User_ID', Auth::user()->User_ID)
-                        ->whereIn('order_status', ['delivered', 'canceled'])
                         ->orderBy('updated_at', 'desc')
                         ->take(5)
                         ->get();
                 @endphp
-                <div class="header-tools__item hover-container position-relative">
+                <div class="header-tools__item hover-container position-relative notification-bell-container">
                     <a href="{{ route('user.orders') }}" class="header-tools__item px-2">
                         <i class="fa fa-bell" style="font-size: 20px;"></i>
                         @if($user_notifications_count > 0)
-                            <span class="cart-amount d-block position-absolute" style="background: #ff3f3f; width: 16px; height: 16px; min-width: 16px; line-height: 16px; font-size: 10px; top: -5px; right: 2px; color: white; border-radius: 50%; text-align: center;">{{ $user_notifications_count }}</span>
+                            <span class="cart-amount d-block position-absolute notification-badge" style="background: #ff3f3f; width: 16px; height: 16px; min-width: 16px; line-height: 16px; font-size: 10px; top: -5px; right: 2px; color: white; border-radius: 50%; text-align: center;">{{ $user_notifications_count }}</span>
                         @endif
                     </a>
                     <div class="hover__content bg-white p-3 border shadow-sm position-absolute" style="width: 300px; right: 0; top: 100%; z-index: 1050; display: none;">
@@ -587,7 +587,11 @@
                         @forelse($user_notifications as $notif)
                             <div class="mb-3 pb-2 border-bottom">
                                 <a href="{{ route('user.order.details', ['order_id' => $notif->Order_ID]) }}" class="text-decoration-none text-dark d-block">
-                                    <div class="text-tiny fw-bold">Order #{{ $notif->Order_ID }} is <span class="text-{{ $notif->order_status == 'delivered' ? 'success' : 'danger' }}">{{ ucfirst($notif->order_status) }}</span></div>
+                                    <div class="text-tiny fw-bold">Order #{{ $notif->Order_ID }} is 
+                                        <span class="text-{{ $notif->order_status == 'delivered' ? 'success' : ($notif->order_status == 'canceled' ? 'danger' : 'info') }}">
+                                            {{ ucfirst($notif->order_status) }}
+                                        </span>
+                                    </div>
                                     <div class="text-tiny text-secondary">{{ $notif->updated_at->diffForHumans() }}</div>
                                 </a>
                             </div>
@@ -702,5 +706,36 @@
 
   <!-- AI Chatbot Widget -->
   @include('components.chatbot')
+
+  @auth
+    <script>
+      @php
+        $max_updated = \App\Models\Order::where('User_ID', Auth::user()->User_ID)->max('updated_at');
+        $latest_timestamp = $max_updated ? strtotime($max_updated) : 0;
+      @endphp
+      window.latestNotificationTime = {{ $latest_timestamp }};
+      
+      document.addEventListener('DOMContentLoaded', function() {
+          const badges = document.querySelectorAll('.notification-badge');
+          const bellContainers = document.querySelectorAll('.notification-bell-container');
+
+          const lastSeenTime = localStorage.getItem('last_seen_notification_time');
+          
+          if (lastSeenTime && parseInt(lastSeenTime) >= window.latestNotificationTime) {
+              badges.forEach(badge => badge.classList.add('d-none'));
+          }
+
+          const clearNotifications = () => {
+              badges.forEach(badge => badge.classList.add('d-none'));
+              localStorage.setItem('last_seen_notification_time', window.latestNotificationTime.toString());
+          };
+
+          bellContainers.forEach(container => {
+              container.addEventListener('mouseenter', clearNotifications);
+              container.addEventListener('click', clearNotifications);
+          });
+      });
+    </script>
+  @endauth
 </body>
 </html>

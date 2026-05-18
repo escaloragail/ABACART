@@ -180,7 +180,7 @@
             </div>
         </div>
 
-        <form action="{{ route('cart.place_order') }}" method="POST">
+        <form id="placeOrderForm" action="{{ route('cart.place_order') }}" method="POST">
             @csrf
             <input type="hidden" name="address_id" value="{{ request('address_id') }}">
             <input type="hidden" name="payment_mode" value="{{ $paymentMode }}">
@@ -193,6 +193,7 @@
                 <input type="hidden" name="City" value="{{ $selectedAddress->City }}">
                 <input type="hidden" name="Province" value="{{ $selectedAddress->Province }}">
             @endif
+        </form>
 
             <div class="row gx-5">
                 <div class="col-lg-8">
@@ -239,16 +240,63 @@
                             <span class="ac-summary-label">SUBTOTAL</span>
                             <span class="ac-summary-value">₱{{ number_format($subtotal, 2) }}</span>
                         </div>
+
+                        @if(Session::has('coupon'))
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="ac-summary-label text-danger">DISCOUNT ({{ Session::get('coupon')['code'] }})</span>
+                            <span class="ac-summary-value text-danger">-₱{{ number_format($discount, 2) }}</span>
+                        </div>
+                        @endif
+
                         <div class="d-flex justify-content-between mb-4">
                             <span class="ac-summary-label">TAX (12%)</span>
                             <span class="ac-summary-value">₱{{ number_format($tax, 2) }}</span>
                         </div>
+
+                        <!-- Coupon Box -->
+                        <div class="coupon-section" style="margin-top: 25px; margin-bottom: 25px;">
+                            @if(Session::has('coupon_success'))
+                                <div style="font-size: 11px; color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                    {{ Session::get('coupon_success') }}
+                                </div>
+                            @elseif(Session::has('success'))
+                                <div style="font-size: 11px; color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                    {{ Session::get('success') }}
+                                </div>
+                            @endif
+                            @if(Session::has('error'))
+                                <div style="font-size: 11px; color: #c62828; background: #ffebee; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-weight: 500;">
+                                    {{ Session::get('error') }}
+                                </div>
+                            @endif
+
+                            @if(!Session::has('coupon'))
+                                <form action="{{ route('cart.coupon.apply') }}" method="POST" style="display: flex; gap: 8px; margin: 0;">
+                                    @csrf
+                                    <input type="text" name="coupon_code" placeholder="Enter coupon code" required style="flex: 1; border: 1px solid #dfd8d1; border-radius: 50px; padding: 12px 18px; font-size: 12px; outline: none; background: #fcfbfa; font-family: 'Inter', sans-serif;">
+                                    <button type="submit" style="background: #111; color: #fff; border: none; border-radius: 50px; padding: 0 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#111'">Apply</button>
+                                </form>
+                            @else
+                                <div style="display: flex; align-items: center; justify-content: space-between; background: #FAF7F2; border: 1.5px dashed #dfd8d1; border-radius: 12px; padding: 12px 18px;">
+                                    <div>
+                                        <div style="font-size: 10px; font-weight: 800; color: #8c7e73; letter-spacing: 0.05em;">COUPON APPLIED</div>
+                                        <div style="font-size: 13px; font-weight: 700; color: #634d3a;">{{ Session::get('coupon')['code'] }}</div>
+                                    </div>
+                                    <form action="{{ route('cart.coupon.remove') }}" method="POST" style="margin: 0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="background: none; border: none; color: #d9534f; font-size: 18px; font-weight: 700; cursor: pointer;">&times;</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+
                         <hr style="border-color: #e2e8f0; margin-bottom: 25px;">
                         <div class="d-flex justify-content-between align-items-center mb-5">
                             <span class="fw-bold" style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #111;">TOTAL DUE</span>
                             <span style="font-size: 24px; font-weight: 800; color: #111;">₱{{ number_format($total, 2) }}</span>
                         </div>
-                        <button type="submit" class="ac-btn-black">Place Order Now</button>
+                        <button type="submit" form="placeOrderForm" class="ac-btn-black">Place Order Now</button>
 
                         <p class="text-center mt-4 mb-0" style="font-size: 10px; color: #a0aec0; line-height: 1.5; font-weight: 500;">
                             By clicking "Place Order Now", you agree to our <br><strong>Terms of Service</strong> and <strong>Refund Policy</strong>.
@@ -256,7 +304,6 @@
                     </div>
                 </div> 
             </div> 
-        </form>
     </div> 
 </div> 
 

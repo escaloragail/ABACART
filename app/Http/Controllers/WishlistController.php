@@ -34,9 +34,11 @@ class WishlistController extends Controller
                 'quantity' => 1,
                 'instance' => 'wishlist',
             ]);
+            return response()->json(['status' => 200, 'added' => true, 'message' => 'Success! Item successfully added to your wishlist.']);
+        } else {
+            $existing->delete();
+            return response()->json(['status' => 200, 'added' => false, 'message' => 'Item removed from wishlist.']);
         }
-
-        return response()->json(['status' => 200, 'message' => 'Success! Item successfully added to your wishlist.']);
     }
 
     public function remove_item($id)
