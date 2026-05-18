@@ -18,6 +18,9 @@ class CartController extends Controller
     {
         $items = CartItem::where('User_ID', Auth::user()->User_ID)
             ->where('instance', 'cart')
+            ->whereHas('product', function($query) {
+                $query->where('is_active', 1);
+            })
             ->with('product')
             ->get();
 
@@ -32,6 +35,9 @@ class CartController extends Controller
     {
         $items = CartItem::where('User_ID', Auth::user()->User_ID)
             ->where('instance', 'cart')
+            ->whereHas('product', function($query) {
+                $query->where('is_active', 1);
+            })
             ->with('product')
             ->get();
 

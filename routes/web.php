@@ -62,6 +62,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/dashboard/addresses', [UserController::class, 'addresses'])->name('user.addresses');
     Route::get('/dashboard/address/add', [UserController::class, 'address_add'])->name('user.address.add');
     Route::post('/dashboard/address/store', [UserController::class, 'address_store'])->name('user.address.store');
+    Route::get('/dashboard/address/edit/{id}', [UserController::class, 'address_edit'])->name('user.address.edit');
+    Route::put('/dashboard/address/update/{id}', [UserController::class, 'address_update'])->name('user.address.update');
     Route::delete('/dashboard/address/delete/{id}', [UserController::class, 'address_delete'])->name('user.address.delete');
 });
 
