@@ -88,8 +88,8 @@ class TestLoginFunctionality(unittest.TestCase):
         current_url = self.driver.current_url
 
         self.assertNotIn("/login", current_url,
-                         "FAIL: User was not redirected after valid login.")
-        print("✅ TC-01 PASSED — Successful login with valid credentials.")
+                         "User was not redirected after valid login.")
+        print("Successful login with valid credentials.")
 
     # ──────────────────────────────────────────────
     # TC-02: Failed login with invalid password
@@ -114,7 +114,7 @@ class TestLoginFunctionality(unittest.TestCase):
 
         # Should remain on /login and show an error
         self.assertIn("/login", self.driver.current_url,
-                      "FAIL: User was redirected despite invalid password.")
+                      "User was redirected despite invalid password.")
 
         # Check for validation error message
         page_source = self.driver.page_source.lower()
@@ -123,8 +123,8 @@ class TestLoginFunctionality(unittest.TestCase):
                      "do not match" in page_source or
                      "invalid-feedback" in page_source)
         self.assertTrue(has_error,
-                        "FAIL: No error message shown for invalid credentials.")
-        print("✅ TC-02 PASSED — Invalid password correctly rejected.")
+                        "No error message shown for invalid credentials.")
+        print("Invalid password correctly rejected.")
 
     # ──────────────────────────────────────────────
     # TC-03: Empty fields validation
@@ -147,14 +147,14 @@ class TestLoginFunctionality(unittest.TestCase):
 
         # HTML5 'required' attribute should prevent submission — URL stays at /login
         self.assertIn("/login", self.driver.current_url,
-                      "FAIL: Empty form submission was not prevented.")
+                      "Empty form submission was not prevented.")
 
         # Verify 'required' attribute exists on both fields
         email_required = email_field.get_attribute("required")
         password_required = password_field.get_attribute("required")
-        self.assertIsNotNone(email_required, "FAIL: Email field missing 'required' attribute.")
-        self.assertIsNotNone(password_required, "FAIL: Password field missing 'required' attribute.")
-        print("✅ TC-03 PASSED — Empty field validation works correctly.")
+        self.assertIsNotNone(email_required, "Email field missing 'required' attribute.")
+        self.assertIsNotNone(password_required, "Password field missing 'required' attribute.")
+        print("Empty field validation works correctly.")
 
     # ──────────────────────────────────────────────
     # TC-04: Redirect behavior (customer vs admin)
@@ -180,8 +180,8 @@ class TestLoginFunctionality(unittest.TestCase):
         # Regular customer → homepage (/)
         current_url = self.driver.current_url
         self.assertNotIn("/admin", current_url,
-                         "FAIL: Regular user was redirected to admin page.")
-        print("✅ TC-04 PASSED — Customer correctly redirected to homepage.")
+                         "Regular user was redirected to admin page.")
+        print("Customer correctly redirected to homepage.")
 
     # ──────────────────────────────────────────────
     # TC-05: SQL Injection attempt
@@ -211,12 +211,12 @@ class TestLoginFunctionality(unittest.TestCase):
         no_admin_access = "/admin" not in self.driver.current_url
 
         self.assertTrue(is_still_login or no_admin_access,
-                        "FAIL: SQL injection may have bypassed authentication!")
+                        "SQL injection may have bypassed authentication!")
 
         # Check no PHP/SQL error is exposed
-        self.assertNotIn("sql", page_source, "FAIL: SQL error exposed in page source.")
-        self.assertNotIn("syntax error", page_source, "FAIL: Syntax error exposed.")
-        print("✅ TC-05 PASSED — SQL injection attempt correctly rejected.")
+        self.assertNotIn("sql", page_source, "SQL error exposed in page source.")
+        self.assertNotIn("syntax error", page_source, "Syntax error exposed.")
+        print("SQL injection attempt correctly rejected.")
 
 
 if __name__ == "__main__":

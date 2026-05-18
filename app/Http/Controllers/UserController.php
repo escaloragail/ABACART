@@ -66,14 +66,16 @@ class UserController extends Controller
     public function account_update(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'         => 'required|string|max:255',
             'phone_number' => 'required|string|max:15',
-            'password' => 'nullable|string|min:8|confirmed'
+            'email'        => 'required|email|unique:users,email,' . Auth::user()->User_ID . ',User_ID',
+            'password'     => 'nullable|string|min:8|confirmed'
         ]);
 
         $user = \App\Models\User::find(Auth::user()->User_ID);
-        $user->name = $request->name;
+        $user->name         = $request->name;
         $user->phone_number = $request->phone_number;
+        $user->email        = $request->email;
 
         if ($request->hasFile('image')) {
             if ($user->image && \Illuminate\Support\Facades\File::exists(public_path('uploads/profiles/' . $user->image))) {
@@ -124,6 +126,39 @@ class UserController extends Controller
         $address->save();
 
         return redirect()->route('user.addresses')->with('success', 'Address added successfully!');
+    }
+
+    public function address_edit($id)
+    {
+        $address = Address::where('Address_ID', $id)
+            ->where('User_ID', Auth::user()->User_ID)
+            ->firstOrFail();
+
+        return view('user.address-edit', compact('address'));
+    }
+
+    public function address_update(Request $request, $id)
+    {
+        $request->validate([
+            'Zone_Street_HouseNumber' => 'required',
+            'Barangay'               => 'required',
+            'City'                   => 'required',
+            'Province'               => 'required',
+            'address_type'           => 'required',
+        ]);
+
+        $address = Address::where('Address_ID', $id)
+            ->where('User_ID', Auth::user()->User_ID)
+            ->firstOrFail();
+
+        $address->Zone_Street_HouseNumber = $request->Zone_Street_HouseNumber;
+        $address->Barangay                = $request->Barangay;
+        $address->City                    = $request->City;
+        $address->Province                = $request->Province;
+        $address->address_type            = $request->address_type;
+        $address->save();
+
+        return redirect()->route('user.addresses')->with('success', 'Address updated successfully!');
     }
 
     public function address_delete($id)

@@ -204,10 +204,10 @@
     }
 
     /* ── Action Pill Buttons ── */
-    .btn-delete-address {
+    .btn-edit-address {
         background: #fff;
-        color: #e53e3e;
-        border: 1px solid #fed7d7;
+        color: #111;
+        border: 1px solid #e2e8f0;
         padding: 8px 18px;
         border-radius: 50px;
         font-family: 'Inter', sans-serif;
@@ -216,15 +216,14 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         transition: all 0.2s ease;
-        cursor: pointer;
-        outline: none;
+        text-decoration: none;
         display: inline-block;
     }
 
-    .btn-delete-address:hover {
-        background: #fff5f5;
-        border-color: #e53e3e;
-        color: #e53e3e;
+    .btn-edit-address:hover {
+        background: #f8fafc;
+        border-color: #111;
+        color: #111;
     }
 
     .empty-text {
@@ -278,13 +277,9 @@
                                 <div class="address-card-header d-flex justify-content-between align-items-center">
                                     <h5 class="address-type-label">{{ $address->address_type }}</h5>
                                     
-                                    <form action="{{ route('user.address.delete', ['id' => $address->Address_ID]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this address?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-delete-address" title="Delete Address">
-                                            Delete
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('user.address.edit', ['id' => $address->Address_ID]) }}" class="btn-edit-address">
+                                        Edit
+                                    </a>
                                 </div>
                                 
                                 <div class="address-details-list">

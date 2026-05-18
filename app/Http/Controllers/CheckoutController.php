@@ -19,6 +19,9 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItem::where('User_ID', Auth::user()->User_ID)
             ->where('instance', 'cart')
+            ->whereHas('product', function($query) {
+                $query->where('is_active', 1);
+            })
             ->with('product')
             ->get();
 
@@ -37,6 +40,9 @@ class CheckoutController extends Controller
             $userId = Auth::user()->User_ID;
             $cartItems = CartItem::where('User_ID', $userId)
                 ->where('instance', 'cart')
+                ->whereHas('product', function($query) {
+                    $query->where('is_active', 1);
+                })
                 ->with('product')
                 ->get();
 
@@ -97,7 +103,12 @@ class CheckoutController extends Controller
     {
         // 1. Setup Data
         $userId = Auth::user()->User_ID; 
-        $cartItems = CartItem::where('User_ID', $userId)->where('instance', 'cart')->get();
+        $cartItems = CartItem::where('User_ID', $userId)
+            ->where('instance', 'cart')
+            ->whereHas('product', function($query) {
+                $query->where('is_active', 1);
+            })
+            ->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
