@@ -238,7 +238,7 @@
                 <div class="modern-filter-tabs">
                     <a href="{{ route('admin.sales', array_merge(request()->only(['date_from', 'date_to']), ['status' => 'delivered'])) }}" class="modern-tab {{ $status_filter == 'delivered' ? 'active' : '' }}">Completed <span class="count-badge">{{ $counts['delivered'] }}</span></a>
                     <a href="{{ route('admin.sales', array_merge(request()->only(['date_from', 'date_to']), ['status' => 'ordered'])) }}" class="modern-tab {{ $status_filter == 'ordered' ? 'active' : '' }}">Pending <span class="count-badge">{{ $counts['ordered'] }}</span></a>
-                    <a href="{{ route('admin.sales', array_merge(request()->only(['date_from', 'date_to']), ['status' => 'canceled'])) }}" class="modern-tab {{ $status_filter == 'canceled' ? 'active' : '' }}">Canceled <span class="count-badge">{{ $counts['canceled'] }}</span></a>
+
                     <a href="{{ route('admin.sales', array_merge(request()->only(['date_from', 'date_to']), ['status' => 'all'])) }}" class="modern-tab {{ $status_filter == 'all' ? 'active' : '' }}">All <span class="count-badge">{{ $counts['all'] }}</span></a>
                 </div>
             </div>
@@ -256,7 +256,7 @@
                                 <th>Discount</th>
                                 <th>Total</th>
                                 <th>Status</th>
-                                <th>Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -285,15 +285,11 @@
                                     @else <span class="modern-badge bg-danger-soft">Canceled</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ route('admin.order.details', ['order_id' => $sale->Order_ID]) }}" class="btn-action-pill">
-                                        VIEW
-                                    </a>
-                                </td>
+
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="10" style="text-align:center; padding:40px 20px; color:#94a3b8; font-size:14px;">
+                                <td colspan="9" style="text-align:center; padding:40px 20px; color:#94a3b8; font-size:14px;">
                                     No sales records found for the selected filters.
                                 </td>
                             </tr>
