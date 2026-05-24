@@ -19,6 +19,7 @@ class CheckoutController extends Controller
     {
         $cartItems = CartItem::where('User_ID', Auth::user()->User_ID)
             ->where('instance', 'cart')
+            ->where('is_selected', true)
             ->whereHas('product', function($query) {
                 $query->where('is_active', 1);
             })
@@ -40,6 +41,7 @@ class CheckoutController extends Controller
             $userId = Auth::user()->User_ID;
             $cartItems = CartItem::where('User_ID', $userId)
                 ->where('instance', 'cart')
+                ->where('is_selected', true)
                 ->whereHas('product', function($query) {
                     $query->where('is_active', 1);
                 })
@@ -105,6 +107,7 @@ class CheckoutController extends Controller
         $userId = Auth::user()->User_ID; 
         $cartItems = CartItem::where('User_ID', $userId)
             ->where('instance', 'cart')
+            ->where('is_selected', true)
             ->whereHas('product', function($query) {
                 $query->where('is_active', 1);
             })

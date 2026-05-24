@@ -1,19 +1,3 @@
-"""
-=============================================================================
-  TEST SCRIPT #2 — Registration Functionality
-  Abacart PH Automated Testing
-  Tool: Python + Selenium WebDriver
-  Author: Member 2
-=============================================================================
-  Covers:
-    TC-06: Successful registration with valid data
-    TC-07: Registration with duplicate email
-    TC-08: Registration with invalid mobile number format
-    TC-09: Password confirmation mismatch
-    TC-10: Registration with password less than 8 characters
-=============================================================================
-"""
-
 import time
 import random
 import string
@@ -24,18 +8,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
-# ── Configuration ──
 BASE_URL = "http://localhost:8000"
-EXISTING_EMAIL = "user@gmail.com"  # An email already in the database
+EXISTING_EMAIL = "user@gmail.com"
 
 
 def random_string(length=8):
-    """Generate a random string for unique test data."""
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
 
 
 class TestRegistrationFunctionality(unittest.TestCase):
-    """Automated test suite for Abacart PH Registration Page."""
 
     @classmethod
     def setUpClass(cls):
@@ -51,12 +32,10 @@ class TestRegistrationFunctionality(unittest.TestCase):
         cls.driver.quit()
 
     def _go_to_register(self):
-        """Helper: navigate to the registration page."""
         self.driver.get(f"{BASE_URL}/register")
         self.wait.until(EC.presence_of_element_located((By.NAME, "name")))
 
     def _logout_if_needed(self):
-        """Helper: log out if currently authenticated."""
         try:
             self.driver.get(BASE_URL)
             logout_form = self.driver.find_elements(By.CSS_SELECTOR, "form[action*='logout']")
@@ -67,7 +46,6 @@ class TestRegistrationFunctionality(unittest.TestCase):
             pass
 
     def _fill_registration_form(self, name, email, mobile, password, password_confirm):
-        """Helper: fill all registration fields."""
         fields = {
             "name": name,
             "email": email,
@@ -80,11 +58,7 @@ class TestRegistrationFunctionality(unittest.TestCase):
             element.clear()
             element.send_keys(value)
 
-    # ──────────────────────────────────────────────
-    # TC-06: Successful registration
-    # ──────────────────────────────────────────────
     def test_06_successful_registration(self):
-        """Verify that a user can register with all valid fields."""
         self._logout_if_needed()
         self._go_to_register()
 
@@ -101,16 +75,11 @@ class TestRegistrationFunctionality(unittest.TestCase):
         submit_btn.click()
         time.sleep(3)
 
-        # Successful registration should redirect away from /register
         self.assertNotIn("/register", self.driver.current_url,
                          "FAIL: User was not redirected after successful registration.")
-        print("✅ TC-06 PASSED — Successful registration with valid data.")
+        print("[PASS] TC-06 PASSED — Successful registration with valid data.")
 
-    # ──────────────────────────────────────────────
-    # TC-07: Duplicate email
-    # ──────────────────────────────────────────────
     def test_07_duplicate_email(self):
-        """Verify that registration fails when using an already-taken email."""
         self._logout_if_needed()
         self._go_to_register()
 
@@ -126,7 +95,6 @@ class TestRegistrationFunctionality(unittest.TestCase):
         submit_btn.click()
         time.sleep(2)
 
-        # Should stay on /register
         self.assertIn("/register", self.driver.current_url,
                       "FAIL: Duplicate email was accepted.")
 
@@ -138,11 +106,7 @@ class TestRegistrationFunctionality(unittest.TestCase):
                         "FAIL: No error message for duplicate email.")
         print("✅ TC-07 PASSED — Duplicate email correctly rejected.")
 
-    # ──────────────────────────────────────────────
-    # TC-08: Invalid mobile number format
-    # ──────────────────────────────────────────────
     def test_08_invalid_mobile_format(self):
-        """Verify that an invalid Philippine mobile number format is rejected."""
         self._logout_if_needed()
         self._go_to_register()
 
@@ -150,7 +114,7 @@ class TestRegistrationFunctionality(unittest.TestCase):
         self._fill_registration_form(
             name=f"Bad Mobile {unique}",
             email=f"badmobile_{unique}@abacart.com",
-            mobile="12345",  # Invalid format — not PH number
+            mobile="12345",
             password="Password123!",
             password_confirm="Password123!",
         )
@@ -172,11 +136,7 @@ class TestRegistrationFunctionality(unittest.TestCase):
                         "FAIL: No validation error for invalid mobile format.")
         print("✅ TC-08 PASSED — Invalid mobile number format rejected.")
 
-    # ──────────────────────────────────────────────
-    # TC-09: Password confirmation mismatch
-    # ──────────────────────────────────────────────
     def test_09_password_mismatch(self):
-        """Verify that mismatched password and password_confirmation is rejected."""
         self._logout_if_needed()
         self._go_to_register()
 
@@ -204,11 +164,7 @@ class TestRegistrationFunctionality(unittest.TestCase):
                         "FAIL: No error message for password mismatch.")
         print("✅ TC-09 PASSED — Password mismatch correctly rejected.")
 
-    # ──────────────────────────────────────────────
-    # TC-10: Short password (< 8 characters)
-    # ──────────────────────────────────────────────
     def test_10_short_password(self):
-        """Verify that a password shorter than 8 characters is rejected."""
         self._logout_if_needed()
         self._go_to_register()
 

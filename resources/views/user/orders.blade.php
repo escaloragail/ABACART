@@ -312,9 +312,9 @@
                             <li class="nav-item">
                                 <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button">Delivered</button>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <button class="nav-link" id="canceled-tab" data-bs-toggle="tab" data-bs-target="#canceled" type="button">Canceled</button>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 
@@ -337,10 +337,10 @@
                             @include('user.partials.order-table', ['orders_list' => $delivered_orders])
                         </div>
 
-                        <!-- Canceled -->
+                        <!-- Canceled
                         <div class="tab-pane fade" id="canceled" role="tabpanel">
                             @include('user.partials.order-table', ['orders_list' => $canceled_orders])
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

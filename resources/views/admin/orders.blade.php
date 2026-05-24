@@ -19,9 +19,7 @@
                 <div class="flex items-center justify-between gap10 flex-wrap mb-20">
                     <div class="modern-filter-tabs">
                         <a href="{{ route('admin.orders') }}" class="modern-tab {{ !$status ? 'active' : '' }}">All Orders <span class="count-badge">{{ $counts['all'] }}</span></a>
-                        <a href="{{ route('admin.orders', ['status' => 'ordered']) }}" class="modern-tab {{ $status == 'ordered' ? 'active' : '' }}">Ordered <span class="count-badge">{{ $counts['ordered'] }}</span></a>
-                        <a href="{{ route('admin.orders', ['status' => 'delivered']) }}" class="modern-tab {{ $status == 'delivered' ? 'active' : '' }}">Delivered <span class="count-badge">{{ $counts['delivered'] }}</span></a>
-                        <a href="{{ route('admin.orders', ['status' => 'canceled']) }}" class="modern-tab {{ $status == 'canceled' ? 'active' : '' }}">Canceled <span class="count-badge">{{ $counts['canceled'] }}</span></a>
+
                     </div>
                 </div>
                 <div class="wg-table table-all-user">
@@ -51,9 +49,22 @@
                                     <td>₱{{ $order->discount }}</td>
                                     <td class="td-price">₱{{ $order->total }}</td>
                                     <td>
-                                        @if($order->order_status == 'ordered') <span class="modern-badge bg-warning-soft">Ordered</span>
-                                        @elseif($order->order_status == 'delivered') <span class="modern-badge bg-success-soft">Delivered</span>
-                                        @else <span class="modern-badge bg-danger-soft">Canceled</span> @endif
+                                        <form action="{{ route('admin.order.update_status') }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="order_id" value="{{ $order->Order_ID }}">
+                                            <div class="status-wrap">
+                                                <select
+                                                    name="order_status"
+                                                    onchange="this.form.submit()"
+                                                    class="status-select status-{{ $order->order_status }}"
+                                                    {{ $order->order_status == 'delivered' ? 'disabled' : '' }}
+                                                >
+                                                    <option value="ordered"   {{ $order->order_status == 'ordered'   ? 'selected' : '' }}>Ordered</option>
+                                                    <option value="delivered" {{ $order->order_status == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                                </select>
+                                            </div>
+                                        </form>
                                     </td>
                                     <td>{{ $order->created_at->format('M d Y') }}</td>
                                     <td>
@@ -76,4 +87,30 @@
             </div>
         </div>
     </div>
+    <style>
+    .status-wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .status-select {
+        border: none;
+        border-radius: 20px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+        outline: none;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align: center;
+        text-align-last: center;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        width: auto;
+    }
+    .status-select.status-ordered   { background-color: #ffc107; color: #5a3e00; }
+    .status-select.status-delivered { background-color: #198754; color: #ffffff; }
+    .status-select.status-canceled  { background-color: #dc3545; color: #ffffff; }
+    .status-select:disabled         { opacity: 0.75; cursor: not-allowed; }
+</style>
 @endsection

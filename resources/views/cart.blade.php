@@ -80,14 +80,14 @@
                 <h6 style="font-size: 14px; font-weight: 700; margin: 0 0 8px 0; color: inherit;">01 SHOPPING BAG</h6>
                 <p style="font-size: 11px; margin: 0; color: #a3aab2;">Manage Your Items List</p>
             </a>
-            <div class="ac-step" style="flex: 1; text-align: left; padding: 0 0 20px 0; color: #ccc;">
+            <a href="{{ route('cart.index') }}" class="ac-step" style="flex: 1; text-align: left; padding: 0 0 20px 0; color: #ccc; text-decoration: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='#999'" onmouseout="this.style.color='#ccc'">
                 <h6 style="font-size: 14px; font-weight: 700; margin: 0 0 8px 0;">02 SHIPPING AND CHECKOUT</h6>
                 <p style="font-size: 11px; margin: 0; color: #bbb;">Delivery Details</p>
-            </div>
-            <div class="ac-step" style="flex: 1; text-align: left; padding: 0 0 20px 0; color: #ccc;">
+            </a>
+            <a href="{{ route('cart.index') }}" class="ac-step" style="flex: 1; text-align: left; padding: 0 0 20px 0; color: #ccc; text-decoration: none; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='#999'" onmouseout="this.style.color='#ccc'">
                 <h6 style="font-size: 14px; font-weight: 700; margin: 0 0 8px 0;">03 CONFIRMATION</h6>
                 <p style="font-size: 11px; margin: 0; color: #bbb;">Review And Submit Your Order</p>
-            </div>
+            </a>
         </div>
 
         @if($items->count() > 0)
@@ -101,6 +101,9 @@
                 <table style="width: 100%; border-collapse: separate; border-spacing: 0 15px;">
                     <thead>
                         <tr>
+                            <th style="text-align: center; padding: 0 10px 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #111; width: 40px;">
+                                <input type="checkbox" id="selectAllCheckbox" style="width: 18px; height: 18px; cursor: pointer;">
+                            </th>
                             <th style="text-align: left; padding: 0 10px 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #111;">PRODUCT</th>
                             <th style="text-align: center; padding: 0 10px 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #111;">PRICE</th>
                             <th style="text-align: center; padding: 0 10px 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #111;">QUANTITY</th>
@@ -110,6 +113,9 @@
                     <tbody>
                         @foreach($items as $item)
                         <tr style="background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.02); transition: 0.3s;">
+                            <td style="padding: 25px 10px; border-top: 1.5px solid #eee; border-bottom: 1.5px solid #eee; text-align: center;">
+                                <input type="checkbox" class="item-checkbox" data-item-id="{{ $item->Cart_Item_ID }}" {{ $item->is_selected ? 'checked' : '' }} style="width: 18px; height: 18px; cursor: pointer;">
+                            </td>
                             <td style="padding: 25px 20px; border-top: 1.5px solid #eee; border-bottom: 1.5px solid #eee; border-left: 1.5px solid #eee; border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <img src="{{ asset('uploads/products/' . $item->product->main_product_image) }}" style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover;">
@@ -124,15 +130,9 @@
                             </td>
                             <td style="text-align: center; padding: 25px 10px; border-top: 1.5px solid #eee; border-bottom: 1.5px solid #eee;">
                                 <div style="display: flex; align-items: center; border: 1.5px solid #eee; border-radius: 12px; overflow: hidden; width: fit-content; margin: 0 auto;">
-                                    <form method="POST" action="{{ route('cart.decrease', $item->Cart_Item_ID) }}" style="margin:0;">
-                                        @csrf @method('PUT')
-                                        <button type="submit" style="width: 35px; height: 40px; background: transparent; border: none; cursor: pointer;">-</button>
-                                    </form>
-                                    <input type="text" value="{{ $item->quantity }}" readonly style="width: 40px; text-align: center; border: none; font-size: 14px; font-weight: 700; background: transparent;">
-                                    <form method="POST" action="{{ route('cart.increase', $item->Cart_Item_ID) }}" style="margin:0;">
-                                        @csrf @method('PUT')
-                                        <button type="submit" style="width: 35px; height: 40px; background: transparent; border: none; cursor: pointer;">+</button>
-                                    </form>
+                                    <button class="qty-decrease" data-item-id="{{ $item->Cart_Item_ID }}" style="width: 35px; height: 40px; background: transparent; border: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#f8f8f8'" onmouseout="this.style.background='transparent'">-</button>
+                                    <input type="text" class="qty-input" value="{{ $item->quantity }}" readonly style="width: 40px; text-align: center; border: none; font-size: 14px; font-weight: 700; background: transparent;">
+                                    <button class="qty-increase" data-item-id="{{ $item->Cart_Item_ID }}" style="width: 35px; height: 40px; background: transparent; border: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#f8f8f8'" onmouseout="this.style.background='transparent'">+</button>
                                 </div>
                             </td>
                             <td style="text-align: right; padding: 25px 20px; border-top: 1.5px solid #eee; border-bottom: 1.5px solid #eee; border-right: 1.5px solid #eee; border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
@@ -233,6 +233,201 @@
         @endif
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    const checkoutButton = document.querySelector('a[href*="cart.checkout"]');
+    const decreaseButtons = document.querySelectorAll('.qty-decrease');
+    const increaseButtons = document.querySelectorAll('.qty-increase');
+
+    // Handle quantity decrease - instant update with seamless calculations
+    decreaseButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const itemId = this.dataset.itemId;
+            const container = this.parentElement;
+            const qtyInput = container.querySelector('.qty-input');
+            const currentQty = parseInt(qtyInput.value);
+            
+            if (currentQty <= 1) return;
+            
+            const newQty = currentQty - 1;
+            qtyInput.value = newQty;
+            
+            // Update subtotal instantly
+            updateItemSubtotal(itemId);
+            
+            // Update totals instantly
+            recalculateTotals();
+            
+            // Save to server in background (fire and forget)
+            fetch(`/cart/decrease/${itemId}`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }).catch(error => console.error('Error:', error));
+        });
+    });
+
+    // Handle quantity increase - instant update with seamless calculations
+    increaseButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const itemId = this.dataset.itemId;
+            const container = this.parentElement;
+            const qtyInput = container.querySelector('.qty-input');
+            const currentQty = parseInt(qtyInput.value);
+            
+            const newQty = currentQty + 1;
+            qtyInput.value = newQty;
+            
+            // Update subtotal instantly
+            updateItemSubtotal(itemId);
+            
+            // Update totals instantly
+            recalculateTotals();
+            
+            // Save to server in background (fire and forget)
+            fetch(`/cart/increase/${itemId}`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }).catch(error => console.error('Error:', error));
+        });
+    });
+
+    // Update a single item's subtotal
+    function updateItemSubtotal(itemId) {
+        const row = document.querySelector(`tr:has(input[data-item-id="${itemId}"])`);
+        if (!row) return;
+        
+        const qtyInput = row.querySelector('.qty-input');
+        const priceCell = row.querySelectorAll('td')[2]; // Price column
+        const subtotalSpan = row.querySelector('td:last-child span:first-child');
+        
+        const qty = parseInt(qtyInput.value);
+        const priceText = priceCell.textContent.trim().replace('₱', '').replace(/,/g, '');
+        const price = parseFloat(priceText);
+        const subtotal = qty * price;
+        
+        subtotalSpan.textContent = '₱' + subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Recalculate all totals based on selected items
+    function recalculateTotals() {
+        let subtotal = 0;
+        
+        // Sum only selected items
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const checkbox = row.querySelector('.item-checkbox');
+            if (checkbox && checkbox.checked) {
+                const subtotalSpan = row.querySelector('td:last-child span:first-child');
+                const subtotalText = subtotalSpan.textContent.replace('₱', '').replace(/,/g, '');
+                subtotal += parseFloat(subtotalText);
+            }
+        });
+        
+        const tax = subtotal * 0.12; // 12% VAT
+        
+        // Get discount amount if it exists
+        let discount = 0;
+        const discountElements = document.querySelectorAll('.ac-summary-pane span');
+        discountElements.forEach(el => {
+            const text = el.textContent.trim();
+            if (text.includes('Discount') || (text.startsWith('-₱') && el.parentElement.querySelector('span:first-child').textContent.includes('Discount'))) {
+                const discountText = text.replace('-₱', '').replace('₱', '').replace(/,/g, '');
+                discount = parseFloat(discountText) || 0;
+            }
+        });
+        
+        const total = subtotal - discount + tax;
+        
+        // Update summary display - find rows by content text for robustness
+        const summaryPane = document.querySelector('.ac-summary-pane');
+        const allRows = summaryPane.querySelectorAll('.ac-summary-row');
+        
+        allRows.forEach(row => {
+            const label = row.querySelector('span:first-child').textContent.trim();
+            const valueSpan = row.querySelector('span:last-child');
+            
+            if (label === 'Subtotal' || label.includes('Subtotal')) {
+                valueSpan.textContent = '₱' + subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else if (label === 'Tax' || label.includes('Tax')) {
+                valueSpan.textContent = '₱' + tax.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else if (label === 'Total' || label.includes('Total')) {
+                valueSpan.textContent = '₱' + total.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        });
+    }
+
+    // Handle individual checkbox changes
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const itemId = this.dataset.itemId;
+            const isSelected = this.checked;
+            
+            // Recalculate totals instantly
+            recalculateTotals();
+            updateCheckoutButton();
+            
+            // Save to server in background
+            fetch('{{ route("cart.update.selection") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    is_selected: isSelected
+                })
+            }).catch(error => console.error('Error:', error));
+
+            updateSelectAllCheckbox();
+        });
+    });
+
+    // Handle select all checkbox
+    selectAllCheckbox.addEventListener('change', function() {
+        const isChecked = this.checked;
+        itemCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+            checkbox.dispatchEvent(new Event('change'));
+        });
+    });
+
+    // Update select all checkbox state
+    function updateSelectAllCheckbox() {
+        const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+        selectAllCheckbox.checked = checkedCount === itemCheckboxes.length && itemCheckboxes.length > 0;
+        selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < itemCheckboxes.length;
+    }
+
+    // Update checkout button state
+    function updateCheckoutButton() {
+        const checkedCount = document.querySelectorAll('.item-checkbox:checked').length;
+        if (checkoutButton) {
+            if (checkedCount === 0) {
+                checkoutButton.style.opacity = '0.5';
+                checkoutButton.style.pointerEvents = 'none';
+                checkoutButton.title = 'Please select at least one item to checkout';
+            } else {
+                checkoutButton.style.opacity = '1';
+                checkoutButton.style.pointerEvents = 'auto';
+                checkoutButton.title = 'Proceed to checkout with ' + checkedCount + ' selected item(s)';
+            }
+        }
+    }
+
+    // Initial state
+    updateSelectAllCheckbox();
+    updateCheckoutButton();
+});
+</script>
 
 @endsection
 

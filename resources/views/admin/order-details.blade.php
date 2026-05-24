@@ -182,7 +182,7 @@
                     <div class="info-value mt-1">
                         @if($order->order_status == 'ordered') <span class="bw-badge warning">Ordered</span>
                         @elseif($order->order_status == 'delivered') <span class="bw-badge success">Delivered</span>
-                        @else <span class="bw-badge danger">Canceled</span> @endif
+                        @endif
                     </div>
                 </div>
                 <div class="info-item">
@@ -335,9 +335,8 @@
                         <input type="hidden" name="order_id" value="{{ $order->Order_ID }}" />
                         <div class="d-flex flex-column gap-3">
                             <select name="order_status" class="form-select">
-                                <option value="ordered" {{ $order->order_status == 'ordered' ? 'selected' : '' }}>Ordered</option>
+                                <option value="ordered"   {{ $order->order_status == 'ordered'   ? 'selected' : '' }}>Ordered</option>
                                 <option value="delivered" {{ $order->order_status == 'delivered' ? 'selected' : '' }}>Delivered</option>
-                                <option value="canceled" {{ $order->order_status == 'canceled' ? 'selected' : '' }}>Canceled</option>
                             </select>
                             <button type="submit" class="btn-update-status">Save Status</button>
                         </div>
