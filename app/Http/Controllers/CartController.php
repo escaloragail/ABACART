@@ -12,12 +12,13 @@ use Carbon\Carbon;
 class CartController extends Controller
 {
     /**
-     * Helper: get the cart subtotal from DB for the current user.
+     * Helper: get the cart subtotal from DB for the current user (only selected items).
      */
     private function getCartSubtotal()
     {
         $items = CartItem::where('User_ID', Auth::user()->User_ID)
             ->where('instance', 'cart')
+            ->where('is_selected', true)
             ->whereHas('product', function($query) {
                 $query->where('is_active', 1);
             })
@@ -41,7 +42,12 @@ class CartController extends Controller
             ->with('product')
             ->get();
 
-        $subtotal = $items->sum('subtotal');
+        // Calculate subtotal for SELECTED items only
+        $selectedItems = $items->filter(function($item) {
+            return $item->is_selected;
+        });
+        
+        $subtotal = $selectedItems->sum('subtotal');
         
         // Dynamic discount recalculation
         $this->calculateDiscount();
@@ -205,5 +211,17 @@ class CartController extends Controller
         Session::forget('coupon');
         Session::forget('discounts');
         return redirect()->back()->with('success', 'Coupon has been removed!');
+    }
+
+    public function update_selection(Request $request)
+    {
+        $item = CartItem::where('Cart_Item_ID', $request->item_id)
+            ->where('User_ID', Auth::user()->User_ID)
+            ->firstOrFail();
+
+        $item->is_selected = $request->is_selected;
+        $item->save();
+
+        return response()->json(['success' => true]);
     }
 }

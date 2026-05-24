@@ -1,12 +1,3 @@
-"""
-TEST SCRIPT #3 — Shop Browsing & Search/Filtering
-Abacart PH | Tool: Python + Selenium | Author: Member 3
-TC-11: Shop page loads correctly
-TC-12: Product details page accessible
-TC-13: Shop page sorting/ordering
-TC-14: Category filtering
-TC-15: Non-existent product → 404
-"""
 import time, unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -51,14 +42,14 @@ class TestShopAndSearch(unittest.TestCase):
         time.sleep(2)
         self.assertIn("/shop/product/", self.driver.current_url)
         self._no_php_errors()
-        print("✅ TC-12 PASSED — Product details page loads correctly.")
+        print("[PASS] TC-12 PASSED — Product details page loads correctly.")
 
     def test_13_shop_ordering(self):
         for order in [1, 2, 3, 4]:
             self.driver.get(f"{BASE_URL}/shop?order={order}")
             time.sleep(1)
             self._no_php_errors()
-        print("✅ TC-13 PASSED — Shop ordering works.")
+        print("[PASS] TC-13 PASSED — Shop ordering works.")
 
     def test_14_category_filtering(self):
         self.driver.get(f"{BASE_URL}/shop?categories=1")

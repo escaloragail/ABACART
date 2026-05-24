@@ -9,7 +9,7 @@ class CartItem extends Model
     protected $primaryKey = 'Cart_Item_ID';
 
     protected $fillable = [
-        'User_ID', 'Product_ID', 'quantity', 'instance'
+        'User_ID', 'Product_ID', 'quantity', 'instance', 'is_selected'
     ];
 
     public function user()

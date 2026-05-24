@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function(){
     Route::delete('/cart/empty', [CartController::class, 'empty_cart'])->name('cart.empty');
     Route::post('/cart/coupon/apply', [CartController::class, 'apply_coupon'])->name('cart.coupon.apply');
     Route::delete('/cart/coupon/remove', [CartController::class, 'remove_coupon'])->name('cart.coupon.remove');
+    Route::post('/cart/update-selection', [CartController::class, 'update_selection'])->name('cart.update.selection');
 
     // Wishlist Logic
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
