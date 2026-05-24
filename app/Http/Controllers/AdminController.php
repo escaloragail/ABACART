@@ -498,6 +498,67 @@ class AdminController extends Controller
         return back()->with('success', 'Status has been updated successfully!');
     }
 
+    public function sales(Request $request)
+    {
+        $date_from = $request->query('date_from');
+        $date_to = $request->query('date_to');
+        $status_filter = $request->query('status', 'delivered'); // default to delivered (completed sales)
+
+        $query = \App\Models\Order::query();
+
+        // Filter by status
+        if ($status_filter && $status_filter !== 'all') {
+            $query->where('order_status', $status_filter);
+        }
+
+        // Filter by date range
+        if ($date_from) {
+            $query->whereDate('created_at', '>=', $date_from);
+        }
+        if ($date_to) {
+            $query->whereDate('created_at', '<=', $date_to);
+        }
+
+        $sales = $query->orderBy('created_at', 'DESC')->paginate(15)->appends($request->query());
+
+        // Summary stats (for the filtered results)
+        $statsQuery = \App\Models\Order::query();
+        if ($status_filter && $status_filter !== 'all') {
+            $statsQuery->where('order_status', $status_filter);
+        }
+        if ($date_from) {
+            $statsQuery->whereDate('created_at', '>=', $date_from);
+        }
+        if ($date_to) {
+            $statsQuery->whereDate('created_at', '<=', $date_to);
+        }
+
+        $total_sales = $statsQuery->sum('total');
+        $total_transactions = $statsQuery->count();
+        $total_discount = $statsQuery->sum('discount');
+
+        // Status counts (within date range)
+        $countQuery = \App\Models\Order::query();
+        if ($date_from) {
+            $countQuery->whereDate('created_at', '>=', $date_from);
+        }
+        if ($date_to) {
+            $countQuery->whereDate('created_at', '<=', $date_to);
+        }
+
+        $counts = [
+            'all' => (clone $countQuery)->count(),
+            'delivered' => (clone $countQuery)->where('order_status', 'delivered')->count(),
+            'ordered' => (clone $countQuery)->where('order_status', 'ordered')->count(),
+            'canceled' => (clone $countQuery)->where('order_status', 'canceled')->count(),
+        ];
+
+        return view('admin.sales', compact(
+            'sales', 'total_sales', 'total_transactions', 'total_discount',
+            'date_from', 'date_to', 'status_filter', 'counts'
+        ));
+    }
+
     public function account_details()
     {
         $user = \Illuminate\Support\Facades\Auth::user();
@@ -535,6 +596,68 @@ class AdminController extends Controller
         $user->save();
 
         return back()->with('success', 'Account details updated successfully!');
+    }
+
+    public function users(Request $request)
+    {
+        $search = $request->query('search');
+        $role = $request->query('role');
+        $status = $request->query('status');
+
+        $query = \App\Models\User::query();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone_number', 'like', "%{$search}%");
+            });
+        }
+
+        if ($role && $role !== 'all') {
+            $query->where('utype', $role);
+        }
+
+        if ($status !== null && $status !== 'all') {
+            $query->where('is_active', $status == 'active');
+        }
+
+        $users = $query->orderBy('User_ID', 'DESC')->paginate(15)->appends($request->query());
+
+        return view('admin.users', compact('users', 'search', 'role', 'status'));
+    }
+
+    public function user_update_role(Request $request, $id)
+    {
+        $request->validate([
+            'utype' => 'required|in:ADM,USR',
+        ]);
+
+        $user = \App\Models\User::findOrFail($id);
+
+        if ($user->User_ID === \Illuminate\Support\Facades\Auth::user()->User_ID) {
+            return back()->with('error', 'You cannot change your own role!');
+        }
+
+        $user->utype = $request->utype;
+        $user->save();
+
+        return back()->with('success', 'User role updated successfully!');
+    }
+
+    public function user_toggle_status(Request $request, $id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+
+        if ($user->User_ID === \Illuminate\Support\Facades\Auth::user()->User_ID) {
+            return back()->with('error', 'You cannot deactivate your own account!');
+        }
+
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        $statusStr = $user->is_active ? 'reactivated' : 'deactivated';
+        return back()->with('success', "User account {$statusStr} successfully!");
     }
 
     public function GenerateProfileImage($image, $imageName)

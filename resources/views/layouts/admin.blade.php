@@ -117,6 +117,19 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item">
+                                    <a href="{{ route('admin.sales') }}" class="">
+                                        <div class="icon"><i class="icon-trending-up"></i></div>
+                                        <div class="text">Sales</div>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="{{ route('admin.users') }}" class="">
+                                        <div class="icon"><i class="icon-users"></i></div>
+                                        <div class="text">User</div>
+                                    </a>
+                                </li>
 
                                 <li class="menu-item">
                                     <form method="POST" action="{{ route('logout') }}" id="logout-form">

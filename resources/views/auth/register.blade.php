@@ -117,13 +117,18 @@
 
     .auth-field.has-error {
         border-bottom-color: #dc3545;
+        margin-bottom: 30px;
     }
 
     .auth-field .invalid-feedback {
+        display: block;
         position: absolute;
         bottom: -22px;
         left: 0;
-        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        color: #dc3545;
+        font-weight: 500;
     }
 
     /* ── Submit Button ── */
