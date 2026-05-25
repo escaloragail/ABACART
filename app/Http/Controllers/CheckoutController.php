@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use App\Models\Address;
 use App\Models\Product;
 use App\Models\Coupon;
+use App\Models\GreenpayAccount;
 
 class CheckoutController extends Controller
 {
@@ -73,19 +74,20 @@ class CheckoutController extends Controller
     }
 
     $subtotal = $cartItems->sum('subtotal');
-        $taxRate = 12; // Standard Philippine VAT
+        $greenpayAccounts = GreenpayAccount::where('User_ID', $userId)
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         if (Session::has('discounts')) {
             $totals = Session::get('discounts');
             // Using floatval to ensure math safety
             $discount = floatval($totals['discount']);
-            $tax = floatval($totals['tax']);
-            $total = floatval($totals['total']);
+            $tax = 0;
+            $total = max(round($subtotal - $discount, 2), 0);
         } else {
             $discount = 0;
-            // VAT Calculation: Subtotal * 0.12
-            $tax = round($subtotal * ($taxRate / 100), 2);
-            $total = round($subtotal + $tax, 2);
+            $tax = 0;
+            $total = round($subtotal, 2);
         }
 
     return view('review', compact(
@@ -97,12 +99,36 @@ class CheckoutController extends Controller
         'total', 
         'discount',
         'note',
-        'addressId' // Pass this so your final "Place Order" form knows if it's new or existing
+        'addressId',
+        'greenpayAccounts'
     ));
     }
 
         public function place_order(Request $request) 
     {
+        $request->validate([
+            'address_id' => ['required'],
+            'payment_mode' => ['required', 'in:cod,greenpay'],
+            'payment_reference_number' => [
+                'nullable',
+                'string',
+                'max:100',
+                'required_if:payment_mode,greenpay',
+                'unique:orders,payment_reference_number',
+            ],
+            'greenpay_account_id' => ['nullable', 'required_if:payment_mode,greenpay'],
+            'greenpay_fullname' => ['nullable', 'required_if:greenpay_account_id,new', 'string', 'max:255'],
+            'greenpay_mobile_number' => ['nullable', 'required_if:greenpay_account_id,new', 'string', 'max:20'],
+            'greenpay_email' => ['nullable', 'required_if:greenpay_account_id,new', 'email', 'max:255'],
+        ], [
+            'payment_reference_number.required_if' => 'Please enter the GreenPay reference number.',
+            'payment_reference_number.unique' => 'This payment reference number has already been used.',
+            'greenpay_account_id.required_if' => 'Please choose or add GreenPay information.',
+            'greenpay_fullname.required_if' => 'Please enter the GreenPay account name.',
+            'greenpay_mobile_number.required_if' => 'Please enter the GreenPay mobile number.',
+            'greenpay_email.required_if' => 'Please enter the GreenPay email address.',
+        ]);
+
         // 1. Setup Data
         $userId = Auth::user()->User_ID; 
         $cartItems = CartItem::where('User_ID', $userId)
@@ -122,12 +148,12 @@ class CheckoutController extends Controller
         if (Session::has('discounts')) {
             $totals = Session::get('discounts');
             $discount = floatval($totals['discount']);
-            $tax = floatval($totals['tax']);
-            $total = floatval($totals['total']);
+            $tax = 0;
+            $total = max(round($subtotal - $discount, 2), 0);
         } else {
             $discount = 0;
-            $tax = round($subtotal * 0.12, 2); 
-            $total = round($subtotal + $tax, 2);
+            $tax = 0;
+            $total = round($subtotal, 2);
         }
         $addressId = $request->address_id;
 
@@ -154,6 +180,22 @@ class CheckoutController extends Controller
             }
         }
 
+        $greenpayAccount = null;
+        if ($request->payment_mode === 'greenpay') {
+            if ($request->greenpay_account_id === 'new') {
+                $greenpayAccount = GreenpayAccount::create([
+                    'User_ID' => $userId,
+                    'fullname' => $request->greenpay_fullname,
+                    'mobile_number' => $request->greenpay_mobile_number,
+                    'email' => $request->greenpay_email,
+                ]);
+            } else {
+                $greenpayAccount = GreenpayAccount::where('User_ID', $userId)
+                    ->where('id', $request->greenpay_account_id)
+                    ->firstOrFail();
+            }
+        }
+
         $order = new Order();
         $order->User_ID = $userId;
         $order->Address_ID = $addressId;
@@ -166,6 +208,13 @@ class CheckoutController extends Controller
         $order->order_status = 'ordered';
         $order->payment_mode = $request->payment_mode ?? 'cod';
         $order->payment_status = 'pending';
+        $order->payment_reference_number = $request->payment_mode === 'greenpay'
+            ? $request->payment_reference_number
+            : null;
+        $order->greenpay_account_id = $greenpayAccount?->id;
+        $order->greenpay_fullname = $greenpayAccount?->fullname;
+        $order->greenpay_mobile_number = $greenpayAccount?->mobile_number;
+        $order->greenpay_email = $greenpayAccount?->email;
         $order->save();
 
         // 4. Save Items & Deduct Stock
@@ -193,7 +242,11 @@ class CheckoutController extends Controller
         Session::forget(['coupon', 'discounts']);
 
         // 6. Redirect to Success Page
-        return redirect()->route('checkout.success');
+        $message = $order->payment_mode === 'greenpay'
+            ? 'Order placed successfully. Your GreenPay payment is pending admin verification.'
+            : 'Order placed successfully. Your Cash on Delivery order is now pending.';
+
+        return redirect()->route('checkout.success')->with('success', $message);
     }
 
     // STEP 04: Order Success Confirmation

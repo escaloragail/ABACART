@@ -295,10 +295,6 @@
                         <span style="font-size:13px; color:#64748b;">Subtotal</span>
                         <span style="font-size:14px; font-weight:600; color:#111;">₱{{ number_format($order->subtotal, 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="font-size:13px; color:#64748b;">Tax</span>
-                        <span style="font-size:14px; font-weight:600; color:#111;">₱{{ number_format($order->tax, 2) }}</span>
-                    </div>
                     <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                         <span style="font-size:13px; color:#64748b;">Discount</span>
                         <span style="font-size:14px; font-weight:600; color:#111;">- ₱{{ number_format($order->discount, 2) }}</span>
@@ -314,8 +310,26 @@
                     <div class="bw-section-title">Payment Info</div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span style="font-size:13px; color:#64748b; text-transform:uppercase; font-weight:700;">Mode</span>
-                        <span style="font-size:14px; font-weight:800; color:#111;">{{ strtoupper($order->payment_mode) }}</span>
+                        <span style="font-size:14px; font-weight:800; color:#111;">{{ $order->payment_mode == 'greenpay' ? 'GreenPay' : strtoupper($order->payment_mode) }}</span>
                     </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span style="font-size:13px; color:#64748b; text-transform:uppercase; font-weight:700;">Reference #</span>
+                        <span style="font-size:14px; font-weight:800; color:#111;">{{ $order->payment_reference_number ?? '--' }}</span>
+                    </div>
+                    @if($order->payment_mode == 'greenpay')
+                    <div class="info-item mb-3">
+                        <div class="info-label">GreenPay Name</div>
+                        <div class="info-value">{{ $order->greenpay_fullname ?? '--' }}</div>
+                    </div>
+                    <div class="info-item mb-3">
+                        <div class="info-label">GreenPay Mobile</div>
+                        <div class="info-value">{{ $order->greenpay_mobile_number ?? '--' }}</div>
+                    </div>
+                    <div class="info-item mb-3">
+                        <div class="info-label">GreenPay Email</div>
+                        <div class="info-value">{{ $order->greenpay_email ?? '--' }}</div>
+                    </div>
+                    @endif
                     <div class="d-flex justify-content-between align-items-center">
                         <span style="font-size:13px; color:#64748b; text-transform:uppercase; font-weight:700;">Status</span>
                         @if($order->payment_status == 'pending') <span class="bw-badge warning">Pending</span>

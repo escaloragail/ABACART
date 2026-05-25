@@ -171,11 +171,6 @@
                     </div>
                     @endif
 
-                    <div class="ac-summary-row" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px;">
-                        <span style="color: #888; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em;">Tax</span>
-                        <span style="color: #111; font-weight: 500;">₱{{ number_format($tax, 2) }}</span>
-                    </div>
-
                     <!-- Coupon Box -->
                     <div class="coupon-section" style="margin-top: 25px; margin-bottom: 25px;">
                         @if(Session::has('coupon_success'))
@@ -331,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        const tax = subtotal * 0.12; // 12% VAT
+        const tax = 0;
         
         // Get discount amount if it exists
         let discount = 0;
@@ -344,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        const total = subtotal - discount + tax;
+        const total = subtotal - discount;
         
         // Update summary display - find rows by content text for robustness
         const summaryPane = document.querySelector('.ac-summary-pane');
@@ -356,8 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (label === 'Subtotal' || label.includes('Subtotal')) {
                 valueSpan.textContent = '₱' + subtotal.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            } else if (label === 'Tax' || label.includes('Tax')) {
-                valueSpan.textContent = '₱' + tax.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             } else if (label === 'Total' || label.includes('Total')) {
                 valueSpan.textContent = '₱' + total.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             }
@@ -430,4 +423,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 @endsection
-

@@ -156,6 +156,82 @@
         transform: translateY(-1px);
         box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
+    .payment-options { display: grid; gap: 12px; margin-bottom: 18px; }
+    .payment-radio { display: none; }
+    .payment-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px;
+        cursor: pointer;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        transition: 0.2s ease;
+        background: #fff;
+    }
+    .payment-radio:checked + .payment-card {
+        border-color: #15803d;
+        background: #f0fdf4;
+        box-shadow: 0 8px 20px rgba(21, 128, 61, 0.08);
+    }
+    .payment-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: #edf2f7;
+        color: #111;
+        flex-shrink: 0;
+    }
+    .payment-radio:checked + .payment-card .payment-icon { background: #15803d; color: #fff; }
+    .payment-card-title {
+        display: block;
+        font-size: 13px;
+        font-weight: 800;
+        color: #111;
+        margin: 0 0 3px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    .payment-card-text { display: block; font-size: 12px; color: #718096; margin: 0; line-height: 1.4; }
+    .greenpay-reference { display: none; margin-bottom: 18px; }
+    .greenpay-reference input,
+    .greenpay-reference select {
+        width: 100%;
+        border: 1px solid #d8e7dd;
+        border-radius: 12px;
+        padding: 13px 15px;
+        font-size: 13px;
+        outline: none;
+        background: #fff;
+        margin-bottom: 10px;
+    }
+    .greenpay-reference input:focus,
+    .greenpay-reference select:focus {
+        border-color: #15803d;
+        box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1);
+    }
+    .greenpay-new-fields { display: none; }
+    .greenpay-hint {
+        font-size: 11px;
+        color: #4b6b58;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 10px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+    .field-error {
+        color: #c62828;
+        background: #ffebee;
+        border-radius: 8px;
+        padding: 9px 11px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
 </style>
 
 <div class="ac-white-content">
@@ -183,7 +259,6 @@
         <form id="placeOrderForm" action="{{ route('cart.place_order') }}" method="POST">
             @csrf
             <input type="hidden" name="address_id" value="{{ request('address_id') }}">
-            <input type="hidden" name="payment_mode" value="{{ $paymentMode }}">
             <input type="hidden" name="note" value="{{ $note }}">
             
             @if(request('address_id') == 'new')
@@ -210,7 +285,7 @@
                             </div>
                             <div class="col-md-5 ps-md-4">
                                 <div class="ac-label-tiny">Payment Method</div>
-                                <p class="ac-data-text fw-bold" style="color: #111;">Cash on Delivery</p>
+                                <p class="ac-data-text fw-bold" style="color: #111;">Choose below before placing your order</p>
                                 <div class="ac-label-tiny mt-4">Notes</div>
                                 <p class="ac-data-text" style="font-style: italic; color: #718096;">"{{ $note ?? 'No special instructions.' }}"</p>
                             </div>
@@ -247,11 +322,6 @@
                             <span class="ac-summary-value text-danger">-₱{{ number_format($discount, 2) }}</span>
                         </div>
                         @endif
-
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="ac-summary-label">TAX (12%)</span>
-                            <span class="ac-summary-value">₱{{ number_format($tax, 2) }}</span>
-                        </div>
 
                         <!-- Coupon Box -->
                         <div class="coupon-section" style="margin-top: 25px; margin-bottom: 25px;">
@@ -292,8 +362,76 @@
                         </div>
 
                         <hr style="border-color: #e2e8f0; margin-bottom: 25px;">
+
+                        <div class="ac-section-title">Payment Options</div>
+                        <div class="payment-options">
+                            <div>
+                                <input form="placeOrderForm" type="radio" name="payment_mode" id="payment_cod" value="cod" class="payment-radio" {{ old('payment_mode', $paymentMode) !== 'greenpay' ? 'checked' : '' }}>
+                                <label for="payment_cod" class="payment-card">
+                                    <span class="payment-icon"><i class="fa fa-truck"></i></span>
+                                    <span>
+                                        <span class="payment-card-title">Cash on Delivery</span>
+                                        <span class="payment-card-text">Pay when your order arrives.</span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div>
+                                <input form="placeOrderForm" type="radio" name="payment_mode" id="payment_greenpay" value="greenpay" class="payment-radio" {{ old('payment_mode', $paymentMode) === 'greenpay' ? 'checked' : '' }}>
+                                <label for="payment_greenpay" class="payment-card">
+                                    <span class="payment-icon"><i class="fa fa-credit-card"></i></span>
+                                    <span>
+                                        <span class="payment-card-title">GreenPay Manual Payment</span>
+                                        <span class="payment-card-text">Choose saved GreenPay info or add a new one.</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="greenpayReferenceBox" class="greenpay-reference">
+                            <div class="greenpay-hint">
+                                Select your GreenPay information. If this is your first time, choose "Add new GreenPay information" and complete the fields below.
+                            </div>
+
+                            <select form="placeOrderForm" name="greenpay_account_id" id="greenpayAccountSelect">
+                                @foreach($greenpayAccounts as $account)
+                                    <option value="{{ $account->id }}" {{ old('greenpay_account_id') == $account->id ? 'selected' : '' }}>
+                                        {{ $account->fullname }} - {{ $account->mobile_number }} - {{ $account->email }}
+                                    </option>
+                                @endforeach
+                                <option value="new" {{ old('greenpay_account_id', $greenpayAccounts->isEmpty() ? 'new' : '') === 'new' ? 'selected' : '' }}>
+                                    Add new GreenPay information
+                                </option>
+                            </select>
+                            @error('greenpay_account_id')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+
+                            <div id="greenpayNewFields" class="greenpay-new-fields">
+                                <input form="placeOrderForm" type="text" name="greenpay_fullname" value="{{ old('greenpay_fullname', Auth::user()->name ?? '') }}" placeholder="GreenPay Full Name">
+                                @error('greenpay_fullname')
+                                    <div class="field-error">{{ $message }}</div>
+                                @enderror
+
+                                <input form="placeOrderForm" type="text" name="greenpay_mobile_number" value="{{ old('greenpay_mobile_number', Auth::user()->phone_number ?? Auth::user()->mobile ?? '') }}" placeholder="GreenPay Mobile Number">
+                                @error('greenpay_mobile_number')
+                                    <div class="field-error">{{ $message }}</div>
+                                @enderror
+
+                                <input form="placeOrderForm" type="email" name="greenpay_email" value="{{ old('greenpay_email', Auth::user()->email ?? '') }}" placeholder="GreenPay Email Address">
+                                @error('greenpay_email')
+                                    <div class="field-error">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <input form="placeOrderForm" type="text" name="payment_reference_number" value="{{ old('payment_reference_number') }}" placeholder="Enter GreenPay reference number">
+                            @error('payment_reference_number')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="d-flex justify-content-between align-items-center mb-5">
-                            <span class="fw-bold" style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #111;">TOTAL DUE</span>
+                            <span class="fw-bold" style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #111;">GRAND TOTAL</span>
                             <span style="font-size: 24px; font-weight: 800; color: #111;">₱{{ number_format($total, 2) }}</span>
                         </div>
                         <button type="submit" form="placeOrderForm" class="ac-btn-black">Place Order Now</button>
@@ -306,5 +444,35 @@
             </div> 
     </div> 
 </div> 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cod = document.getElementById('payment_cod');
+        const greenpay = document.getElementById('payment_greenpay');
+        const referenceBox = document.getElementById('greenpayReferenceBox');
+        const referenceInput = referenceBox.querySelector('input[name="payment_reference_number"]');
+        const accountSelect = document.getElementById('greenpayAccountSelect');
+        const newFields = document.getElementById('greenpayNewFields');
+        const newFieldInputs = newFields.querySelectorAll('input');
+
+        function toggleReference() {
+            const showReference = greenpay.checked;
+            referenceBox.style.display = showReference ? 'block' : 'none';
+            referenceInput.required = showReference;
+            toggleNewFields();
+        }
+
+        function toggleNewFields() {
+            const showNewFields = greenpay.checked && accountSelect.value === 'new';
+            newFields.style.display = showNewFields ? 'block' : 'none';
+            newFieldInputs.forEach(input => input.required = showNewFields);
+        }
+
+        cod.addEventListener('change', toggleReference);
+        greenpay.addEventListener('change', toggleReference);
+        accountSelect.addEventListener('change', toggleNewFields);
+        toggleReference();
+    });
+</script>
 
 @endsection

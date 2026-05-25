@@ -231,6 +231,12 @@
         <div class="auth-form-container">
             <div class="auth-brand">ABACART</div>
 
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" name="login-form" class="needs-validation">
                 @csrf
 

@@ -421,8 +421,14 @@
                                         </div>
                                         <div class="detail-row">
                                             <span class="detail-label">Method</span>
-                                            <span class="detail-value">{{ strtoupper($order->payment_mode) }}</span>
+                                            <span class="detail-value">{{ $order->payment_mode == 'greenpay' ? 'GreenPay' : strtoupper($order->payment_mode) }}</span>
                                         </div>
+                                        @if($order->payment_reference_number)
+                                        <div class="detail-row">
+                                            <span class="detail-label">Reference #</span>
+                                            <span class="detail-value">{{ $order->payment_reference_number }}</span>
+                                        </div>
+                                        @endif
                                         <div class="detail-row">
                                             <span class="detail-label">Payment</span>
                                             <span class="detail-value">{{ ucfirst($order->payment_status) }}</span>
@@ -480,10 +486,6 @@
                                             <td style="color: #e53e3e;">-₱{{ number_format($order->discount, 2) }}</td>
                                         </tr>
                                         @endif
-                                        <tr>
-                                            <th colspan="3">Tax</th>
-                                            <td>₱{{ number_format($order->tax, 2) }}</td>
-                                        </tr>
                                         <tr class="total-row">
                                             <th colspan="3">Total Due</th>
                                             <td>₱{{ number_format($order->total, 2) }}</td>

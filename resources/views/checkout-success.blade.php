@@ -110,6 +110,11 @@
 <div class="ac-white-content">
     <div class="container">
         <div class="success-container">
+            @if(session('success'))
+                <div class="alert alert-success mb-4" style="border-radius: 14px; font-size: 13px; font-weight: 700;">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="success-icon">
                 <i class="fas fa-check"></i>
             </div>

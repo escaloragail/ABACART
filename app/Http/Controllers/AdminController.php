@@ -571,8 +571,10 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . \Illuminate\Support\Facades\Auth::user()->User_ID . ',User_ID',
             'phone_number' => 'required|string|max:15',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => ['nullable', 'string', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/', 'confirmed'],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one symbol.'
         ]);
 
         $user = \App\Models\User::find(\Illuminate\Support\Facades\Auth::user()->User_ID);

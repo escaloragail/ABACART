@@ -224,7 +224,7 @@
         <div class="auth-form-container">
             <div class="auth-brand">ABACART</div>
 
-            <form method="POST" action="{{ route('register') }}" name="register-form" class="needs-validation" novalidate="">
+            <form method="POST" action="{{ route('register') }}" name="register-form" class="needs-validation">
                 @csrf
 
                 <div class="auth-fields-row">
@@ -258,7 +258,7 @@
                     </div>
 
                     <div class="auth-field @error('password') has-error @enderror">
-                        <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Password">
+                        <input id="password" type="password" name="password" required minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{6,}" autocomplete="new-password" placeholder="Password" title="Password must be at least 6 characters and include uppercase, lowercase, and a symbol.">
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

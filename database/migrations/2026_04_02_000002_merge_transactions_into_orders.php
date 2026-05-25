@@ -11,7 +11,7 @@ return new class extends Migration
     {
         // Add payment columns to orders
         Schema::table('orders', function (Blueprint $table) {
-            $table->enum('payment_mode', ['cod', 'card', 'paypal'])->default('cod')->after('is_shipping_different');
+            $table->enum('payment_mode', ['cod', 'card', 'paypal', 'greenpay'])->default('cod')->after('is_shipping_different');
             $table->enum('payment_status', ['pending', 'approved', 'declined', 'refunded'])->default('pending')->after('payment_mode');
         });
 
@@ -34,7 +34,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id('Transaction_ID');
             $table->unsignedBigInteger('Order_ID');
-            $table->enum('payment_mode', ['cod', 'card', 'paypal'])->default('cod');
+            $table->enum('payment_mode', ['cod', 'card', 'paypal', 'greenpay'])->default('cod');
             $table->enum('status', ['pending', 'approved', 'declined', 'refunded'])->default('pending');
             $table->timestamps();
             $table->foreign('Order_ID')->references('Order_ID')->on('orders')->onDelete('cascade');

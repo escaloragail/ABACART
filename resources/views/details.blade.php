@@ -249,6 +249,11 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
 
     // --- BUY NOW LOGIC (Direct to Cart) ---
     document.getElementById('buyNowBtn')?.addEventListener('click', function() {
+        @if(!Auth::check())
+            window.location.href = "{{ route('login') }}";
+            return;
+        @endif
+
         const formData = new FormData(form);
         fetch(form.action, {
             method: 'POST',
@@ -261,6 +266,11 @@ body { background: #FAF7F2 !important; font-family: 'Inter', sans-serif; }
 
     // --- ADD TO CART LOGIC (Minimal Pop-up) ---
     document.getElementById('addToCartBtn')?.addEventListener('click', function() {
+        @if(!Auth::check())
+            window.location.href = "{{ route('login') }}";
+            return;
+        @endif
+
         const formData = new FormData(form);
         fetch(form.action, {
             method: 'POST',

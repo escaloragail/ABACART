@@ -56,9 +56,10 @@ class RegisterController extends Controller
                 'regex:/^(?:\+63|09)\d{9}$/', // PH numbers only
                 'unique:users'
             ],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/', 'confirmed'],
         ], [
-            'mobile.regex' => 'Mobile number must start with +63 or 09 and be 11 digits long.'
+            'mobile.regex' => 'Mobile number must start with +63 or 09 and be 11 digits long.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one symbol.'
         ]);
     }
 

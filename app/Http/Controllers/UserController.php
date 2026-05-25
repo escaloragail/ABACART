@@ -69,7 +69,9 @@ class UserController extends Controller
             'name'         => 'required|string|max:255',
             'phone_number' => 'required|string|max:15',
             'email'        => 'required|email|unique:users,email,' . Auth::user()->User_ID . ',User_ID',
-            'password'     => 'nullable|string|min:8|confirmed'
+            'password'     => ['nullable', 'string', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/', 'confirmed']
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one symbol.'
         ]);
 
         $user = \App\Models\User::find(Auth::user()->User_ID);

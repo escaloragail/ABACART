@@ -256,8 +256,11 @@
                 
                 <div class="form-grid">
                     <div class="form-floating">
-                        <input type="password" class="form-control" name="password" placeholder="New password">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{6,}" placeholder="New password" title="Password must be at least 6 characters and include uppercase, lowercase, and a symbol.">
                         <label for="password">New password</label>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     
                     <div class="form-floating">

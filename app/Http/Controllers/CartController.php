@@ -53,16 +53,14 @@ class CartController extends Controller
         $this->calculateDiscount();
 
         $discount = 0;
-        $taxRate = 12;
-
         if (Session::has('discounts')) {
             $totals = Session::get('discounts');
             $discount = floatval($totals['discount']);
             $tax = floatval($totals['tax']);
             $total = floatval($totals['total']);
         } else {
-            $tax = round($subtotal * $taxRate / 100, 2);
-            $total = round($subtotal + $tax, 2);
+            $tax = 0;
+            $total = round($subtotal, 2);
         }
 
         return view('cart', compact('items', 'subtotal', 'discount', 'tax', 'total'));
@@ -70,6 +68,10 @@ class CartController extends Controller
 
     public function add_to_cart(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in first before adding items to your cart.');
+        }
+
         $userId = Auth::user()->User_ID;
         $productId = $request->id;
 
@@ -194,8 +196,8 @@ class CartController extends Controller
             }
 
             $subtotalAfterDiscount = $cart_subtotal - $discount;
-            $taxAfterDiscount = ($subtotalAfterDiscount * 12) / 100;
-            $totalAfterDiscount = $subtotalAfterDiscount + $taxAfterDiscount;
+            $taxAfterDiscount = 0;
+            $totalAfterDiscount = $subtotalAfterDiscount;
 
             Session::put('discounts', [
                 'discount' => number_format(floatval($discount), 2, '.', ''),

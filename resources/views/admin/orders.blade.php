@@ -35,6 +35,8 @@
                                     <th>Subtotal</th>
                                     <th>Discount</th>
                                     <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Reference #</th>
                                     <th>Status</th>
                                     <th>Order Date</th>
                                     <th>Action</th>
@@ -48,6 +50,8 @@
                                     <td>₱{{ $order->subtotal }}</td>
                                     <td>₱{{ $order->discount }}</td>
                                     <td class="td-price">₱{{ $order->total }}</td>
+                                    <td><strong>{{ $order->payment_mode == 'greenpay' ? 'GreenPay' : strtoupper($order->payment_mode) }}</strong></td>
+                                    <td>{{ $order->payment_reference_number ?? '--' }}</td>
                                     <td>
                                         <form action="{{ route('admin.order.update_status') }}" method="POST">
                                             @csrf

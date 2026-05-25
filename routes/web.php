@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ Route::get('/contact-us', [HomeController::class, 'contact'])->name('home.contac
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/product/{slug}', [ShopController::class, 'product_details'])->name('shop.product.details');
+Route::get('/payment', [PaymentController::class, 'create'])->name('payment.create');
+Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
 
 // ── Authenticated User Routes ──
 Route::middleware(['auth'])->group(function(){
